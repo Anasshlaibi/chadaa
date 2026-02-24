@@ -171,6 +171,7 @@ if not GCP_PROJECT:
     print("CRITICAL: GCP_PROJECT_ID not set.")
 
 service_account_json = os.environ.get("GCP_SERVICE_ACCOUNT_JSON")
+creds_path = None
 if service_account_json:
     try:
         creds_fd, creds_path = tempfile.mkstemp(suffix=".json", dir="/tmp")
@@ -181,6 +182,13 @@ if service_account_json:
         print(f"Auth Error: {e}")
 
 client = genai.Client(vertexai=True, project=GCP_PROJECT, location=GCP_LOCATION)
+
+# IMMEDIATELY delete temp credentials after client init — closes LFI vulnerability
+if creds_path and os.path.exists(creds_path):
+    try:
+        os.remove(creds_path)
+    except OSError:
+        pass
 
 
 # ╔═══════════════════════════════════════════════════════════════╗

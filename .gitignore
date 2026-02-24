@@ -26,3 +26,6 @@ build/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Security
+git-scrub-replacements.txt

@@ -1,32 +1,23 @@
 {
-  "buildCommand": "cd portal && npm install && npm run build",
-  "outputDirectory": "portal/dist",
+  "buildCommand": "cd next-app && npm install && npm run build",
+  "outputDirectory": "next-app/.next",
+  "framework": "nextjs",
   "cleanUrls": true,
-  "redirects": [
-    { "source": "/index.htm", "destination": "/", "permanent": true },
-    { "source": "/index.html", "destination": "/", "permanent": true },
-    { "source": "/trappe%20de%20visite.html", "destination": "/products/tr-alu-standard", "permanent": true },
-    { "source": "/faux%20plafond.html", "destination": "/products/fp-std-ba13", "permanent": true },
-    { "source": "/dalle%20en%20laine%20de%20roche.html", "destination": "/products/lr-artic", "permanent": true },
-    { "source": "/DALLE%20EN%20METAL.html", "destination": "/products/dp-metal", "permanent": true },
-    { "source": "/cloisons%20de%20separation%20doublages.html", "destination": "/products/cl-montant-48", "permanent": true },
-    { "source": "/enduits%20pour%20joints.html", "destination": "/products/en-ce78", "permanent": true },
-    { "source": "/bandes%20a%20joints.html", "destination": "/products/ba-papier", "permanent": true },
-    { "source": "/accessoires%20de%20projeter.html", "destination": "/products/ap-chemise", "permanent": true },
-    { "source": "/JOINT%20CREUX.html", "destination": "/products/jc-std-z", "permanent": true },
-    { "source": "/ACCESSOIRES%20DE%20FIXATION.html", "destination": "/#catalog", "permanent": true },
-    { "source": "/DALLE%20EN%20PLATRE.html", "destination": "/#catalog", "permanent": true },
-    { "source": "/OSSATURE%20T24-T15.html", "destination": "/#catalog", "permanent": true },
-    { "source": "/Structure%20pour%20plancher%20sureleve.html", "destination": "/#catalog", "permanent": true },
-    { "source": "/plancher%20technique.html", "destination": "/#catalog", "permanent": true },
-    { "source": "/laine%20de%20roche.html", "destination": "/#catalog", "permanent": true },
-    { "source": "/laine%20de%20verre%20minerale.html", "destination": "/#catalog", "permanent": true },
-    { "source": "/dalle%20en%20vinyle.html", "destination": "/#catalog", "permanent": true },
-    { "source": "/dalle%20en%20laine%20minerale.html", "destination": "/#catalog", "permanent": true },
-    { "source": "/assets/img/portfolio/bordex.jpg", "destination": "/assets/img/portfolio/portfolio-1.jpg", "permanent": false }
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains; preload" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+      ]
+    }
   ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/chat.py" },
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/api/chat", "destination": "/api/chat.py" },
+    { "source": "/api/products", "destination": "/api/chat.py" },
+    { "source": "/api/contact", "destination": "/api/contact.py" }
   ]
 }
