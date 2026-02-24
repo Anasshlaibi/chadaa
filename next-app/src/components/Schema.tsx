@@ -60,11 +60,15 @@ export default function Schema({ lang }: { lang: 'fr' | 'ma' | 'en' }) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ 
+          __html: JSON.stringify(schema).replace(/</g, '\\u003c') 
+        }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+        dangerouslySetInnerHTML={{ 
+          __html: JSON.stringify(productSchema).replace(/</g, '\\u003c') 
+        }}
       />
     </>
   );
