@@ -9,21 +9,21 @@ const products = [
     name: "Trappe de Visite Alu",
     specs: "Cadre Alu / Plaque BA13",
     tag: "Top Vente",
-    img: "/assets/img/portfolio/jointcreux1.jpg"
+    img: "https://znhhzbpmqemappldctpw.supabase.co/storage/v1/object/public/product-images/assetstrappe/img/work-4.jpg"
   },
   {
     id: "joint-creux",
     name: "Profilé Joint Creux",
     specs: "Aluminium Haute Qualité",
     tag: "Design",
-    img: "/assets/img/portfolio/jointcreux1.jpg"
+    img: "https://znhhzbpmqemappldctpw.supabase.co/storage/v1/object/public/product-images/img/portfolio/jointcreux1.jpg"
   },
   {
     id: "ba13-hydro",
     name: "Plaque BA13 Hydro",
     specs: "Résistance Humidité",
     tag: "Standard",
-    img: "/assets/img/portfolio/jointcreux1.jpg"
+    img: "https://znhhzbpmqemappldctpw.supabase.co/storage/v1/object/public/product-images/img/portfolio/portfolio-2.jpg"
   }
 ];
 
