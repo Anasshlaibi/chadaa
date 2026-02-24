@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+.npm
+package-lock.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+env/
+venv/
+.venv/
+.env
+
+# Build outputs
+dist/
+.next/
+out/
+build/
+
+# Vercel
+.vercel
+
+# IDEs/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

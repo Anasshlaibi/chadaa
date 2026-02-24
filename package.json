@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@vercel/analytics": "^1.6.1",
+    "papaparse": "^5.5.3"
+  },
+  "devDependencies": {
+    "@types/papaparse": "^5.5.2"
+  }
+}

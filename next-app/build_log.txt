@@ -1,0 +1,46 @@
+
+> next-app@0.1.0 build
+> next build
+
+ÔÜá Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Downloaded Web Sites\chadaalyasmin.ma\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\package-lock.json
+
+Ôû▓ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+Error: Cannot apply unknown utility class `animate-gradient`
+    [at onInvalidCandidate (C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\node_modules\tailwindcss\dist\lib.js:21:1511)]
+    [at Ee (C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\node_modules\tailwindcss\dist\lib.js:16:37066)]
+    [at C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\node_modules\tailwindcss\dist\lib.js:21:355]
+    [at Pr (C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\node_modules\tailwindcss\dist\lib.js:3:1733)]
+    [at _ (C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\node_modules\tailwindcss\dist\lib.js:3:1377)]
+    [at Te (C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\node_modules\tailwindcss\dist\lib.js:21:172)]
+    [at pn (C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\node_modules\tailwindcss\dist\lib.js:38:294)]
+    [at async dn (C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\node_modules\tailwindcss\dist\lib.js:38:631)]
+    [at async Xr (C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\node_modules\@tailwindcss\node\dist\index.js:10:3417)]
+    [at async N (C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\node_modules\@tailwindcss\postcss\dist\index.js:10:3979)]
+
+> Build error occurred
+Error: Turbopack build failed with 1 errors:
+./next-app/src/app/globals.css
+Error evaluating Node.js code
+CssSyntaxError: tailwindcss: C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\src\app\globals.css:1:1: Cannot apply unknown utility class `animate-gradient`
+    at Input.error (next-app/node_modules/postcss/lib/input.js:135:16) [C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\.next\build\chunks\36f10_286dd8a9._.js:4651:22]
+    at Root.error (next-app/node_modules/postcss/lib/node.js:146:32) [C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\.next\build\chunks\36f10_286dd8a9._.js:928:38]
+    [at Object.Once (C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\node_modules\@tailwindcss\postcss\dist\index.js:10:6913)]
+    at async LazyResult.runAsync (next-app/node_modules/postcss/lib/lazy-result.js:293:11) [C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\.next\build\chunks\36f10_286dd8a9._.js:6206:21]
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34) [C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\.next\build\chunks\[root-of-the-server]__8d4524ae._.js:146:36]
+    at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23) [C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\.next\build\chunks\[root-of-the-server]__fd9cf445._.js:443:31]
+
+Import trace:
+  Client Component Browser:
+    ./next-app/src/app/globals.css [Client Component Browser]
+    ./next-app/src/app/layout.tsx [Server Component]
+
+
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34) [C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\.next\build\chunks\[root-of-the-server]__8d4524ae._.js:146:36])
+    at async run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:23) [C:\Downloaded Web Sites\chadaalyasmin.ma\next-app\.next\build\chunks\[root-of-the-server]__fd9cf445._.js:443:31])
