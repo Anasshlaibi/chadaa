@@ -276,7 +276,7 @@ function ProductDetailPage({ products }: ProductDetailPageProps) {
       </div>
 
       {/* STICKY MOBILE CTA - Refactored */}
-      <div className="lg:hidden fixed bottom-[72px] left-4 right-4 p-4 bg-white/95 backdrop-blur-md border border-gray-100 rounded-3xl z-[60] flex items-center gap-3 shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+      <div className="lg:hidden fixed bottom-24 left-4 right-4 p-4 bg-white/95 backdrop-blur-md border border-gray-100 rounded-3xl z-[110] flex items-center gap-3 shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
         <div className="flex items-center bg-gray-100 rounded-xl p-1 border border-gray-200 shrink-0">
           <button 
             onClick={handleDecrement}

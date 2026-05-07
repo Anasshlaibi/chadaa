@@ -184,7 +184,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
             </div>
 
             {/* Sticky CTA - MOBILE ONLY */}
-            <div className="md:hidden fixed bottom-[72px] left-4 right-4 p-4 bg-white/95 backdrop-blur-md border border-gray-100 rounded-3xl z-[60] flex items-center gap-3 shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+            <div className="md:hidden fixed bottom-24 left-4 right-4 p-4 bg-white/95 backdrop-blur-md border border-gray-100 rounded-3xl z-[110] flex items-center gap-3 shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
               <button 
                 onClick={() => onAddToCart(product, Math.max(1, quantity))}
                 className="w-full min-h-[44px] py-4 bg-blue-950 text-white rounded-2xl font-black text-sm shadow-xl flex items-center justify-center space-x-3 active:scale-95 transition-transform"
