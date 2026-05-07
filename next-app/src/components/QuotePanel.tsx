@@ -96,14 +96,33 @@ const QuotePanel: React.FC = () => {
                           <p className="text-xs font-semibold text-gray-400 uppercase tracking-tighter">{item.category}</p>
                           <div className="flex items-center mt-3 bg-gray-50 rounded-xl p-1 border border-gray-100">
                             <button 
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                               className="w-10 h-10 flex items-center justify-center bg-white hover:bg-blue-100 text-blue-950 rounded-lg transition-colors shadow-sm"
                             >
                               <Minus size={16} />
                             </button>
-                            <span className="w-12 text-center text-sm font-black text-blue-950">
-                              {item.quantity}
-                            </span>
+                            <input 
+                              type="text"
+                              inputMode="numeric"
+                              value={item.quantity === 0 ? '' : item.quantity}
+                              onChange={(e) => {
+                                const val = e.target.value.replace(/\D/g, '');
+                                if (val === '') {
+                                  updateQuantity(item.id, 0);
+                                } else {
+                                  const num = parseInt(val);
+                                  if (!isNaN(num)) {
+                                    updateQuantity(item.id, num);
+                                  }
+                                }
+                              }}
+                              onBlur={() => {
+                                if (item.quantity < 1) {
+                                  updateQuantity(item.id, 1);
+                                }
+                              }}
+                              className="w-12 text-center text-sm font-black text-blue-950 bg-transparent outline-none"
+                            />
                             <button 
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
                               className="w-10 h-10 flex items-center justify-center bg-white hover:bg-blue-100 text-blue-950 rounded-lg transition-colors shadow-sm"
