@@ -276,13 +276,13 @@ function ProductDetailPage({ products }: ProductDetailPageProps) {
       </div>
 
       {/* STICKY MOBILE CTA - Refactored */}
-      <div className="lg:hidden fixed bottom-24 left-4 right-4 p-4 bg-white/95 backdrop-blur-md border border-gray-100 rounded-3xl z-[110] flex items-center gap-3 shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
-        <div className="flex items-center bg-gray-100 rounded-xl p-1 border border-gray-200 shrink-0">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 pb-8 bg-white/95 backdrop-blur-md border-t border-gray-100 z-[110] flex items-center gap-3 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
+        <div className="flex items-center bg-gray-50 rounded-2xl p-1.5 border border-gray-100 shrink-0">
           <button 
             onClick={handleDecrement}
-            className="w-10 h-10 flex items-center justify-center text-blue-950 active:bg-white rounded-lg transition-all"
+            className="w-12 h-12 flex items-center justify-center text-blue-950 active:bg-white rounded-xl transition-all shadow-sm"
           >
-            <Minus size={16} />
+            <Minus size={20} />
           </button>
           <input 
             type="text"
@@ -300,21 +300,21 @@ function ProductDetailPage({ products }: ProductDetailPageProps) {
             onBlur={() => {
               if (quantity < 1) setQuantity(1);
             }}
-            className="w-14 h-10 bg-white rounded-lg text-center font-black text-blue-950 outline-none border border-gray-200"
+            className="w-16 h-12 bg-white rounded-xl text-center font-black text-blue-950 text-lg outline-none border border-gray-100 mx-1"
             placeholder="1"
           />
           <button 
             onClick={handleIncrement}
-            className="w-10 h-10 flex items-center justify-center text-blue-950 active:bg-white rounded-lg transition-all"
+            className="w-12 h-12 flex items-center justify-center text-blue-950 active:bg-white rounded-xl transition-all shadow-sm"
           >
-            <Plus size={16} />
+            <Plus size={20} />
           </button>
         </div>
         <button 
           onClick={() => addToQuote(product, Math.max(1, quantity))}
-          className="grow min-h-[44px] py-4 bg-amber-500 text-white rounded-2xl font-black text-sm shadow-xl flex items-center justify-center space-x-3 active:scale-95 transition-transform"
+          className="grow h-14 bg-amber-500 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-amber-500/20 flex items-center justify-center space-x-3 active:scale-95 transition-transform"
         >
-          <ShoppingBag size={20} className="text-white" />
+          <ShoppingBag size={20} />
           <span>Demander un Devis</span>
         </button>
       </div>

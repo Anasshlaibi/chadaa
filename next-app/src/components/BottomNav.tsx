@@ -10,6 +10,9 @@ function BottomNav() {
   const { itemCount, setIsPanelOpen } = useCart();
   const pathname = usePathname();
 
+  // Hide BottomNav on product detail pages to avoid overlap with sticky CTA
+  if (pathname.includes('/products/')) return null;
+
   const navItems = [
     { label: 'Accueil', icon: Home, path: '/' },
     { label: 'Catalogue', icon: Grid, path: '/#catalog' },

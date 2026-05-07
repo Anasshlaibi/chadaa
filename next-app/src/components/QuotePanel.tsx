@@ -94,21 +94,21 @@ const QuotePanel: React.FC = () => {
                         <div className="grow">
                           <h4 className="font-bold text-blue-950 text-base leading-tight mb-1">{item.name}</h4>
                           <p className="text-xs font-semibold text-gray-400 uppercase tracking-tighter">{item.category}</p>
-                          <div className="flex items-center mt-3 space-x-1">
+                          <div className="flex items-center mt-3 bg-gray-50 rounded-xl p-1 border border-gray-100">
                             <button 
                               onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                              className="w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-blue-100 text-blue-950 rounded-lg transition-colors"
+                              className="w-10 h-10 flex items-center justify-center bg-white hover:bg-blue-100 text-blue-950 rounded-lg transition-colors shadow-sm"
                             >
-                              <Minus size={14} />
+                              <Minus size={16} />
                             </button>
-                            <span className="w-10 text-center text-sm font-black text-blue-950">
+                            <span className="w-12 text-center text-sm font-black text-blue-950">
                               {item.quantity}
                             </span>
                             <button 
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              className="w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-blue-100 text-blue-950 rounded-lg transition-colors"
+                              className="w-10 h-10 flex items-center justify-center bg-white hover:bg-blue-100 text-blue-950 rounded-lg transition-colors shadow-sm"
                             >
-                              <Plus size={14} />
+                              <Plus size={16} />
                             </button>
                           </div>
                         </div>
