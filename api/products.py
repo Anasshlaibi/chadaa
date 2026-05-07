@@ -45,7 +45,8 @@ def get_products():
                 "image": p.get('mainImage') or p.get('image', ''),
                 "inStock": in_stock_bool,
                 "stockStatus": "En Stock" if in_stock_bool else "En Rupture",
-                "ref": p.get('ref')
+                "ref": p.get('ref'),
+                "specs": p.get('specs') or {}
             })
         
         response = jsonify({"status": "success", "products": formatted})
