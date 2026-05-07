@@ -1,6 +1,12 @@
 {
+  "name": "chadaa-root",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd next-app && npm install && npm run build",
+    "start": "cd next-app && npm run start"
+  },
   "dependencies": {
-    "next": "16.1.6",
+    "next": "^16.2.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "@vercel/analytics": "^1.6.1",
