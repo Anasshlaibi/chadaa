@@ -1,59 +1,91 @@
-"use client";
+import React from 'react';
+import { MapPin, Phone, Mail, ArrowRight, Instagram, Facebook, Twitter, Linkedin } from 'lucide-react';
+import Image from 'next/image';
 
-import { Hammer, Mail, Phone, MapPin, Instagram, Facebook, Linkedin } from "lucide-react";
-
-export function Footer({ lang }: { lang: 'fr' | 'ma' | 'en' }) {
+const Footer: React.FC = () => {
   return (
-    <footer className="py-20 bg-slate-900 border-t border-white/5">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
-          <div className="space-y-8">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center">
-                <Hammer className="text-slate-900" size={24} />
+    <footer className="bg-corporate-blue-dark text-white pt-24 pb-12 overflow-hidden relative">
+      {/* Decorative background element */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-corporate-blue opacity-5 -skew-x-12 translate-x-1/2"></div>
+      
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
+          {/* Brand Presence */}
+          <div className="lg:col-span-5">
+            <div className="flex items-center space-x-3 mb-8">
+              <div className="relative w-10 h-10 shadow-lg">
+                <Image 
+                  src="/logo.png" 
+                  alt="Chada Alyasmin Logo" 
+                  fill
+                  className="object-contain"
+                />
               </div>
-              <span className="text-xl font-black tracking-tighter text-white uppercase">CHADA ALYASMIN</span>
+              <span className="text-2xl font-black tracking-tighter">CHADA <span className="text-corporate-blue-light">ALYASMIN</span></span>
             </div>
-            <p className="text-slate-400 font-medium text-sm leading-relaxed">
-              {lang === 'fr' 
-                ? "Solutions premium pour le second œuvre. Votre partenaire de confiance depuis 2017."
-                : "Spécialiste du BA13 et Second Œuvre au Maroc. Livraison Casablanca & Bouskoura."}
+            <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-md">
+              Spécialiste des solutions de construction haut de gamme et des finitions intérieures. En partenariat avec les leaders du secteur pour offrir l'excellence depuis 2017.
             </p>
-            <div className="flex gap-4">
-              {[Instagram, Facebook, Linkedin].map((Icon, i) => (
-                <a key={i} href="#" className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 hover:bg-amber-500 hover:text-slate-950 transition-all">
-                  <Icon size={18} />
+            <div className="flex space-x-5">
+              {[Instagram, Facebook, Twitter, Linkedin].map((Icon, i) => (
+                <a key={i} href="#" className="p-2 border border-white/10 rounded-full text-gray-400 hover:bg-white hover:text-corporate-blue-dark transition-all duration-300">
+                  <Icon size={20} />
                 </a>
               ))}
             </div>
           </div>
 
-          <div>
-            <h4 className="text-white font-black uppercase tracking-[0.2em] text-[10px] mb-8">Contact</h4>
-            <div className="space-y-6">
-              <div className="flex items-start gap-4 text-slate-400">
-                <MapPin className="text-amber-500 shrink-0" size={18} />
-                <span className="text-xs font-medium uppercase leading-relaxed">Lot. Al Amal n°2, Bouskoura, Casablanca, Maroc</span>
+          {/* Quick Nav */}
+          <div className="lg:col-span-3 sm:grid sm:grid-cols-2 lg:block sm:gap-8">
+            <div className="mb-10 lg:mb-12">
+              <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-corporate-gold mb-6">Explorer</h4>
+              <ul className="space-y-4 text-gray-400 font-medium">
+                <li><a href="#catalog" className="hover:text-white flex items-center group transition-colors"><ArrowRight size={14} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" /> Catalogue Produits</a></li>
+                <li><a href="#contact" className="hover:text-white flex items-center group transition-colors"><ArrowRight size={14} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" /> Demander un Devis</a></li>
+                <li><a href="#projets" className="hover:text-white flex items-center group transition-colors"><ArrowRight size={14} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" /> Projets</a></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Global HQ Only */}
+          <div className="lg:col-span-4">
+            <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-corporate-gold mb-8">Informations de Contact</h4>
+            <div className="space-y-8">
+              <div className="flex items-center group">
+                <div className="p-3 bg-white/5 rounded-xl text-corporate-blue-light mr-4 group-hover:bg-corporate-blue-light group-hover:text-white transition-all duration-300">
+                  <Phone size={20} />
+                </div>
+                <div>
+                  <h5 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Ligne Directe</h5>
+                  <p className="text-gray-300 font-bold text-lg tracking-tight">+212 661-138 204</p>
+                </div>
               </div>
-              <div className="flex items-center gap-4 text-slate-400">
-                <Phone className="text-amber-500 shrink-0" size={18} />
-                <span className="text-xs font-black">+212 661 138 204</span>
-              </div>
-              <div className="flex items-center gap-4 text-slate-400">
-                <Mail className="text-amber-500 shrink-0" size={18} />
-                <span className="text-xs font-medium uppercase tracking-widest">contact@chadaalyasmin.ma</span>
+
+              <div className="flex items-center group">
+                <div className="p-3 bg-white/5 rounded-xl text-corporate-blue-light mr-4 group-hover:bg-corporate-blue-light group-hover:text-white transition-all duration-300">
+                  <Mail size={20} />
+                </div>
+                <div>
+                  <h5 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Demande par Email</h5>
+                  <a href="mailto:contact@chadaalyasmin.ma" className="text-gray-300 font-medium hover:text-white transition-colors">
+                    contact@chadaalyasmin.ma
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">© 2026 CHADA ALYASMIN. TOUS DROITS RÉSERVÉS.</p>
-          <div className="flex gap-8">
-             <a href="#" className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-600 hover:text-white transition-colors">Mentions Légales</a>
-             <a href="#" className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-600 hover:text-white transition-colors">Confidentialité</a>
+
+        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 font-medium">
+          <p>© 2026 Chada Alyasmin. Tous droits réservés.</p>
+          <div className="flex space-x-8 mt-6 md:mt-0">
+            <a href="#" className="hover:text-white transition-colors">Politique de Confidentialité</a>
+            <a href="#" className="hover:text-white transition-colors">Conditions d'Utilisation</a>
           </div>
         </div>
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

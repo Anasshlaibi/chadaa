@@ -28,6 +28,16 @@ CREATE POLICY "products_service_role_all"
 -- ============================================================
 -- TABLE: contacts (form submissions — server-only)
 -- ============================================================
+CREATE TABLE IF NOT EXISTS public.contacts (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    subject TEXT,
+    message TEXT NOT NULL,
+    ip_hash TEXT,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL
+);
+
 ALTER TABLE public.contacts ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "contacts_service_role_only" ON public.contacts;

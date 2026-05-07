@@ -1,8 +1,6 @@
-import { Navbar } from "@/components/Navbar";
 import { HeroSection } from "@/components/HeroSection";
 import { ProductSection } from "@/components/ProductSection";
 import { FeatureSection } from "@/components/FeatureSection";
-import { Footer } from "@/components/Footer";
 import Schema from "@/components/Schema";
 import { Metadata } from "next";
 
@@ -14,13 +12,11 @@ export const metadata: Metadata = {
 
 export default function InternationalPage() {
   return (
-    <main className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-slate-900">
       <Schema lang="en" />
-      <Navbar lang="en" />
       <HeroSection lang="en" />
       <FeatureSection lang="en" />
       <ProductSection lang="en" />
-      <Footer lang="en" />
-    </main>
+    </div>
   );
 }

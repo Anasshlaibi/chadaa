@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { ChevronRight, ArrowRight, ShieldCheck, Zap, Globe, Package } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 export function HeroSection({ lang }: { lang: 'fr' | 'ma' | 'en' }) {
   const content = {
@@ -27,6 +28,17 @@ export function HeroSection({ lang }: { lang: 'fr' | 'ma' | 'en' }) {
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+      {/* Hero Background Image — LCP element, preloaded with priority */}
+      <Image
+        src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80"
+        alt="Construction site background"
+        fill
+        priority={true}
+        sizes="100vw"
+        style={{ objectFit: "cover" }}
+        className="opacity-20 -z-20"
+      />
+
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl">
           <motion.div 

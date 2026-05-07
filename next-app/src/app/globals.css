@@ -4,15 +4,27 @@
   --color-primary: #f59e0b;
   --color-secondary: #0f172a;
   --color-accent: #fbbf24;
-  
+
+  /* Corporate Theme Colors */
+  --color-corporate-blue: #1e3a8a;
+  --color-corporate-blue-dark: #0f172a;
+  --color-corporate-blue-light: #3b82f6;
+  --color-corporate-gold: #f59e0b;
+
   --font-outfit: var(--font-outfit);
 
   --animate-gradient: gradient 3s ease infinite;
 
   @keyframes gradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 }
 

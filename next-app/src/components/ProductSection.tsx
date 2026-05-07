@@ -1,33 +1,45 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
+import { Plus, ChevronDown } from "lucide-react";
+import { fetchProducts } from "@/services/googleSheets";
+import { type Product } from "@/data/products";
 
-const products = [
-  {
-    id: "trappe-alu",
-    name: "Trappe de Visite Alu",
-    specs: "Cadre Alu / Plaque BA13",
-    tag: "Top Vente",
-    img: "https://znhhzbpmqemappldctpw.supabase.co/storage/v1/object/public/product-images/assetstrappe/img/work-4.jpg"
-  },
-  {
-    id: "joint-creux",
-    name: "Profilé Joint Creux",
-    specs: "Aluminium Haute Qualité",
-    tag: "Design",
-    img: "https://znhhzbpmqemappldctpw.supabase.co/storage/v1/object/public/product-images/img/portfolio/jointcreux1.jpg"
-  },
-  {
-    id: "ba13-hydro",
-    name: "Plaque BA13 Hydro",
-    specs: "Résistance Humidité",
-    tag: "Standard",
-    img: "https://znhhzbpmqemappldctpw.supabase.co/storage/v1/object/public/product-images/img/portfolio/portfolio-2.jpg"
-  }
-];
+const INITIAL_COUNT = 12;
 
 export function ProductSection({ lang }: { lang: 'fr' | 'ma' | 'en' }) {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [showAll, setShowAll] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        setIsLoading(true);
+        const data = await fetchProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Failed to load products for section:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadProducts();
+  }, []);
+
+  const visibleProducts = showAll ? products : products.slice(0, INITIAL_COUNT);
+  const hasMore = products.length > INITIAL_COUNT;
+
+  if (isLoading && products.length === 0) {
+    return (
+      <section className="py-32 bg-slate-900 flex items-center justify-center">
+        <div className="text-white font-black animate-pulse">Chargement du catalogue...</div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-32 bg-slate-900" id="products">
       <div className="container mx-auto px-6">
@@ -39,12 +51,17 @@ export function ProductSection({ lang }: { lang: 'fr' | 'ma' | 'en' }) {
             </h3>
           </div>
           <p className="text-slate-400 font-medium max-w-xs text-sm leading-relaxed">
-            {lang === 'fr' ? "Découvrez notre sélection de produits certifiés pour vos chantiers les plus exigeants." : "Découvrez les meilleurs prix pour vos matériaux de construction au Maroc."}
+            {lang === 'fr' 
+              ? "Découvrez notre sélection de produits certifiés pour vos chantiers les plus exigeants." 
+              : lang === 'ma' 
+                ? "Découvrez les meilleurs prix pour vos matériaux de construction au Maroc."
+                : "Discover our premium selection of certified building materials for your projects."
+            }
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {products.map((product, i) => (
+          {visibleProducts.map((product, i) => (
             <motion.div 
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
@@ -54,14 +71,19 @@ export function ProductSection({ lang }: { lang: 'fr' | 'ma' | 'en' }) {
               className="group cursor-pointer"
             >
               <div className="glass-card overflow-hidden mb-6 aspect-[4/5] relative">
-                <img 
-                  src={product.img} 
-                  alt={product.name} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-100" 
+                <Image 
+                  src={product.image || "/logo.png"} 
+                  alt={product.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  style={{ objectFit: "cover" }}
+                  className="transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-100" 
                 />
                 <div className="absolute top-6 right-6">
                    <div className="px-3 py-1 rounded-full bg-slate-900/50 backdrop-blur-md border border-white/10">
-                     <span className="text-[9px] font-black uppercase tracking-widest text-amber-500">{product.tag}</span>
+                     <span className="text-[9px] font-black uppercase tracking-widest text-amber-500">
+                       {product.stockStatus === 'En Stock' ? 'Disponible' : product.stockStatus}
+                     </span>
                    </div>
                 </div>
                 <div className="absolute bottom-6 left-6 right-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
@@ -71,11 +93,29 @@ export function ProductSection({ lang }: { lang: 'fr' | 'ma' | 'en' }) {
                 </div>
               </div>
               <h4 className="text-2xl font-black text-white mb-1 group-hover:text-amber-500 transition-colors">{product.name}</h4>
-              <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">{product.specs}</p>
+              <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">{product.category}</p>
             </motion.div>
           ))}
         </div>
+
+        {hasMore && !showAll && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="flex justify-center mt-16"
+          >
+            <button
+              onClick={() => setShowAll(true)}
+              className="group px-10 py-5 bg-white/5 hover:bg-amber-500/10 border border-white/10 hover:border-amber-500/30 text-white font-black text-sm uppercase tracking-[0.2em] rounded-2xl flex items-center gap-3 transition-all duration-300"
+            >
+              {lang === 'fr' || lang === 'ma' ? 'Voir Plus' : 'Show More'}
+              <ChevronDown size={18} className="text-amber-500 group-hover:translate-y-1 transition-transform" />
+            </button>
+          </motion.div>
+        )}
       </div>
     </section>
   );
 }
+

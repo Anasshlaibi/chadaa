@@ -7,18 +7,6 @@ export default function Schema({ lang }: { lang: 'fr' | 'ma' | 'en' }) {
     "@id": "https://chadaalyasmin.ma",
     "url": "https://chadaalyasmin.ma",
     "telephone": "+212661138204",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Lot. Al Amal n°2, Bouskoura",
-      "addressLocality": "Casablanca",
-      "postalCode": "27182",
-      "addressCountry": "MA"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 33.4542,
-      "longitude": -7.6491
-    },
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": [

@@ -1,1 +1,6 @@
 scripts/
+node_modules/
+next-app/node_modules/
+.git/
+.venv/
+api/__pycache__/

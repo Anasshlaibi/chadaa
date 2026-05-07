@@ -2,6 +2,13 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import { CartProvider } from "@/context/CartContext";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import BottomNav from "@/components/BottomNav";
+import FloatingContact from "@/components/FloatingContact";
+import CartNotification from "@/components/CartNotification";
+import QuotePanel from "@/components/QuotePanel";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -39,11 +46,24 @@ export default function RootLayout({
         <noscript>
           <img height="1" width="1" style={{display:'none'}}
             src="https://www.facebook.com/tr?id=1161859512197703&ev=PageView&noscript=1"
+            alt="facebook pixel"
           />
         </noscript>
       </head>
-      <body className={`${outfit.variable} antialiased`}>
-        {children}
+      <body className={`${outfit.variable} antialiased bg-gray-50`}>
+        <CartProvider>
+          <Navbar />
+          <CartNotification />
+          <QuotePanel />
+          <FloatingContact />
+          <main className="min-h-screen flex flex-col">
+            <div className="grow pt-[80px] lg:pt-[160px]">
+              {children}
+            </div>
+          </main>
+          <Footer />
+          <BottomNav />
+        </CartProvider>
       </body>
     </html>
   );

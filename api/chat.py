@@ -122,7 +122,7 @@ else:
 # ║  SECTION 5: CACHING LAYER                                    ║
 # ╚═══════════════════════════════════════════════════════════════╝
 _cache: dict = {"data": None, "timestamp": 0.0, "instruction": ""}
-CACHE_TTL = float(os.environ.get("CACHE_TTL", 300))
+CACHE_TTL = 10.0
 
 
 def get_db_products() -> tuple:
@@ -162,33 +162,16 @@ def get_db_products() -> tuple:
 
 
 # ╔═══════════════════════════════════════════════════════════════╗
-# ║  SECTION 6: VERTEX AI — All Config from Environment          ║
+# ║  SECTION 6: GENAI CLIENT — Standard API Key                   ║
 # ╚═══════════════════════════════════════════════════════════════╝
-GCP_PROJECT = os.environ.get("GCP_PROJECT_ID")
-GCP_LOCATION = os.environ.get("GCP_LOCATION", "us-central1")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-if not GCP_PROJECT:
-    print("CRITICAL: GCP_PROJECT_ID not set.")
-
-service_account_json = os.environ.get("GCP_SERVICE_ACCOUNT_JSON")
-creds_path = None
-if service_account_json:
-    try:
-        creds_fd, creds_path = tempfile.mkstemp(suffix=".json", dir="/tmp")
-        with os.fdopen(creds_fd, 'w') as f:
-            f.write(service_account_json)
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = creds_path
-    except Exception as e:
-        print(f"Auth Error: {e}")
-
-client = genai.Client(vertexai=True, project=GCP_PROJECT, location=GCP_LOCATION)
-
-# IMMEDIATELY delete temp credentials after client init — closes LFI vulnerability
-if creds_path and os.path.exists(creds_path):
-    try:
-        os.remove(creds_path)
-    except OSError:
-        pass
+if not GEMINI_API_KEY:
+    print("CRITICAL: GEMINI_API_KEY not set.")
+    client = None
+else:
+    # Use standard API Key instead of Vertex AI
+    client = genai.Client(api_key=GEMINI_API_KEY, vertexai=False)
 
 
 # ╔═══════════════════════════════════════════════════════════════╗
@@ -224,13 +207,23 @@ def get_products():
             "stockStatus": "En Stock" if in_stock_bool else "En Rupture",
             "ref": p.get('ref')
         })
-    return jsonify({"status": "success", "products": formatted})
+    response = jsonify({"status": "success", "products": formatted})
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 
 @app.route('/api/chat', methods=['POST'])
 @app.route('/chat', methods=['POST'])
 def chat():
     try:
+        if client is None:
+            return jsonify({
+                "response": "AI Assistant is currently unavailable (Missing API Key). Please check back later.",
+                "status": "error"
+            }), 503
+
         data = request.json
         if not data:
             return jsonify({"error": "Empty request body."}), 400
@@ -253,15 +246,20 @@ def chat():
             system_instruction = os.environ.get("AI_SYSTEM_PROMPT", "Sales Assistant.")
 
         response = client.models.generate_content(
-            model="gemini-2.0-flash-001",
+            model="gemini-2.5-flash",
             contents=user_msg,
             config={'system_instruction': system_instruction, 'temperature': 0.1}
         )
 
         return jsonify({"response": response.text, "status": "success"})
     except Exception as e:
-        print(f"Chat Error: {e}")
-        return jsonify({"response": "Service temporarily unavailable.", "status": "error"}), 500
+        print(f"Chat Error: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
+        return jsonify({
+            "response": "Service temporairement indisponible. Veuillez réessayer plus tard.",
+            "status": "error"
+        }), 500
 
 
 @app.route('/', methods=['GET'])
