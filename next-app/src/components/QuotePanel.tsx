@@ -151,7 +151,7 @@ const QuotePanel: React.FC = () => {
 
             {/* Footer Actions (Only shown in cart view) */}
             {view === 'cart' && (
-              <div className="p-8 border-t border-gray-100 bg-gray-50/50 space-y-4">
+              <div className="px-8 pt-8 pb-[max(2rem,env(safe-area-inset-bottom))] border-t border-gray-100 bg-gray-50/50 space-y-4">
                 {items.length > 0 && (
                   <button 
                     onClick={clearQuote}

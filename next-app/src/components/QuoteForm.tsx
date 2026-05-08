@@ -89,6 +89,7 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onSuccess, onCancel }) => {
             <input
               required
               type="text"
+              autoComplete="organization"
               placeholder="Nom de l'entreprise"
               className="w-full bg-gray-50 border-2 border-transparent focus:border-amber-500 focus:bg-white rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-blue-950 outline-none transition-all"
               value={formData.companyName}
@@ -101,6 +102,7 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onSuccess, onCancel }) => {
             <input
               required
               type="text"
+              autoComplete="name"
               placeholder="Nom du Contact"
               className="w-full bg-gray-50 border-2 border-transparent focus:border-amber-500 focus:bg-white rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-blue-950 outline-none transition-all"
               value={formData.contactName}
@@ -113,6 +115,7 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onSuccess, onCancel }) => {
             <input
               required
               type="email"
+              autoComplete="email"
               placeholder="Email professionnel"
               className="w-full bg-gray-50 border-2 border-transparent focus:border-amber-500 focus:bg-white rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-blue-950 outline-none transition-all"
               value={formData.email}
@@ -125,6 +128,7 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onSuccess, onCancel }) => {
             <input
               required
               type="tel"
+              autoComplete="tel"
               placeholder="Téléphone"
               className="w-full bg-gray-50 border-2 border-transparent focus:border-amber-500 focus:bg-white rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-blue-950 outline-none transition-all"
               value={formData.phone}
