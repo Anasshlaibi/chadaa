@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useState } from 'react';
-import { PackagePlus, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { PackagePlus, Loader2, CheckCircle2, AlertCircle, LogOut } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
 
 export default function AdminDashboard() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
@@ -80,18 +83,38 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleSignOut = async () => {
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      router.push('/login');
+      router.refresh();
+    } catch (err) {
+      console.error('Erreur lors de la déconnexion:', err);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-slate-50 font-sans">
       <div className="pb-20 px-4 max-w-4xl mx-auto">
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
-          <div className="bg-slate-900 p-8 text-white flex items-center gap-4">
-            <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg">
-              <PackagePlus size={24} className="text-white" />
+          <div className="bg-slate-900 p-8 text-white flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg">
+                <PackagePlus size={24} className="text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold font-serif">Dashboard Administrateur</h1>
+                <p className="text-slate-300 text-sm mt-1">Ajouter un nouveau produit à l'inventaire</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold font-serif">Dashboard Administrateur</h1>
-              <p className="text-slate-300 text-sm mt-1">Ajouter un nouveau produit à l'inventaire</p>
-            </div>
+            <button
+              onClick={handleSignOut}
+              className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 active:bg-slate-650 text-slate-200 border border-slate-700/60 hover:text-white hover:border-slate-500 text-xs font-semibold rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md"
+            >
+              <LogOut size={15} />
+              <span className="hidden sm:inline">Se déconnecter</span>
+            </button>
           </div>
 
           <div className="p-8">
