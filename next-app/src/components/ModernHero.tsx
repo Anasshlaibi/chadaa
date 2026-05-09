@@ -10,6 +10,7 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
     if (catalogElement) catalogElement.scrollIntoView({ behavior: isMobile ? 'instant' : 'smooth' });
   };
 
+  // Force rebuild for UX Fix Step 2 verification
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
 
   const content = {
