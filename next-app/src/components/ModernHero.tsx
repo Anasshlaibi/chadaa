@@ -76,7 +76,7 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center pt-[80px] lg:pt-[96px] overflow-hidden bg-white">
+    <section className="relative min-h-screen flex flex-col justify-center pt-[80px] lg:pt-[80px] pb-16 overflow-visible bg-white">
       {/* Dynamic Background Elements - Desktop Only */}
       <div className="hidden lg:block absolute top-0 right-0 w-1/2 h-full bg-blue-50/30 -skew-x-12 translate-x-1/2 z-0" />
       <div className="hidden lg:block absolute bottom-1/4 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px] z-0" />

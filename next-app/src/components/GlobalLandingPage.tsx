@@ -130,7 +130,7 @@ export default function GlobalLandingPage({ lang }: { lang: 'fr' | 'ma' | 'en' }
       <Catalog products={products} isLoading={isLoading} lang={lang} />
 
       {/* Product Categories Overview */}
-      <section id="expertise" className="pt-40 pb-24 bg-white">
+      <section id="expertise" className="pt-20 lg:pt-32 pb-16 lg:pb-24 bg-white">
         <div className="w-full max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16">
             <div className="max-w-xl">
@@ -164,7 +164,7 @@ export default function GlobalLandingPage({ lang }: { lang: 'fr' | 'ma' | 'en' }
       </section>
 
       {/* Competitive Advantages */}
-      <section id="projets" className="pt-40 pb-32 bg-blue-950 relative overflow-hidden">
+      <section id="projets" className="pt-20 lg:pt-32 pb-16 lg:pb-24 bg-blue-950 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-400 opacity-5 -skew-x-12 translate-x-1/2"></div>
         <div className="w-full max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
@@ -201,7 +201,7 @@ export default function GlobalLandingPage({ lang }: { lang: 'fr' | 'ma' | 'en' }
       </section>
 
       {/* Brand Story - Dedicated Section */}
-      <section id="about" className="pt-40 pb-32 bg-slate-50 overflow-hidden">
+      <section id="about" className="pt-20 lg:pt-32 pb-16 lg:pb-24 bg-slate-50 overflow-hidden">
         <div className="w-full max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Text Content - Fully Visible */}

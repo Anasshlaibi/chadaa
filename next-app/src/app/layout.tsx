@@ -60,7 +60,7 @@ export default function RootLayout({
           <QuotePanel />
           <FloatingContact />
           <main className="min-h-screen flex flex-col">
-            <div className="grow pt-[80px] lg:pt-[100px]">
+            <div className="grow pb-[70px] lg:pb-0">
               {children}
             </div>
           </main>
