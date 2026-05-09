@@ -75,24 +75,26 @@ def rate_limit_check():
 # ╔═══════════════════════════════════════════════════════════════╗
 # ║  SECTION 3: PROMPT INJECTION DEFENSE                         ║
 # ╚═══════════════════════════════════════════════════════════════╝
-INJECTION_PATTERNS = [
-    re.compile(r"ignore\s+(all\s+)?previous\s+instructions", re.IGNORECASE),
-    re.compile(r"reveal\s+(your\s+)?system\s+prompt", re.IGNORECASE),
-    re.compile(r"what\s+are\s+your\s+(instructions|rules|system\s+prompt)", re.IGNORECASE),
-    re.compile(r"pretend\s+you\s+are", re.IGNORECASE),
-    re.compile(r"act\s+as\s+(if|though)\s+you", re.IGNORECASE),
-    re.compile(r"disregard\s+(all\s+)?prior", re.IGNORECASE),
-    re.compile(r"override\s+(your\s+)?(system|safety)", re.IGNORECASE),
-    re.compile(r"forget\s+(everything|all)", re.IGNORECASE),
-    re.compile(r"new\s+instructions?\s*:", re.IGNORECASE),
-    re.compile(r"you\s+are\s+now\s+(?:a|an)\s+", re.IGNORECASE),
-    re.compile(r"system\s*:\s*", re.IGNORECASE),
+BLOCKED_PATTERNS = [
+    re.compile(r"ignore\s+(previous|all|your)\s+(instructions?|rules?|prompt)", re.IGNORECASE),
+    re.compile(r"disregard", re.IGNORECASE),
+    re.compile(r"you\s+are\s+now", re.IGNORECASE),
+    re.compile(r"new\s+persona", re.IGNORECASE),
+    re.compile(r"pretend\s+(you\s+are|to\s+be)", re.IGNORECASE),
+    re.compile(r"system\s+prompt", re.IGNORECASE),
+    re.compile(r"reveal\s+(your|the)\s+(instructions?|prompt|rules?)", re.IGNORECASE),
+    re.compile(r"jailbreak", re.IGNORECASE),
+    re.compile(r"act\s+as", re.IGNORECASE),
+    re.compile(r"DAN", re.IGNORECASE),
     re.compile(r"<\s*/?script", re.IGNORECASE),
 ]
 
+MAX_MESSAGE_LENGTH = 1000  # chars
 
 def is_prompt_injection(text: str) -> bool:
-    return any(pattern.search(text) for pattern in INJECTION_PATTERNS)
+    if len(text) > MAX_MESSAGE_LENGTH:
+        return True
+    return any(pattern.search(text) for pattern in BLOCKED_PATTERNS)
 
 
 def sanitize_input(text: str) -> str:
@@ -244,7 +246,7 @@ def chat():
 
         if is_prompt_injection(user_msg):
             return jsonify({
-                "response": "I can only help with product-related questions.",
+                "response": "Je ne peux pas traiter cette demande.",
                 "status": "blocked"
             }), 200
 
