@@ -1,7 +1,4 @@
-import { HeroSection } from "@/components/HeroSection";
-import { ProductSection } from "@/components/ProductSection";
-import { FeatureSection } from "@/components/FeatureSection";
-import Schema from "@/components/Schema";
+import GlobalLandingPage from '@/components/GlobalLandingPage';
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,12 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function MoroccoPage() {
-  return (
-    <div className="min-h-screen bg-slate-900">
-      <Schema lang="ma" />
-      <HeroSection lang="ma" />
-      <FeatureSection lang="ma" />
-      <ProductSection lang="ma" />
-    </div>
-  );
+  return <GlobalLandingPage lang="ma" />;
 }

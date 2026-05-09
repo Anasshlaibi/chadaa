@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from 'react';
 import { Outfit } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
@@ -52,12 +53,14 @@ export default function RootLayout({
       </head>
       <body className={`${outfit.variable} antialiased bg-gray-50`}>
         <CartProvider>
-          <Navbar />
+          <Suspense fallback={<div className="h-20" />}>
+            <Navbar />
+          </Suspense>
           <CartNotification />
           <QuotePanel />
           <FloatingContact />
           <main className="min-h-screen flex flex-col">
-            <div className="grow pt-[80px] lg:pt-[160px]">
+            <div className="grow pt-[80px] lg:pt-[100px]">
               {children}
             </div>
           </main>

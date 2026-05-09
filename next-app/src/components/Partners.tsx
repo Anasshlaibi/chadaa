@@ -12,7 +12,13 @@ const partners = [
   { name: 'Gamma', logo: '/assets/img/clients/client-6.png' },
 ];
 
-function Partners() {
+function Partners({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' }) {
+  const text = {
+    fr: 'Nos Partenaires',
+    ma: 'Nos Partenaires',
+    en: 'Our Partners'
+  }[lang];
+
   return (
     <section className="py-12 lg:py-24 bg-white border-y border-gray-50">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -23,7 +29,7 @@ function Partners() {
             viewport={{ once: true }}
             className="text-[10px] font-black uppercase tracking-[0.4em] text-green-500 mb-4"
           >
-            Nos Partenaires
+            {text}
           </motion.h2>
           <div className="w-12 h-1 bg-green-500 mx-auto rounded-full opacity-20" />
         </div>

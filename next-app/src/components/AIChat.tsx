@@ -72,7 +72,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
           initial={{ opacity: 0, y: 20, scale: 0.95, x: 20 }}
           animate={{ opacity: 1, y: 0, scale: 1, x: 0 }}
           exit={{ opacity: 0, y: 20, scale: 0.95, x: 20 }}
-          className="fixed bottom-24 lg:bottom-28 right-6 lg:right-24 z-300 w-80 sm:w-96 h-[500px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200"
+          className="fixed bottom-48 lg:bottom-28 right-4 lg:right-24 z-[300] w-[calc(100vw-2rem)] max-w-sm lg:w-96 h-[420px] lg:h-[500px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200"
         >
           {/* Header */}
           <div className="bg-slate-900 p-4 flex justify-between items-center text-white">

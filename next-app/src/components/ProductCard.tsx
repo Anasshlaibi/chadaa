@@ -37,12 +37,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenModal, onAddTo
       </div>
 
       {/* Product Image */}
-      <div className="relative aspect-square overflow-hidden bg-white p-4">
+      <div className="relative aspect-square overflow-hidden bg-gray-50 p-4">
         <Image
           src={product.image}
           alt={product.name}
           fill
-          className="object-contain transform group-hover:scale-105 transition-transform duration-500 p-4"
+          className="object-contain transform group-hover:scale-105 transition-transform duration-500 p-4 mix-blend-multiply"
           sizes="(max-width: 768px) 50vw, 33vw"
         />
         

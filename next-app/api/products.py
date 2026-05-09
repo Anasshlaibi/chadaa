@@ -53,4 +53,62 @@ def get_products():
         response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
         return response
     except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 500
+        import traceback
+        print("======== SUPABASE PRODUCTS ERROR ========")
+        print(f"Exception Type: {type(e).__name__}")
+        print(f"Exception Args: {e.args}")
+        traceback.print_exc()
+        print("=========================================")
+        return jsonify({
+            "status": "error", 
+            "message": str(e),
+            "type": type(e).__name__,
+            "details": getattr(e, 'details', None) or getattr(e, 'message', None) or str(e.args)
+        }), 500
+
+@app.route('/api/products', methods=['POST'])
+@app.route('/api/products.py', methods=['POST'])
+def add_product():
+    if not supabase:
+        return jsonify({"status": "error", "message": "Supabase not configured"}), 500
+
+    from flask import request
+    
+    try:
+        data = request.json
+        if not data:
+            return jsonify({"status": "error", "message": "No JSON payload provided"}), 400
+            
+        # Basic validation
+        if not data.get('name') or not data.get('ref'):
+            return jsonify({"status": "error", "message": "Missing required fields (name, ref)"}), 400
+            
+        # Prepare for insertion
+        new_product = {
+            "name": data.get('name'),
+            "ref": data.get('ref'),
+            "category": data.get('category', 'Non catégorisé'),
+            "description": data.get('description', ''),
+            "mainImage": data.get('image', ''),
+            "inStock": is_positive(data.get('inStock', True)),
+            "specs": data.get('specs', {})
+        }
+        
+        # Insert into Supabase
+        res = supabase.table('products').insert(new_product).execute()
+        
+        return jsonify({"status": "success", "message": "Product added successfully", "product": res.data[0] if res.data else None})
+    except Exception as e:
+        import traceback
+        print("======== SUPABASE PRODUCT INSERT ERROR ========")
+        print(f"Exception Type: {type(e).__name__}")
+        print(f"Exception Args: {e.args}")
+        traceback.print_exc()
+        print("=========================================")
+        return jsonify({
+            "status": "error", 
+            "message": str(e),
+            "type": type(e).__name__,
+            "details": getattr(e, 'details', None) or getattr(e, 'message', None) or str(e.args)
+        }), 500
+

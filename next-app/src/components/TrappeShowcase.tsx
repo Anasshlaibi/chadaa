@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import Link from 'next/link';
 
-const TrappeShowcase: React.FC = () => {
+const TrappeShowcase: React.FC<{ lang?: 'fr' | 'ma' | 'en' }> = ({ lang = 'fr' }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({
@@ -28,6 +28,30 @@ const TrappeShowcase: React.FC = () => {
   // Shadow / Glow Mapping
   const shadowOpacity = useTransform(smoothProgress, [0.4, 0.8], [0, 0.4]);
 
+  const content = {
+    fr: {
+      titleTop: "Finition Invisible.",
+      titleBottom: "Sécurité Absolue.",
+      desc: "Nos trappes de visite sur mesure s'intègrent parfaitement à vos faux plafonds. Contrôlez l'ouverture d'un simple geste et profitez d'une finition haut de gamme.",
+      cta: "Demander un Devis",
+      scrollInfo: "Scroll to Close"
+    },
+    ma: {
+      titleTop: "Finition Parfaite.",
+      titleBottom: "Qualité Sinca.",
+      desc: "Trappes de visite en aluminium de haute qualité, fabriquées à Casablanca. Idéales pour le placoplâtre BA13, avec ouverture facile et discrète.",
+      cta: "Demander un Devis",
+      scrollInfo: "Scroll to Close"
+    },
+    en: {
+      titleTop: "Invisible Finish.",
+      titleBottom: "Absolute Security.",
+      desc: "Our custom access panels integrate perfectly into your suspended ceilings. Control the opening with a simple gesture and enjoy a premium finish.",
+      cta: "Request a Quote",
+      scrollInfo: "Scroll to Close"
+    }
+  }[lang];
+
   return (
     <section ref={wrapperRef} className="relative h-[300vh] bg-white">
       {/* Sticky Container */}
@@ -41,19 +65,18 @@ const TrappeShowcase: React.FC = () => {
               className="flex flex-col space-y-8"
             >
               <h2 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-blue-950 leading-[0.9]">
-                Finition Invisible. <br />
-                <span className="text-yellow-500">Sécurité Absolue.</span>
+                {content.titleTop} <br />
+                <span className="text-yellow-500">{content.titleBottom}</span>
               </h2>
               <p className="text-xl text-gray-400 font-medium max-w-lg leading-relaxed">
-                Nos trappes de visite sur mesure s'intègrent parfaitement à vos faux plafonds. 
-                Contrôlez l'ouverture d'un simple geste et profitez d'une finition haut de gamme.
+                {content.desc}
               </p>
               <div className="pt-4">
                 <Link 
                   href="#contact"
                   className="bg-blue-950 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-yellow-500 transition-all duration-300 shadow-xl group flex items-center space-x-3 w-fit"
                 >
-                  <span>Demander un Devis</span>
+                  <span>{content.cta}</span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </Link>
               </div>
@@ -112,7 +135,7 @@ const TrappeShowcase: React.FC = () => {
               className="absolute inset-0 bg-blue-950"
             />
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-blue-950 mt-4">Scroll to Close</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-blue-950 mt-4">{content.scrollInfo}</span>
         </div>
       </div>
     </section>

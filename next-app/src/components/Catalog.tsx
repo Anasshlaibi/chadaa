@@ -11,9 +11,10 @@ import { useRouter } from 'next/navigation';
 interface CatalogProps {
   products: Product[];
   isLoading: boolean;
+  lang?: 'fr' | 'ma' | 'en';
 }
 
-const Catalog: React.FC<CatalogProps> = ({ products, isLoading }) => {
+const Catalog: React.FC<CatalogProps> = ({ products, isLoading, lang = 'fr' }) => {
   const [activeCategory, setActiveCategory] = useState('Tous');
   const [searchTerm, setSearchTerm] = useState('');
   const [isMoreOpen, setIsMoreOpen] = useState(false);
@@ -71,8 +72,41 @@ const Catalog: React.FC<CatalogProps> = ({ products, isLoading }) => {
     show: { opacity: 1, y: 0 }
   };
 
+  const content = {
+    fr: {
+      tag: "Solutions Architectures",
+      titleTop: "Notre",
+      titleBottom: "Expertise.",
+      searchPlaceholder: "Rechercher un produit...",
+      allCategory: "Tous",
+      noResults: "Aucun résultat",
+      noResultsDesc: "Essayez d'autres mots-clés ou parcourez les catégories.",
+      seeMore: "Voir Plus de Produits"
+    },
+    ma: {
+      tag: "Grossiste B2B",
+      titleTop: "Notre",
+      titleBottom: "Catalogue.",
+      searchPlaceholder: "Rechercher un produit...",
+      allCategory: "Tous",
+      noResults: "Aucun résultat",
+      noResultsDesc: "Essayez d'autres mots-clés ou parcourez les catégories.",
+      seeMore: "Voir Plus de Produits"
+    },
+    en: {
+      tag: "Architectural Solutions",
+      titleTop: "Our",
+      titleBottom: "Expertise.",
+      searchPlaceholder: "Search for a product...",
+      allCategory: "All",
+      noResults: "No results",
+      noResultsDesc: "Try different keywords or browse categories.",
+      seeMore: "View More Products"
+    }
+  }[lang];
+
   return (
-    <section id="catalog" className="py-24 bg-gray-50/50 scroll-mt-20">
+    <section id="catalog" className="pt-40 pb-24 bg-gray-50/50">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Header Area */}
         <div className="flex flex-col lg:flex-row justify-between items-end mb-16 gap-10">
@@ -83,10 +117,10 @@ const Catalog: React.FC<CatalogProps> = ({ products, isLoading }) => {
             className="text-left max-w-2xl"
           >
             <p className="text-[10px] font-black uppercase tracking-[0.5em] text-amber-600 mb-4 px-4 py-1.5 bg-amber-50 rounded-lg inline-block">
-              Solutions Architectures
+              {content.tag}
             </p>
             <h2 className="text-4xl md:text-6xl font-black text-blue-950 tracking-tighter leading-[0.9] mb-6">
-              Notre <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-950 to-gray-400">Expertise.</span>
+              {content.titleTop} <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-950 to-gray-400">{content.titleBottom}</span>
             </h2>
             <div className="w-20 h-1 bg-amber-500 rounded-full" />
           </motion.div>
@@ -101,7 +135,7 @@ const Catalog: React.FC<CatalogProps> = ({ products, isLoading }) => {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               <input 
                 type="text"
-                placeholder="Rechercher un produit..."
+                placeholder={content.searchPlaceholder}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full lg:w-[400px] min-h-[54px] pl-12 pr-6 rounded-2xl bg-white border border-gray-100 focus:border-amber-500 outline-none transition-all font-medium text-blue-950 shadow-sm"
@@ -126,7 +160,7 @@ const Catalog: React.FC<CatalogProps> = ({ products, isLoading }) => {
                           : 'bg-white text-gray-400 border-gray-100 hover:border-amber-500 hover:text-blue-950'
                       }`}
                     >
-                      {cat}
+                      {cat === 'Tous' ? content.allCategory : cat}
                     </button>
                   ))}
                 </div>
@@ -147,7 +181,7 @@ const Catalog: React.FC<CatalogProps> = ({ products, isLoading }) => {
                           : 'bg-white text-gray-400 border-gray-100'
                       }`}
                     >
-                      {cat}
+                      {cat === 'Tous' ? content.allCategory : cat}
                     </button>
                   ))}
                   <button
@@ -185,7 +219,7 @@ const Catalog: React.FC<CatalogProps> = ({ products, isLoading }) => {
                             activeCategory === cat ? 'bg-blue-950 text-white' : 'bg-gray-50 text-gray-400'
                           }`}
                         >
-                          {cat}
+                          {cat === 'Tous' ? content.allCategory : cat}
                         </button>
                       ))}
                     </motion.div>
@@ -232,8 +266,8 @@ const Catalog: React.FC<CatalogProps> = ({ products, isLoading }) => {
                 ) : (
                   <div className="text-center py-32 px-10 rounded-[3rem] bg-white border border-dashed border-gray-200">
                     <PackageSearch size={48} className="mx-auto mb-8 text-gray-200" />
-                    <h3 className="text-2xl font-black text-blue-950 mb-3">Aucun résultat</h3>
-                    <p className="text-gray-400">Essayez d'autres mots-clés ou parcourez les catégories.</p>
+                    <h3 className="text-2xl font-black text-blue-950 mb-3">{content.noResults}</h3>
+                    <p className="text-gray-400">{content.noResultsDesc}</p>
                   </div>
                 )}
               </AnimatePresence>
@@ -244,7 +278,7 @@ const Catalog: React.FC<CatalogProps> = ({ products, isLoading }) => {
                     onClick={() => setVisibleCount(prev => prev + 12)}
                     className="px-12 py-5 bg-white border-2 border-blue-950 text-blue-950 rounded-2xl font-black text-base hover:bg-blue-950 hover:text-white transition-all duration-300 shadow-xl"
                   >
-                    Voir Plus de Produits
+                    {content.seeMore}
                   </button>
                 </div>
               )}

@@ -140,7 +140,7 @@ def handle_quotes():
                 html_content = f"""
                 <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <img src="https://chadaalyasminma.vercel.app/logo.png" alt="Chada Alyasmin" style="height: 80px; width: auto;">
+                        <img src="https://next-app-indol-two.vercel.app/logo.png" alt="Chada Alyasmin" style="height: 80px; width: auto;">
                         <h1 style="color: #1e3a8a; margin-top: 10px; font-size: 24px;">CHADA ALYASMIN</h1>
                         <p style="color: #d97706; text-transform: uppercase; letter-spacing: 2px; font-size: 10px; font-weight: bold; margin: 0;">Construction & Design</p>
                     </div>
@@ -199,8 +199,15 @@ def handle_quotes():
         return jsonify({"status": "success", "message": "Demande de devis enregistrée."})
 
     except Exception as e:
-        print(f"Error: {e}")
+        import traceback
+        print("======== SUPABASE QUOTES ERROR ========")
+        print(f"Exception Type: {type(e).__name__}")
+        print(f"Exception Args: {e.args}")
+        traceback.print_exc()
+        print("=======================================")
         return jsonify({
             "status": "error", 
-            "message": "Une erreur est survenue lors de l'enregistrement."
+            "message": "Une erreur est survenue lors de l'enregistrement.",
+            "type": type(e).__name__,
+            "details": getattr(e, 'details', None) or getattr(e, 'message', None) or str(e.args)
         }), 500

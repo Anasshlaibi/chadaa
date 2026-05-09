@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
               <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-corporate-gold mb-6">Explorer</h4>
               <ul className="space-y-4 text-gray-400 font-medium">
                 <li><a href="#catalog" className="hover:text-white flex items-center group transition-colors"><ArrowRight size={14} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" /> Catalogue Produits</a></li>
-                <li><a href="#contact" className="hover:text-white flex items-center group transition-colors"><ArrowRight size={14} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" /> Demander un Devis</a></li>
+                <li><a href="#catalog" className="hover:text-white flex items-center group transition-colors"><ArrowRight size={14} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" /> Demander un Devis</a></li>
                 <li><a href="#projets" className="hover:text-white flex items-center group transition-colors"><ArrowRight size={14} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" /> Projets</a></li>
               </ul>
             </div>

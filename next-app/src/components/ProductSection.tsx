@@ -41,7 +41,7 @@ export function ProductSection({ lang }: { lang: 'fr' | 'ma' | 'en' }) {
   }
 
   return (
-    <section className="py-32 bg-slate-900" id="products">
+    <section className="pt-40 pb-32 bg-slate-900" id="products">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
           <div className="max-w-xl">

@@ -48,5 +48,6 @@
 }
 
 .grad-text {
-  @apply text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-500 to-amber-200 bg-[length:200%_auto] animate-gradient;
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-500 to-amber-200 bg-[length:200%_auto];
+  animation: gradient 3s ease infinite;
 }

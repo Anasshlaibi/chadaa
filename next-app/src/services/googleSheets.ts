@@ -95,7 +95,18 @@ export async function fetchProducts(): Promise<Product[]> {
   try {
     // Calling the internal Supabase-backed API instead of Apps Script
     const response = await fetch("/api/products", { cache: "no-store" });
-    if (!response.ok) throw new Error("Network response was not ok");
+    
+    if (!response.ok) {
+      // Try to parse the exact error payload returned by our Python API
+      let errorPayload = "Unknown error";
+      try {
+        const errorData = await response.json();
+        errorPayload = JSON.stringify(errorData);
+      } catch (e) {
+        errorPayload = await response.text();
+      }
+      throw new Error(`Supabase API Error (${response.status}): ${errorPayload}`);
+    }
 
     const result = await response.json();
     if (result.status === "success" && Array.isArray(result.products)) {
@@ -114,7 +125,10 @@ export async function fetchProducts(): Promise<Product[]> {
     }
     return mockProducts;
   } catch (error) {
-    console.error("Error fetching products from Supabase API:", error);
+    console.error("================ SUPABASE FETCH ERROR ================");
+    console.error("Failed to fetch products from Supabase API:");
+    console.error(error);
+    console.error("======================================================");
     // Fallback to CSV if API fails
     return fetchCatalogFromSheet();
   }
@@ -136,12 +150,24 @@ export async function sendQuoteRequest(payload: {
       body: JSON.stringify(payload),
     });
 
-    if (!response.ok) throw new Error("Network response was not ok");
+    if (!response.ok) {
+      let errorPayload = "Unknown error";
+      try {
+        const errorData = await response.json();
+        errorPayload = JSON.stringify(errorData);
+      } catch (e) {
+        errorPayload = await response.text();
+      }
+      throw new Error(`Supabase API Error (${response.status}): ${errorPayload}`);
+    }
 
     const result = await response.json();
     return result.status === "success";
   } catch (error) {
-    console.error("Error sending quote request to Supabase API:", error);
+    console.error("================ SUPABASE QUOTE ERROR ================");
+    console.error("Failed to send quote to Supabase API:");
+    console.error(error);
+    console.error("======================================================");
     return false;
   }
 }

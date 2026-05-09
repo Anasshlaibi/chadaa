@@ -15,7 +15,7 @@ const FloatingContact: React.FC = () => {
   }, []);
 
   return (
-    <div className="fixed bottom-24 lg:bottom-10 right-6 z-[160] flex flex-col space-y-4">
+    <div className="fixed bottom-36 lg:bottom-10 right-4 lg:right-6 z-[500] flex flex-col space-y-3">
       {/* AI Chat Window */}
       <AIChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
 
@@ -32,7 +32,7 @@ const FloatingContact: React.FC = () => {
             rel="noopener noreferrer"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl hover:shadow-green-500/40 transition-shadow relative group"
+            className="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-[0_12px_40px_rgba(37,211,102,0.55),_0_4px_16px_rgba(0,0,0,0.18)] hover:shadow-[0_20px_60px_rgba(37,211,102,0.65),_0_8px_24px_rgba(0,0,0,0.22)] hover:-translate-y-1.5 transition-all duration-300 relative group ring-2 ring-white/30"
             title="Chat via WhatsApp"
           >
             <MessageCircle size={28} />
@@ -46,8 +46,10 @@ const FloatingContact: React.FC = () => {
             onClick={() => setIsChatOpen(!isChatOpen)}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className={`w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all relative group ${
-              isChatOpen ? 'bg-amber-500 text-white' : 'bg-slate-900 text-white hover:bg-amber-500'
+            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 relative group ring-2 ring-white/20 hover:-translate-y-1 ${
+              isChatOpen
+                ? 'bg-amber-500 text-white shadow-[0_12px_40px_rgba(245,158,11,0.6),_0_4px_16px_rgba(0,0,0,0.18)]'
+                : 'bg-slate-900 text-white hover:bg-amber-500 shadow-[0_12px_40px_rgba(15,23,42,0.5),_0_4px_16px_rgba(0,0,0,0.2)] hover:shadow-[0_20px_60px_rgba(245,158,11,0.55),_0_8px_24px_rgba(0,0,0,0.22)]'
             }`}
             title="Assistant IA"
           >

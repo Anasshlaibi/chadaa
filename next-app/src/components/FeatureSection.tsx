@@ -26,7 +26,7 @@ export function FeatureSection({ lang }: { lang: 'fr' | 'ma' | 'en' }) {
   }[lang];
 
   return (
-    <section className="py-32 bg-slate-950 relative" id="features">
+    <section className="pt-40 pb-32 bg-slate-950 relative" id="features">
        <div className="container mx-auto px-6">
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             {features.map((feature, i) => (

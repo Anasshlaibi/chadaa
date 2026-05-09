@@ -1,7 +1,4 @@
-import { HeroSection } from "@/components/HeroSection";
-import { ProductSection } from "@/components/ProductSection";
-import { FeatureSection } from "@/components/FeatureSection";
-import Schema from "@/components/Schema";
+import GlobalLandingPage from '@/components/GlobalLandingPage';
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,12 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function InternationalPage() {
-  return (
-    <div className="min-h-screen bg-slate-900">
-      <Schema lang="en" />
-      <HeroSection lang="en" />
-      <FeatureSection lang="en" />
-      <ProductSection lang="en" />
-    </div>
-  );
+  return <GlobalLandingPage lang="en" />;
 }

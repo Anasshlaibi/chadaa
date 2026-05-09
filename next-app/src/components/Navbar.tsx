@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Menu, Search, ChevronDown, X } from 'lucide-react';
+import { ShoppingCart, Menu, Search, ChevronDown, X, Globe } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { cn } from '../lib/utils';
 import { getCategoryGroups } from '../data/products';
 import { useCart } from '../hooks/useCart';
@@ -17,8 +17,25 @@ function Navbar() {
   
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { itemCount, setIsPanelOpen } = useCart();
   const categoryGroups = getCategoryGroups();
+
+  const currentLang = pathname.startsWith('/products') 
+    ? (searchParams.get('lang') || 'fr')
+    : pathname.startsWith('/ma') ? 'ma' : pathname.startsWith('/en') ? 'en' : 'fr';
+  
+  const languages = [
+    { code: 'fr', flag: '🇫🇷', name: 'Français', href: pathname.startsWith('/products') ? '/products?lang=fr' : '/fr' },
+    { code: 'ma', flag: '🇲🇦', name: 'Maroc', href: pathname.startsWith('/products') ? '/products?lang=ma' : '/ma' },
+    { code: 'en', flag: '🇬🇧', name: 'English', href: pathname.startsWith('/products') ? '/products?lang=en' : '/en' }
+  ];
+
+  const sortedLanguages = [...languages].sort((a, b) => {
+    if (a.code === currentLang) return -1;
+    if (b.code === currentLang) return 1;
+    return 0;
+  });
 
   const handleCategoryClick = (category: string) => {
     const hash = `#catalog?filter=${encodeURIComponent(category)}`;
@@ -66,7 +83,7 @@ function Navbar() {
           style={{ scaleX }}
         />
 
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-24">
           <div className="flex justify-between items-center">
             {/* Logo Section */}
             <Link 
@@ -82,7 +99,7 @@ function Navbar() {
               <div className="relative shrink-0">
                 <div className={cn(
                   "relative transition-all duration-500 group-hover:scale-105",
-                  isScrolled ? "w-10 h-10 sm:w-12 sm:h-12" : "w-12 h-12 sm:w-[5.5rem] sm:h-[5.5rem]"
+                  isScrolled ? "w-10 h-10 sm:w-12 sm:h-12" : "w-10 h-10 sm:w-16 sm:h-16"
                 )}>
                   <Image 
                     src="/logo.png" 
@@ -130,13 +147,17 @@ function Navbar() {
                 onMouseEnter={() => setActiveDropdown('products')}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <button className={cn(
-                  "flex items-center text-[11px] font-black uppercase tracking-[0.2em] transition-colors",
-                  activeDropdown === 'products' ? "text-yellow-600" : "text-gray-400 hover:text-blue-950"
-                )}>
+                <Link 
+                  href="/products"
+                  onClick={() => setActiveDropdown(null)}
+                  className={cn(
+                    "flex items-center text-[11px] font-black uppercase tracking-[0.2em] transition-colors",
+                    activeDropdown === 'products' ? "text-yellow-600" : "text-gray-400 hover:text-blue-950"
+                  )}
+                >
                   <span>Produits</span>
                   <ChevronDown size={14} className={cn("ml-1 transition-transform duration-300 text-yellow-500", activeDropdown === 'products' && "rotate-180")} />
-                </button>
+                </Link>
 
                 {/* Mega Menu */}
                 <AnimatePresence>
@@ -191,6 +212,35 @@ function Navbar() {
 
             {/* Action Icons */}
             <div className="flex items-center space-x-2 sm:space-x-4">
+              {/* Language Switcher */}
+              <div 
+                className="relative group hidden sm:block"
+                onMouseEnter={() => setActiveDropdown('lang')}
+                onMouseLeave={() => setActiveDropdown(null)}
+              >
+                <button className="flex items-center gap-1.5 px-3 py-2 rounded-full text-blue-950 hover:bg-gray-100 transition-all min-h-[44px]">
+                  <Globe size={15} className="text-blue-950/60" />
+                  <span className="text-base">{sortedLanguages[0].flag}</span>
+                  <ChevronDown size={12} className="text-blue-950/40" />
+                </button>
+                <AnimatePresence>
+                  {activeDropdown === 'lang' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                      className="absolute top-full right-0 mt-2 w-40 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden py-2 z-[1000]"
+                    >
+                      {sortedLanguages.map((lang) => (
+                        <Link key={lang.code} href={lang.href} className="flex items-center px-4 py-2 hover:bg-gray-50 transition-colors">
+                          <span className="mr-3 text-lg">{lang.flag}</span>
+                          <span className={cn("text-xs font-bold", lang.code === currentLang ? "text-amber-500" : "text-blue-950")}>{lang.name}</span>
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
               <button 
                 onClick={() => {
                   const el = document.getElementById('catalog');
@@ -260,7 +310,7 @@ function Navbar() {
                 <div className="flex flex-col space-y-4">
                   {[
                     { label: 'Accueil', href: '/' },
-                    { label: 'Produits', href: '/#catalog' },
+                    { label: 'Produits', href: '/products' },
                     { label: 'À Propos', href: '/#about' },
                     { label: 'Projets', href: '/#projets' },
                     { label: 'Contact', href: '/#contact' }
@@ -272,6 +322,20 @@ function Navbar() {
                       className="text-3xl font-black text-blue-950 hover:text-yellow-600 transition-colors"
                     >
                       {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              <div className="h-px bg-gray-100 w-full" />
+              
+              {/* Mobile Language Switcher */}
+              <div className="space-y-6">
+                <h3 className="text-xs font-black uppercase tracking-widest text-yellow-600">Langue / Région</h3>
+                <div className="flex space-x-4">
+                  {sortedLanguages.map((lang) => (
+                    <Link key={lang.code} href={lang.href} onClick={() => setIsMenuOpen(false)} className={cn("flex items-center justify-center p-3 border-2 rounded-xl transition-colors", lang.code === currentLang ? "border-amber-500 bg-amber-50" : "border-gray-100 hover:border-blue-950")}>
+                      <span className="text-2xl">{lang.flag}</span>
                     </Link>
                   ))}
                 </div>
