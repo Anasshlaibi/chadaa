@@ -21,7 +21,7 @@ function Partners({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' }) {
 
   return (
     <section className="py-12 lg:py-24 bg-white border-y border-gray-50">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+      <div className="max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20">
         <div className="text-center mb-10 lg:mb-16">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}

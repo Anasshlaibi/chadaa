@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
       {/* Decorative background element */}
       <div className="absolute top-0 right-0 w-1/3 h-full bg-corporate-blue opacity-5 -skew-x-12 translate-x-1/2"></div>
       
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+      <div className="max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
           {/* Brand Presence */}
           <div className="lg:col-span-5">

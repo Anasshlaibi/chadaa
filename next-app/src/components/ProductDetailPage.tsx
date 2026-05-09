@@ -43,7 +43,7 @@ function ProductDetailPage({ products }: ProductDetailPageProps) {
     <div className="min-h-screen bg-white pb-32">
       {/* Navigation Header - Fixed to stick below global Navbar */}
       <div className="sticky top-20 lg:top-[80px] z-40 bg-white/80 backdrop-blur-md border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 h-16 flex items-center justify-between">
           <button 
             onClick={() => router.back()} 
             className="flex items-center text-blue-950 font-black uppercase text-[10px] tracking-widest min-h-[44px]"
@@ -58,7 +58,7 @@ function ProductDetailPage({ products }: ProductDetailPageProps) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 pt-8">
+      <div className="max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Left: Dynamic Image Showcase */}
           <motion.div 

@@ -107,7 +107,7 @@ const Catalog: React.FC<CatalogProps> = ({ products, isLoading, lang = 'fr' }) =
 
   return (
     <section id="catalog" className="pt-40 pb-24 bg-gray-50/50">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+      <div className="max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20">
         {/* Header Area */}
         <div className="flex flex-col lg:flex-row justify-between items-end mb-16 gap-10">
           <motion.div 

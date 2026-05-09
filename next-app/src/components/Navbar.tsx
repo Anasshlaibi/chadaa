@@ -83,7 +83,7 @@ function Navbar() {
           style={{ scaleX }}
         />
 
-        <div className="w-full max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20">
+        <div className="w-full max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20">
           <div className="flex justify-between items-center">
             {/* Logo Section */}
             <Link 

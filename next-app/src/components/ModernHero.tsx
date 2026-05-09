@@ -81,7 +81,7 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
       <div className="hidden lg:block absolute top-0 right-0 w-1/2 h-full bg-blue-50/30 -skew-x-12 translate-x-1/2 z-0" />
       <div className="hidden lg:block absolute bottom-1/4 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px] z-0" />
       
-      <div className="w-full max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 relative z-20">
+      <div className="w-full max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 relative z-20">
         <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-12 lg:gap-20 xl:gap-28">
           
           {/* Left Side: Cinematic Typography */}

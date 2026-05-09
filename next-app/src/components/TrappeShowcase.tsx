@@ -53,10 +53,10 @@ const TrappeShowcase: React.FC<{ lang?: 'fr' | 'ma' | 'en' }> = ({ lang = 'fr' }
   }[lang];
 
   return (
-    <section ref={wrapperRef} className="relative h-[300vh] bg-white">
+    <section ref={wrapperRef} className="relative h-[130vh] bg-white">
       {/* Sticky Container */}
       <div className="sticky top-0 h-screen w-full flex items-center overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
+        <div className="max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             
             {/* Left Side: Apple-Tier Typography */}
