@@ -136,6 +136,19 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
           
           {/* Right Side: Architectural Depth (Background on Mobile) */}
           <div className="absolute inset-0 lg:relative lg:w-[40%] lg:aspect-[4/5] lg:h-[620px] z-0 lg:z-10 mt-0 lg:mt-0">
+            {/* Floating Trust Badge */}
+            <div className="hidden md:flex absolute top-1/4 -left-10 lg:-left-24 z-40 bg-white/80 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-2xl p-4 lg:p-5 items-center gap-4 border border-white">
+              <div className="bg-amber-500/15 p-3 rounded-xl flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-500 fill-amber-500/20">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl lg:text-2xl font-black text-blue-950 leading-none tracking-tight">10+ Années</span>
+                <span className="text-sm font-semibold text-slate-500 mt-1">D'Expertise</span>
+              </div>
+            </div>
+
             {/* Main Image Frame */}
             <motion.div
               initial="hidden"
