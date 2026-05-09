@@ -131,7 +131,7 @@ export default function GlobalLandingPage({ lang }: { lang: 'fr' | 'ma' | 'en' }
 
       {/* Product Categories Overview */}
       <section id="expertise" className="pt-40 pb-24 bg-white">
-        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-24">
+        <div className="w-full max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16">
             <div className="max-w-xl">
               <h2 className="text-sm font-bold uppercase tracking-[0.3em] text-amber-600 mb-4">{content.solutions}</h2>
@@ -166,7 +166,7 @@ export default function GlobalLandingPage({ lang }: { lang: 'fr' | 'ma' | 'en' }
       {/* Competitive Advantages */}
       <section id="projets" className="pt-40 pb-32 bg-blue-950 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-400 opacity-5 -skew-x-12 translate-x-1/2"></div>
-        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-24 relative z-10">
+        <div className="w-full max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>
               <h2 className="text-sm font-bold uppercase tracking-[0.3em] text-amber-500 mb-6">{content.whyUs}</h2>
@@ -202,7 +202,7 @@ export default function GlobalLandingPage({ lang }: { lang: 'fr' | 'ma' | 'en' }
 
       {/* Brand Story - Dedicated Section */}
       <section id="about" className="pt-40 pb-32 bg-slate-50 overflow-hidden">
-        <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-24">
+        <div className="w-full max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Text Content - Fully Visible */}
             <div className="order-2 lg:order-1 max-w-2xl h-auto min-h-fit">
