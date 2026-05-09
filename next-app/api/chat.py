@@ -46,21 +46,29 @@ def enforce_origin():
 # ╚═══════════════════════════════════════════════════════════════╝
 RATE_LIMIT_WINDOW = int(os.environ.get("RATE_LIMIT_WINDOW", 60))
 RATE_LIMIT_MAX = int(os.environ.get("RATE_LIMIT_MAX", 15))
-_rate_store: dict = defaultdict(list)
-
-
-def _hash_ip(ip: str) -> str:
-    return hashlib.sha256(ip.encode()).hexdigest()[:16]
-
-
 def is_rate_limited(ip: str) -> bool:
-    key = _hash_ip(ip)
-    now = time.time()
-    _rate_store[key] = [t for t in _rate_store[key] if now - t < RATE_LIMIT_WINDOW]
-    if len(_rate_store[key]) >= RATE_LIMIT_MAX:
-        return True
-    _rate_store[key].append(now)
-    return False
+    if not supabase:
+        return False # Fail open if no DB
+    try:
+        now = time.time()
+        cutoff = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now - RATE_LIMIT_WINDOW))
+        
+        # Check current count
+        res = supabase.table("rate_limits").select("id", count="exact").eq("ip_address", ip).eq("endpoint", "chat").gte("created_at", cutoff).execute()
+        current_count = res.count if res.count is not None else len(res.data)
+        
+        if current_count >= RATE_LIMIT_MAX:
+            return True
+            
+        # Insert new record
+        supabase.table("rate_limits").insert({
+            "ip_address": ip,
+            "endpoint": "chat"
+        }).execute()
+        return False
+    except Exception as e:
+        print(f"Rate Limit Error: {e}")
+        return False
 
 
 @app.before_request

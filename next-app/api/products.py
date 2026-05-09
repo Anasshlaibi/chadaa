@@ -61,9 +61,7 @@ def get_products():
         print("=========================================")
         return jsonify({
             "status": "error", 
-            "message": str(e),
-            "type": type(e).__name__,
-            "details": getattr(e, 'details', None) or getattr(e, 'message', None) or str(e.args)
+            "message": "Internal Server Error"
         }), 500
 
 @app.route('/api/products', methods=['POST'])
@@ -107,8 +105,6 @@ def add_product():
         print("=========================================")
         return jsonify({
             "status": "error", 
-            "message": str(e),
-            "type": type(e).__name__,
-            "details": getattr(e, 'details', None) or getattr(e, 'message', None) or str(e.args)
+            "message": "Internal Server Error"
         }), 500
 

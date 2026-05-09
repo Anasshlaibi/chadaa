@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Plus, ChevronDown } from "lucide-react";
-import { fetchProducts } from "@/services/googleSheets";
+import { fetchProducts } from "@/services/api";
 import { type Product } from "@/data/products";
 
 const INITIAL_COUNT = 12;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle, AlertCircle, Loader2, Building2, User, Mail, Phone } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
-import { sendQuoteRequest } from '../services/googleSheets';
+import { sendQuoteRequest } from '../services/api';
 
 interface QuoteFormProps {
   onSuccess: () => void;

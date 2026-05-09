@@ -6,7 +6,7 @@ import TrappeShowcase from '@/components/TrappeShowcase';
 import Catalog from '@/components/Catalog';
 import { ArrowRight, Layers, Maximize, Thermometer, ShieldCheck, Zap, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { fetchProducts } from '@/services/googleSheets';
+import { fetchProducts } from '@/services/api';
 import { type Product } from '@/data/products';
 import Schema from '@/components/Schema';
 
