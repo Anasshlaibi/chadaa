@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, Suspense } from 'react';
 import Catalog from '@/components/Catalog';
-import { fetchProducts } from '@/services/googleSheets';
+import { fetchProducts } from '@/services/api';
 import { type Product } from '@/data/products';
 import { useSearchParams } from 'next/navigation';
 

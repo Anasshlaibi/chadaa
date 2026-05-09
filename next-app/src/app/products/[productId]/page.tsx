@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState } from 'react';
 import ProductDetailPageComponent from '@/components/ProductDetailPage';
-import { fetchProducts } from '@/services/googleSheets';
+import { fetchProducts } from '@/services/api';
 import { type Product } from '@/data/products';
 
 export default function ProductDetailPage({ params }: { params: Promise<{ productId: string }> }) {
