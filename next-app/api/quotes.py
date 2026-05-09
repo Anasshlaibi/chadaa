@@ -128,13 +128,30 @@ supabase = get_supabase()
 
 # Rate Limiting
 _rate_store = defaultdict(list)
-RATE_LIMIT_WINDOW = 600
-RATE_LIMIT_MAX = 5
+RATE_LIMIT_WINDOW = 3600  # 1 hour
+RATE_LIMIT_MAX = 5        # Prevent spamming quotes
+
+def _hash_ip(ip: str) -> str:
+    import hashlib
+    return hashlib.sha256(ip.encode()).hexdigest()[:16]
+
+def is_rate_limited(ip: str) -> bool:
+    key = _hash_ip(ip)
+    now = time.time()
+    _rate_store[key] = [t for t in _rate_store[key] if now - t < RATE_LIMIT_WINDOW]
+    if len(_rate_store[key]) >= RATE_LIMIT_MAX:
+        return True
+    _rate_store[key].append(now)
+    return False
 
 @app.route('/api/quotes', methods=['POST'])
 def handle_quotes():
     # POST Logic
     try:
+        client_ip = request.headers.get("X-Forwarded-For", request.remote_addr or "0.0.0.0")
+        if is_rate_limited(client_ip):
+            return jsonify({"status": "error", "message": "Trop de demandes de devis. Veuillez reessayer plus tard."}), 429
+
         data = request.json or {}
         if not data:
             return jsonify({"status": "error", "message": "No data received"}), 400
