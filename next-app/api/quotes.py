@@ -22,17 +22,37 @@ if RESEND_API_KEY:
 else:
     resend = None
 
+def clean_txt(text):
+    if not text:
+        return ""
+    # Map common French accents to safe ASCII/Latin-1 equivalents
+    replacements = {
+        'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
+        'à': 'a', 'â': 'a', 'ä': 'a',
+        'ô': 'o', 'ö': 'o', 'ó': 'o',
+        'û': 'u', 'ù': 'u', 'ü': 'u',
+        'ç': 'c',
+        'ï': 'i', 'î': 'i',
+        'É': 'E', 'È': 'E', 'Ê': 'E',
+        'À': 'A', 'Â': 'A',
+        'Ô': 'O',
+        'Û': 'U',
+        'Ç': 'C'
+    }
+    cleaned = "".join(replacements.get(char, char) for char in str(text))
+    return cleaned.encode('latin-1', 'replace').decode('latin-1')
+
 def generate_pdf(client_name, client_email, client_phone, cart):
     """Generates a PDF using fpdf2 and returns its bytes."""
     try:
         from fpdf import FPDF
-        import base64
+        import tempfile
+        import os
         
         pdf = FPDF()
         pdf.add_page()
         
-        # Header - Logo (using remote URL or placeholder)
-        # pdf.image("https://chadaalyasminma.vercel.app/logo.png", 10, 10, 30) # URL image can be slow or fail
+        # Header
         pdf.set_font("Helvetica", "B", 20)
         pdf.cell(0, 10, "CHADA ALYASMIN", ln=True, align="C")
         pdf.set_font("Helvetica", "I", 10)
@@ -41,12 +61,12 @@ def generate_pdf(client_name, client_email, client_phone, cart):
         
         # Client Details
         pdf.set_font("Helvetica", "B", 12)
-        pdf.cell(0, 10, "Informations Client :", ln=True)
+        pdf.cell(0, 10, clean_txt("Informations Client :"), ln=True)
         pdf.set_font("Helvetica", "", 10)
-        pdf.cell(0, 8, f"Nom/Société : {client_name}", ln=True)
-        pdf.cell(0, 8, f"Email : {client_email}", ln=True)
-        pdf.cell(0, 8, f"Téléphone : {client_phone or 'Non fourni'}", ln=True)
-        pdf.cell(0, 8, f"Date : {time.strftime('%Y-%m-%d %H:%M')}", ln=True)
+        pdf.cell(0, 8, clean_txt(f"Nom/Societe : {client_name}"), ln=True)
+        pdf.cell(0, 8, clean_txt(f"Email : {client_email}"), ln=True)
+        pdf.cell(0, 8, clean_txt(f"Telephone : {client_phone or 'Non fourni'}"), ln=True)
+        pdf.cell(0, 8, clean_txt(f"Date : {time.strftime('%Y-%m-%d %H:%M')}"), ln=True)
         pdf.ln(10)
         
         # Table Header
@@ -54,7 +74,7 @@ def generate_pdf(client_name, client_email, client_phone, cart):
         pdf.set_text_color(255, 255, 255)
         pdf.set_font("Helvetica", "B", 10)
         pdf.cell(140, 10, "Produit", 1, 0, "L", fill=True)
-        pdf.cell(50, 10, "Quantité", 1, 1, "C", fill=True)
+        pdf.cell(50, 10, clean_txt("Quantite"), 1, 1, "C", fill=True)
         
         # Table Contents
         pdf.set_text_color(0, 0, 0)
@@ -62,17 +82,30 @@ def generate_pdf(client_name, client_email, client_phone, cart):
         for item in cart:
             name = item.get('name', 'Produit inconnu')
             qty = str(item.get('quantity', 0))
-            pdf.cell(140, 10, name, 1)
-            pdf.cell(50, 10, qty, 1, 1, "C")
+            pdf.cell(140, 10, clean_txt(name), 1)
+            pdf.cell(50, 10, clean_txt(qty), 1, 1, "C")
         
         pdf.ln(15)
         pdf.set_font("Helvetica", "I", 9)
-        pdf.multi_cell(0, 5, "Ce document est un devis proforma généré automatiquement. Veuillez nous contacter pour la version finale et les modalités de paiement.")
+        pdf.multi_cell(0, 5, clean_txt("Ce document est un devis proforma genere automatiquement. Veuillez nous contacter pour la version finale et les modalites de paiement."))
         
-        # Output as bytes
-        return pdf.output()
+        # Output as bytes using a temporary file to avoid buffer/stdout issues
+        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
+        tmp.close()
+        try:
+            pdf.output(tmp.name)
+            with open(tmp.name, "rb") as f:
+                pdf_bytes = f.read()
+        finally:
+            if os.path.exists(tmp.name):
+                os.unlink(tmp.name)
+                
+        return pdf_bytes
     except Exception as e:
-        print(f"PDF ERROR: {e}")
+        import traceback
+        print("======== GENERATE PDF ERROR ========")
+        traceback.print_exc()
+        print("====================================")
         return None
 
 app = Flask(__name__)
@@ -185,10 +218,12 @@ def handle_quotes():
                 }
 
                 if pdf_bytes:
+                    import base64
+                    encoded_content = base64.b64encode(pdf_bytes).decode('utf-8')
                     email_params["attachments"] = [
                         {
                             "filename": f"Devis_{client_name.replace(' ', '_')}.pdf",
-                            "content": list(pdf_bytes)
+                            "content": encoded_content
                         }
                     ]
 
