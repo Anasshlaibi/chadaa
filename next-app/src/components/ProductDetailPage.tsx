@@ -69,7 +69,7 @@ function ProductDetailPage({ products }: ProductDetailPageProps) {
             <div className="relative w-full aspect-square bg-gray-50 rounded-[3rem] flex items-center justify-center p-12 border border-gray-100 shadow-sm overflow-hidden group">
               <Image 
                 src={product.image} 
-                alt={product.name}
+                alt={`${product.name} - Solution technique Chada Alyasmin Casablanca`}
                 fill
                 className="object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105 p-12"
                 priority={true}
