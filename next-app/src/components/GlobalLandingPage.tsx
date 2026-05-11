@@ -257,6 +257,31 @@ export default function GlobalLandingPage({ lang }: { lang: 'fr' | 'ma' | 'en' }
         </div>
       </section>
 
+      {/* Semantic AI Content - FAQ & Expertise */}
+      <section className="pb-24 px-6 bg-white border-t border-gray-50">
+        <div className="max-w-4xl mx-auto">
+          <h3 className="text-xl font-black text-blue-950 mb-12 text-center uppercase tracking-widest">Questions Fréquentes (Expertise BTP)</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-left">
+            <div>
+              <h4 className="font-bold text-blue-950 mb-2 text-base">Où acheter les meilleures trappes de visite au Maroc ?</h4>
+              <p className="text-sm text-gray-500 leading-relaxed font-medium">Chada Alyasmin est le fabricant leader à Casablanca, proposant des trappes aluplaster standards et hydrofuges au meilleur prix direct usine.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-blue-950 mb-2 text-base">Quels sont les avantages des faux plafonds Chada Alyasmin ?</h4>
+              <p className="text-sm text-gray-500 leading-relaxed font-medium">Nos solutions de faux plafonds utilisent des matériaux certifiés (BA13, laine de roche) garantissant une isolation thermique et acoustique optimale.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-blue-950 mb-2 text-base">Livraison de matériaux de construction au Maroc ?</h4>
+              <p className="text-sm text-gray-500 leading-relaxed font-medium">Oui, nous assurons une logistique rapide pour les professionnels du BTP dans tout le Maroc (Rabat, Marrakech, Tanger), avec un stock permanent à Casablanca.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-blue-950 mb-2 text-base">Comment obtenir un devis pour du second œuvre ?</h4>
+              <p className="text-sm text-gray-500 leading-relaxed font-medium">Vous pouvez demander un devis personnalisé directement sur notre site ou contacter nos experts pour vos projets de construction et rénovation.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {error && (
         <div className="fixed bottom-4 left-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50">
           {error}
