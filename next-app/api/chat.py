@@ -265,15 +265,30 @@ def chat():
                 "status": "blocked"
             }), 200
 
-        products, system_instruction = get_db_products()
+        try:
+            products, system_instruction = get_db_products()
+        except Exception as db_err:
+            print(f"Database Error: {db_err}")
+            return jsonify({
+                "response": "Erreur de connexion à la base de données. Veuillez vérifier la configuration Supabase.",
+                "status": "error"
+            }), 500
+
         if not system_instruction:
             system_instruction = os.environ.get("AI_SYSTEM_PROMPT", "Sales Assistant.")
 
-        response = client.models.generate_content(
-            model="gemini-1.5-flash",
-            contents=user_msg,
-            config={'system_instruction': system_instruction, 'temperature': 0.1}
-        )
+        try:
+            response = client.models.generate_content(
+                model="gemini-1.5-flash",
+                contents=user_msg,
+                config={'system_instruction': system_instruction, 'temperature': 0.1}
+            )
+        except Exception as ai_err:
+            print(f"Gemini API Error: {ai_err}")
+            return jsonify({
+                "response": "L'IA est temporairement indisponible (Erreur API Gemini). Vérifiez votre clé API dans Vercel.",
+                "status": "error"
+            }), 500
 
         if not response or not response.text:
             return jsonify({
