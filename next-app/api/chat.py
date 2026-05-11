@@ -21,9 +21,11 @@ app = Flask(__name__)
 RAW_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "")
 ALLOWED_ORIGINS = [o.strip() for o in RAW_ORIGINS.split(",") if o.strip()]
 
-if not ALLOWED_ORIGINS:
-    print("WARNING: CORS_ALLOWED_ORIGINS is empty. Defaulting to localhost only.")
-    ALLOWED_ORIGINS = ["http://localhost:5173", "http://localhost:3000"]
+# Add production domain and localhost defaults if not present
+defaults = ["https://chadaalyasmin.ma", "https://www.chadaalyasmin.ma", "http://localhost:3000", "http://localhost:5173"]
+for d in defaults:
+    if d not in ALLOWED_ORIGINS:
+        ALLOWED_ORIGINS.append(d)
 
 # NO WILDCARDS like https://*.vercel.app — only exact URLs
 CORS(app, resources={r"/*": {"origins": ALLOWED_ORIGINS}})
