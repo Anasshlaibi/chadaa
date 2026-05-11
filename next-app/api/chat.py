@@ -263,10 +263,16 @@ def chat():
             system_instruction = os.environ.get("AI_SYSTEM_PROMPT", "Sales Assistant.")
 
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-1.5-flash",
             contents=user_msg,
             config={'system_instruction': system_instruction, 'temperature': 0.1}
         )
+
+        if not response or not response.text:
+            return jsonify({
+                "response": "Je n'ai pas pu générer de réponse. Veuillez reformuler votre question.",
+                "status": "error"
+            }), 200
 
         return jsonify({"response": response.text, "status": "success"})
     except Exception as e:
