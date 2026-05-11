@@ -77,7 +77,12 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 font-medium">
-          <p>© 2026 Chada Alyasmin. Tous droits réservés.</p>
+          <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+            <p>© 2026 Chada Alyasmin. Tous droits réservés.</p>
+            <p className="text-[10px] opacity-40 hover:opacity-100 transition-opacity">
+              Made by <a href="tel:0673011873" className="hover:text-amber-500 transition-colors">0673011873</a>
+            </p>
+          </div>
           <div className="flex space-x-8 mt-6 md:mt-0">
             <a href="#" className="hover:text-white transition-colors">Politique de Confidentialité</a>
             <a href="#" className="hover:text-white transition-colors">Conditions d'Utilisation</a>
