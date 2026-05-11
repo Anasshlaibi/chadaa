@@ -189,7 +189,7 @@ export default function GlobalLandingPage({ lang }: { lang: 'fr' | 'ma' | 'en' }
             
             <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-2xl relative">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3326.6575727025816!2d-7.643806!3d33.484218!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda62d5119932155%3A0xc39f880362c3f815!2sTrappe%20de%20visite!5e0!3m2!1sfr!2sma!4v1715850000000"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3324.475431675432!2d-7.5898765!3d33.564321!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda6330040f67625%3A0x8280e5026d76764b!2sCHADA%20ALYASMIN%20SUD!5e0!3m2!1sfr!2sma!4v1715850000000"
                 className="absolute inset-0 w-full h-full border-0"
                 allowFullScreen={true}
                 loading="lazy"

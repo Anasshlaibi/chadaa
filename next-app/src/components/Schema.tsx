@@ -11,14 +11,14 @@ export default function Schema({ lang }: { lang: 'fr' | 'ma' | 'en' }) {
     "telephone": "+212661138204",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Sidi Maarouf",
+      "streetAddress": "10 Bd Mohammed VI",
       "addressLocality": "Casablanca",
       "addressCountry": "MA"
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 33.5898,
-      "longitude": -7.6031
+      "latitude": 33.5643,
+      "longitude": -7.5899
     },
     "priceRange": "$$",
     "areaServed": {
