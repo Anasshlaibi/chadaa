@@ -1,12 +1,12 @@
+import { Metadata } from 'next';
 import GlobalLandingPage from '@/components/GlobalLandingPage';
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Achat BA13 & Trappes de Visite Casablanca | Chada Alyasmin Maroc",
-  description: "Meilleur prix BA13 au Maroc. Grossiste trappes de visite, joints creux aluminium et profilés placo à Casablanca.",
-  keywords: "BA13 Maroc, Placo prix m2, Faux plafond Casablanca, Joint creux aluminium, Sinca, Lafarge Maroc",
+  title: "Chada Alyasmin | شادي الياسمين - رائد في مواد البناء",
+  description: "متخصص في فتحات الزيارة، الأسقف المستعارة والعزل في المغرب. جودة عالية وأسعار تنافسية لمشاريعكم.",
+  keywords: ["فتحات الزيارة المغرب", "أسقف مستعارة الدار البيضاء", "عزل حراري المغرب", "مواد البناء"],
 };
 
-export default function MoroccoPage() {
+export default function HomePage() {
   return <GlobalLandingPage lang="ma" />;
 }

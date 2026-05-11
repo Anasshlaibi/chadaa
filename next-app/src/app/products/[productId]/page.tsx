@@ -1,36 +1,36 @@
-"use client";
-
-import { use, useEffect, useState } from 'react';
+import { Metadata } from 'next';
 import ProductDetailPageComponent from '@/components/ProductDetailPage';
-import { fetchProducts } from '@/services/api';
-import { type Product } from '@/data/products';
+import { mockProducts } from '@/data/products';
 
-export default function ProductDetailPage({ params }: { params: Promise<{ productId: string }> }) {
-  const { productId } = use(params);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+type Props = {
+  params: Promise<{ productId: string }>;
+};
 
-  useEffect(() => {
-    async function loadProducts() {
-      try {
-        const data = await fetchProducts();
-        setProducts(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadProducts();
-  }, []);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { productId } = await params;
+  const product = mockProducts.find(p => p.id === productId);
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
+  if (!product) {
+    return {
+      title: "Produit non trouvé | Chada Alyasmin",
+    };
   }
 
-  return <ProductDetailPageComponent products={products} />;
+  return {
+    title: `${product.name} | Chada Alyasmin`,
+    description: `${product.description} Retrouvez nos solutions de trappe de visite et faux plafonds au Maroc.`,
+    openGraph: {
+      title: `${product.name} | Chada Alyasmin`,
+      description: product.description,
+      images: [{ url: product.image }],
+    },
+    keywords: ["trappe de visite", product.category, "Chada Alyasmin", "Maroc", "aménagement"],
+  };
+}
+
+export default async function ProductDetailPage({ params }: Props) {
+  const { productId } = await params;
+  // We pass mockProducts directly since it's available server-side
+  // and ProductDetailPageComponent is a client component that will handle the display.
+  return <ProductDetailPageComponent products={mockProducts} />;
 }

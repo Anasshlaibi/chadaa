@@ -19,6 +19,27 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "Chada Alyasmin | Leader du Second Œuvre au Maroc",
   description: "Expertise en aménagement et finition : Faux plafonds, Trappes de visite, Isolation. Qualité certifiée NF et RT2020.",
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
+  keywords: ["trappe de visite", "faux plafond", "isolation", "Maroc", "Casablanca", "second oeuvre", "aménagement", "BA13", "profilé aluminium"],
+  openGraph: {
+    title: "Chada Alyasmin | Leader du Second Œuvre au Maroc",
+    description: "Expertise en aménagement et finition : Faux plafonds, Trappes de visite, Isolation.",
+    url: 'https://chadaalyasmin.ma',
+    siteName: 'Chada Alyasmin',
+    images: [
+      {
+        url: 'https://chadaalyasmin.ma/logo.png',
+        width: 800,
+        height: 600,
+      },
+    ],
+    locale: 'fr_MA',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({

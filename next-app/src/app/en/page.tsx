@@ -1,12 +1,12 @@
+import { Metadata } from 'next';
 import GlobalLandingPage from '@/components/GlobalLandingPage';
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Access Panels & Drywall Solutions | Chada Alyasmin Global",
-  description: "International supplier of premium maintenance hatches, aluminum profiles, and acoustic insulation. Worldwide shipping.",
-  keywords: "Access panels, Drywall solutions, Maintenance hatches, Acoustic insulation, Worldwide shipping",
+  title: "Chada Alyasmin | Expert Finishing Works in Morocco",
+  description: "Specialist in Access Panels, Suspended Ceilings, and Insulation in Morocco. Premium quality and competitive prices for your construction projects.",
+  keywords: ["access panel Morocco", "suspended ceiling Casablanca", "thermal insulation Morocco", "finishing works supplier"],
 };
 
-export default function InternationalPage() {
+export default function HomePage() {
   return <GlobalLandingPage lang="en" />;
 }
