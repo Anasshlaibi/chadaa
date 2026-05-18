@@ -50,7 +50,8 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
-        <meta name="google-site-verification" content="pn5AwAPSTE2a5lER7SHva-kUJJkQnpzA0ZPSP0k5ITI" />
+        <meta name="google-site-verification" content="f500946794c8c9e8" />
+
         {/* Facebook Pixel */}
         <Script id="fb-pixel" strategy="afterInteractive">
           {`

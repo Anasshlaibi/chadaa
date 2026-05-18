@@ -289,7 +289,22 @@ const nextConfig: NextConfig = {
       permanent: true,
     },
 
+    // ─── Google Search Console verification — must come BEFORE the wildcard ──
+    // The meta tag in layout.tsx handles verification, but this prevents the
+    // wildcard below from intercepting /googleXXXX.html and returning a 301.
+    // We redirect it to /products just like any old page (Google uses meta tag).
+    {
+      source: "/googlef500946794c8c9e8.html",
+      destination: "/products",
+      permanent: false, // temporary — only until Google finishes verifying
+    },
+
     // ─── Tier 2: Wildcard catch-all — any remaining *.html URL ───────────────
+
+    // NOTE: google-site-verification files (e.g. googleXXXX.html) are served
+    // via the <meta> tag in layout.tsx and do NOT need this catch-all.
+    // This rule intentionally placed LAST — specific rules above take priority.
+    // Excludes google*.html files by listing them as specific rules above first.
     {
       source: "/:path*.html",
       destination: "/products",
