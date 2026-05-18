@@ -6,9 +6,10 @@ import type { NextConfig } from "next";
  * Strict CSP + Full Security Headers.
  * NO wildcards like *.vercel.app — only exact trusted domains.
  *
- * 301 Redirects: Two-tier strategy
- *   1. Specific rules for every known old .html page (from products.ts oldUrl fields)
- *   2. Wildcard catch-all for any remaining .html URL
+ * 301 Redirects: Three-tier strategy
+ *   Tier 1a — Specific paths WITH .html extension    (e.g. /trappe%20de%20visite.html)
+ *   Tier 1b — Same paths WITHOUT .html extension     (e.g. /trappe%20de%20visite)
+ *   Tier 2  — Wildcard catch-all for any *.html URL  (safety net)
  */
 
 const cspDirectives = [
@@ -62,150 +63,233 @@ const nextConfig: NextConfig = {
   ],
 
   /**
-   * 301 Permanent Redirects
+   * 301 Permanent Redirects — Three-Tier Strategy
    *
-   * Tier 1 — Specific paths extracted from products.ts `oldUrl` fields.
-   *   Each old standalone HTML page maps directly to /products.
-   *   Listing these explicitly gives search engines the clearest possible
-   *   signal about which exact URLs have moved permanently.
+   * Each known old page gets TWO rules:
+   *   - One for the URL WITH .html    → catches Google-indexed links from the old site
+   *   - One for the URL WITHOUT .html → catches browsers that strip the extension
    *
-   * Tier 2 — Wildcard catch-all for any remaining *.html URL not listed above.
-   *   Acts as a safety net for URLs that may be indexed but not yet in products.ts.
-   *
-   * NOTE: Next.js evaluates redirects in order — specific rules must come FIRST,
-   * before the wildcard, to avoid the catch-all swallowing them.
+   * Tier 2 wildcard at the bottom catches anything else ending in .html.
    */
   redirects: async () => [
-    // ─── Tier 1: Specific old HTML pages (from products.ts oldUrl fields) ───
 
-    // Trappe de Visite
+    // ─── TRAPPE DE VISITE ───────────────────────────────────────────────────
     {
       source: "/trappe%20de%20visite.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/trappe%20de%20visite",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Faux Plafond / Plaques de Plâtre / Ossature Métallique (faux plafond.html)
+    // ─── FAUX PLAFOND / PLAQUES DE PLÂTRE ───────────────────────────────────
     {
       source: "/faux%20plafond.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/faux%20plafond",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Ossature T24 / T15 modulaires
+    // ─── OSSATURE T24 / T15 ─────────────────────────────────────────────────
     {
       source: "/OSSATURE%20T24-T15.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/OSSATURE%20T24-T15",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Accessoires de Projeter (machine à projeter PFT)
+    // ─── ACCESSOIRES DE PROJETER ────────────────────────────────────────────
     {
       source: "/accessoires%20de%20projeter.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/accessoires%20de%20projeter",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Accessoires de Fixation
+    // ─── ACCESSOIRES DE FIXATION ────────────────────────────────────────────
     {
       source: "/ACCESSOIRES%20DE%20FIXATION.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/ACCESSOIRES%20DE%20FIXATION",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Plancher Technique
+    // ─── PLANCHER TECHNIQUE ─────────────────────────────────────────────────
     {
       source: "/plancher%20technique.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/plancher%20technique",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Structure pour Plancher Surélevé
+    // ─── STRUCTURE PLANCHER SURÉLEVÉ ────────────────────────────────────────
     {
       source: "/Structure%20pour%20plancher%20sureleve.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/Structure%20pour%20plancher%20sureleve",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Dalles en Laine de Roche (Rockfon / AMF)
+    // ─── DALLES EN LAINE DE ROCHE ───────────────────────────────────────────
     {
       source: "/dalle%20en%20laine%20de%20roche.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/dalle%20en%20laine%20de%20roche",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Dalles en Laine Minérale (Thermatex)
+    // ─── DALLES EN LAINE MINÉRALE ───────────────────────────────────────────
     {
       source: "/dalle%20en%20laine%20minerale.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/dalle%20en%20laine%20minerale",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Cloisons de Séparation & Doublages
+    // ─── CLOISONS DE SÉPARATION & DOUBLAGES ─────────────────────────────────
     {
       source: "/cloisons%20de%20separation%20doublages.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/cloisons%20de%20separation%20doublages",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Laine de Roche (isolation — Rockmur)
+    // ─── LAINE DE ROCHE (isolation) ─────────────────────────────────────────
     {
       source: "/laine%20de%20roche.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/laine%20de%20roche",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Laine de Verre Minérale (isolation)
+    // ─── LAINE DE VERRE MINÉRALE ────────────────────────────────────────────
     {
       source: "/laine%20de%20verre%20minerale.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/laine%20de%20verre%20minerale",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Dalles en Plâtre
+    // ─── DALLES EN PLÂTRE ───────────────────────────────────────────────────
     {
       source: "/DALLE%20EN%20PLATRE.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/DALLE%20EN%20PLATRE",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Dalle en Vinyle
+    // ─── DALLE EN VINYLE ────────────────────────────────────────────────────
     {
       source: "/dalle%20en%20vinyle.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/dalle%20en%20vinyle",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Dalle en Métal
+    // ─── DALLE EN MÉTAL ─────────────────────────────────────────────────────
     {
       source: "/DALLE%20EN%20METAL.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/DALLE%20EN%20METAL",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Joint Creux
+    // ─── JOINT CREUX ────────────────────────────────────────────────────────
     {
       source: "/JOINT%20CREUX.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/JOINT%20CREUX",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Enduits pour Joints
+    // ─── ENDUITS POUR JOINTS ────────────────────────────────────────────────
     {
       source: "/enduits%20pour%20joints.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/enduits%20pour%20joints",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // Bandes à Joints
+    // ─── BANDES À JOINTS ────────────────────────────────────────────────────
     {
       source: "/bandes%20a%20joints.html",
       destination: "/products",
       permanent: true,
     },
+    {
+      source: "/bandes%20a%20joints",
+      destination: "/products",
+      permanent: true,
+    },
 
-    // ─── Tier 2: Wildcard catch-all — any remaining *.html URL ───
-    // Covers any old pages not yet listed above (e.g., contact.html, index.html, etc.)
+    // ─── Tier 2: Wildcard catch-all — any remaining *.html URL ───────────────
     {
       source: "/:path*.html",
       destination: "/products",
