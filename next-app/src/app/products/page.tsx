@@ -1,58 +1,76 @@
-"use client";
-
-import React, { useEffect, useState, Suspense } from 'react';
+import { Metadata } from 'next';
+import { createClient } from '@/utils/supabase/server';
+import { mockProducts, type Product } from '@/data/products';
 import Catalog from '@/components/Catalog';
-import { fetchProducts } from '@/services/api';
-import { type Product } from '@/data/products';
-import { useSearchParams } from 'next/navigation';
 
-function ProductsContent() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  
-  const searchParams = useSearchParams();
-  const langQuery = searchParams.get('lang');
-  const lang = (langQuery === 'en' || langQuery === 'ma') ? langQuery : 'fr';
+export const metadata: Metadata = {
+  title: "Catalogue Produits | Chada Alyasmin - Faux Plafonds, Trappes, Isolation au Maroc",
+  description: "Découvrez notre catalogue complet : trappes de visite, faux plafonds, dalles, isolation, ossatures métalliques. Livraison au Maroc. Prix grossiste.",
+  openGraph: {
+    title: "Catalogue Produits | Chada Alyasmin",
+    description: "Trappes de visite, faux plafonds, dalles, isolation, ossatures métalliques au Maroc.",
+    url: "https://chadaalyasmin.ma/products",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://chadaalyasmin.ma/products",
+  },
+};
 
-  useEffect(() => {
-    async function loadCatalog() {
-      try {
-        setIsLoading(true);
-        const data = await fetchProducts();
-        setProducts(data);
-        setError(null);
-      } catch (err) {
-        setError(lang === 'en' ? "Error loading catalog." : "Erreur lors du chargement du catalogue.");
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
+async function getProducts(): Promise<Product[]> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.from('products').select('*');
+    if (data && !error && data.length > 0) {
+      return data.map((p: any) => ({
+        id: p.id || p.ref,
+        name: p.name || 'Produit',
+        category: p.category || '',
+        description: p.description || '',
+        image: p.mainImage || p.image || '',
+        stockStatus: p.inStock ? 'En Stock' : 'En Rupture',
+        availability: p.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+        specs: p.specs || {},
+      }));
     }
-    loadCatalog();
-  }, [lang]);
+  } catch (err) {
+    console.error('Supabase product fetch error (falling back to mock):', err);
+  }
+  return mockProducts;
+}
+
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string }>;
+}) {
+  const { lang: langQuery } = await searchParams;
+  const lang: 'fr' | 'ma' | 'en' =
+    langQuery === 'en' || langQuery === 'ma' ? langQuery : 'fr';
+
+  const products = await getProducts();
 
   const content = {
     fr: {
       tag: "Notre Catalogue",
       title: "Tous Nos Produits",
-      desc: "Découvrez notre gamme complète de matériaux de second œuvre, conçus pour l'excellence et la durabilité de vos chantiers."
+      desc: "Découvrez notre gamme complète de matériaux de second œuvre, conçus pour l'excellence et la durabilité de vos chantiers.",
     },
     ma: {
       tag: "Notre Stock",
       title: "Tous les Produits",
-      desc: "Découvrez notre gamme complète au Maroc avec les meilleurs prix de gros pour vos chantiers."
+      desc: "Découvrez notre gamme complète au Maroc avec les meilleurs prix de gros pour vos chantiers.",
     },
     en: {
       tag: "Our Catalog",
       title: "All Our Products",
-      desc: "Discover our complete range of finishing materials, designed for excellence and durability for your projects."
-    }
+      desc: "Discover our complete range of finishing materials, designed for excellence and durability for your projects.",
+    },
   }[lang];
 
   return (
-    <>
-      {/* Page Header */}
+    <main className="min-h-screen bg-slate-50 font-sans">
+      {/* Page Header — rendered server-side, fully visible to Googlebot */}
       <div className="pt-32 pb-10 bg-blue-950 text-white px-6">
         <div className="max-w-7xl mx-auto">
           <p className="text-[10px] font-black uppercase tracking-[0.5em] text-amber-500 mb-4 inline-block">
@@ -67,26 +85,21 @@ function ProductsContent() {
         </div>
       </div>
 
-      {/* Catalog Component */}
-      <div className="bg-slate-50 relative -top-20">
-        <Catalog products={products} isLoading={isLoading} lang={lang} />
-      </div>
-      
-      {error && (
-        <div className="fixed bottom-4 left-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 shadow-xl">
-          {error}
-        </div>
-      )}
-    </>
-  );
-}
+      {/* Hidden SEO product link list — all products indexed by Google, invisible to users */}
+      <nav aria-label="Product index" className="sr-only">
+        <ul>
+          {products.map((p) => (
+            <li key={p.id}>
+              <a href={`/products/${p.id}`}>{p.name} — {p.category}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-export default function ProductsPage() {
-  return (
-    <main className="min-h-screen bg-slate-50 font-sans">
-      <Suspense fallback={<div>Loading...</div>}>
-        <ProductsContent />
-      </Suspense>
+      {/* Interactive Catalog — client component, gets full product list as prop */}
+      <div className="bg-slate-50 relative -top-20">
+        <Catalog products={products} isLoading={false} lang={lang} />
+      </div>
     </main>
   );
 }

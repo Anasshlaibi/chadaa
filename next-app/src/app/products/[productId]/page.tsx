@@ -2,18 +2,31 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import ProductDetailPageComponent from '@/components/ProductDetailPage';
 import { type Product, mockProducts } from '@/data/products';
-import { createClient } from '@/utils/supabase/server';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+
+// Pre-render all known product pages at build time for maximum SEO performance
+export async function generateStaticParams() {
+  return mockProducts.map((p) => ({ productId: p.id }));
+}
+
+// Allow new Supabase-only products (not in mockProducts) to render dynamically
+export const dynamicParams = true;
 
 type Props = {
   params: Promise<{ productId: string }>;
 };
 
-// Helper function to fetch product data server-side
+// Helper function to fetch product data server-side (using plain client for static generation)
 async function getProductById(productId: string): Promise<Product | null> {
   const mockProduct = mockProducts.find(p => p.id === productId);
 
   try {
-    const supabase = await createClient();
+    const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) throw new Error('Supabase credentials missing');
+
+    const supabase = createSupabaseClient(supabaseUrl, supabaseKey);
     const { data, error } = await supabase
       .from('products')
       .select('*')

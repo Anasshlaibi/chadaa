@@ -35,24 +35,28 @@ export async function GET() {
   }
 
   const urls = [
-    { loc: `${baseUrl}/`, priority: '1.0', changefreq: 'monthly', image: null as string | null, title: '' },
+    { loc: `${baseUrl}/`, priority: '1.0', changefreq: 'monthly', image: null as string | null, title: '', description: '' },
+    { loc: `${baseUrl}/products`, priority: '0.9', changefreq: 'weekly', image: null as string | null, title: 'Catalogue Produits', description: 'Trappes de visite, faux plafonds, isolation, dalles au Maroc.' },
     ...products.map(p => ({
       loc: `${baseUrl}/products/${p.id}`,
       priority: '0.8',
-      changefreq: 'weekly',
+      changefreq: 'monthly',
       image: p.image ? (p.image.startsWith('http') ? p.image : `${baseUrl}${p.image}`) : null as string | null,
-      title: p.name
+      title: p.name,
+      description: p.description || ''
     }))
   ];
 
   const xmlItems = urls.map(item => {
     let imageXml = '';
     if (item.image) {
-      imageXml = `\n    <image:image>\n      <image:loc>${item.image.startsWith('http') ? item.image : `${baseUrl}${item.image}`}</image:loc>\n      <image:title>${escapeXml(item.title)}</image:title>\n    </image:image>`;
+      const captionXml = item.description ? `\n      <image:caption>${escapeXml(item.description.slice(0, 200))}</image:caption>` : '';
+      imageXml = `\n    <image:image>\n      <image:loc>${item.image.startsWith('http') ? item.image : `${baseUrl}${item.image}`}</image:loc>\n      <image:title>${escapeXml(item.title)}</image:title>${captionXml}\n    </image:image>`;
     }
     
     return `  <url>
     <loc>${item.loc}</loc>
+    <changefreq>${item.changefreq}</changefreq>
     <priority>${item.priority}</priority>${imageXml}
   </url>`;
   }).join('\n');
