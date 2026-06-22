@@ -144,18 +144,11 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onSuccess, onCancel }) => {
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-4 pt-4">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="py-4 rounded-2xl bg-gray-100 text-blue-950 font-black text-sm hover:bg-gray-200 transition-all"
-          >
-            Retour
-          </button>
+        <div className="pt-4">
           <button
             disabled={status === 'loading'}
             type="submit"
-            className="py-4 rounded-2xl bg-amber-500 text-white font-black text-sm shadow-xl hover:bg-amber-600 active:scale-95 transition-all flex items-center justify-center space-x-2"
+            className="w-full py-4 rounded-2xl bg-amber-500 text-white font-black text-sm shadow-xl hover:bg-amber-600 active:scale-95 transition-all flex items-center justify-center gap-2"
           >
             {status === 'loading' ? (
               <>
@@ -165,11 +158,12 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onSuccess, onCancel }) => {
             ) : (
               <>
                 <Send size={18} />
-                <span>Envoyer</span>
+                <span>Envoyer la Demande</span>
               </>
             )}
           </button>
         </div>
+
       </form>
     </div>
   );
