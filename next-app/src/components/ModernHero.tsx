@@ -21,7 +21,7 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
       descPre: "Expertise en",
       descHighlight: "Aménagement & Finition",
       descPost: "pour vos projets d'exception.",
-      cta: "Demander un Devis",
+      cta: "Voir nos Produits",
       projects: "Projets 2024"
     },
     ma: {
@@ -31,7 +31,7 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
       descPre: "Grossiste",
       descHighlight: "BA13 & Profilés",
       descPost: "directement de l'usine à Casablanca.",
-      cta: "Demander un Devis",
+      cta: "Voir le Stock",
       projects: "Stock Local"
     },
     en: {
@@ -41,7 +41,7 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
       descPre: "Expertise in",
       descHighlight: "Fit-out & Finishing",
       descPost: "for your exceptional projects.",
-      cta: "Request a Quote",
+      cta: "View our Products",
       projects: "2024 Projects"
     }
   }[lang];

@@ -62,7 +62,7 @@ export default function GlobalLandingPage({ lang }: { lang: 'fr' | 'ma' | 'en' }
       yearQuote: "\"Leader du Second Œuvre au Maroc\"",
       ctaTitle: "Prêt à moderniser vos chantiers ?",
       ctaDesc: "Parcourez notre catalogue ou discutez directement avec un expert.",
-      ctaButton1: "Demander un Devis",
+      ctaButton1: "Parcourir le Catalogue",
       ctaButton2: "Discuter avec un Expert"
     },
     ma: {
@@ -89,7 +89,7 @@ export default function GlobalLandingPage({ lang }: { lang: 'fr' | 'ma' | 'en' }
       yearQuote: "\"Le choix des pros au Maroc\"",
       ctaTitle: "Demandez votre devis gratuit",
       ctaDesc: "Contactez-nous pour connaître nos tarifs grossistes actuels.",
-      ctaButton1: "Demander un Devis",
+      ctaButton1: "Voir nos Produits",
       ctaButton2: "Contact WhatsApp"
     },
     en: {
@@ -116,7 +116,7 @@ export default function GlobalLandingPage({ lang }: { lang: 'fr' | 'ma' | 'en' }
       yearQuote: "\"Finishing Works Leader in Morocco\"",
       ctaTitle: "Ready to modernize your sites?",
       ctaDesc: "Browse our catalog or chat directly with an expert.",
-      ctaButton1: "Request a Quote",
+      ctaButton1: "Browse Catalog",
       ctaButton2: "Chat with an Expert"
     }
   }[lang];
