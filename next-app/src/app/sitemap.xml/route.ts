@@ -40,7 +40,7 @@ export async function GET() {
       loc: `${baseUrl}/products/${p.id}`,
       priority: '0.8',
       changefreq: 'weekly',
-      image: p.image ? `${baseUrl}${p.image}` : null as string | null,
+      image: p.image ? (p.image.startsWith('http') ? p.image : `${baseUrl}${p.image}`) : null as string | null,
       title: p.name
     }))
   ];
