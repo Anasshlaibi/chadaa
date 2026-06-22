@@ -92,6 +92,7 @@ export default async function ProductDetailPage({ params }: Props) {
     "offers": {
       "@type": "Offer",
       "url": `https://chadaalyasmin.ma/products/${product.id}`,
+      "price": "0",
       "priceCurrency": "MAD",
       "availability": product.stockStatus === "En Rupture"
         ? "https://schema.org/OutOfStock"
