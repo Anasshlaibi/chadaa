@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Trash2, ChevronRight, ShoppingBag, Plus, Minus } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
@@ -12,32 +12,57 @@ import Image from 'next/image';
 const QuotePanel: React.FC = () => {
   const { items, isPanelOpen, setIsPanelOpen, removeFromQuote, updateQuantity, clearQuote, itemCount } = useCart();
   const [view, setView] = useState<'cart' | 'checkout'>('cart');
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // Detect desktop breakpoint (lg = 1024px)
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   // Reset view when panel is opened
-  React.useEffect(() => {
+  useEffect(() => {
     if (isPanelOpen) setView('cart');
   }, [isPanelOpen]);
+
+  // Animation variants
+  const mobileVariants = {
+    initial: { x: '100%' },
+    animate: { x: 0 },
+    exit: { x: '100%' },
+  };
+  const desktopVariants = {
+    initial: { opacity: 0, scale: 0.92, y: 16 },
+    animate: { opacity: 1, scale: 1, y: 0 },
+    exit: { opacity: 0, scale: 0.92, y: 16 },
+  };
+  const variants = isDesktop ? desktopVariants : mobileVariants;
+
 
   return (
     <AnimatePresence>
       {isPanelOpen && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop — stronger blur on desktop for modal feel */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsPanelOpen(false)}
-            className="fixed inset-0 bg-blue-950/20 backdrop-blur-sm z-[150]"
+            className="fixed inset-0 bg-blue-950/40 backdrop-blur-md z-[150]"
           />
 
-          {/* Side Panel */}
+          {/* Mobile: slide from right | Desktop: centered modal */}
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[160] flex flex-col"
+            variants={variants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={{ type: 'spring', damping: 26, stiffness: 220 }}
+            className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[160] flex flex-col lg:top-1/2 lg:left-1/2 lg:right-auto lg:translate-x-[-50%] lg:translate-y-[-50%] lg:h-auto lg:max-h-[88vh] lg:w-[580px] lg:max-w-[90vw] lg:rounded-3xl lg:overflow-hidden"
           >
             {/* Header */}
             <div className="p-8 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10">
