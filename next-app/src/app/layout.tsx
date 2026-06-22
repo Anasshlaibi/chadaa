@@ -17,6 +17,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://chadaalyasmin.ma'),
   title: "Chada Alyasmin | Leader du Second Œuvre au Maroc",
   description: "Expertise en aménagement et finition : Faux plafonds, Trappes de visite, Isolation. Qualité certifiée NF et RT2020.",
   icons: {
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
     siteName: 'Chada Alyasmin',
     images: [
       {
-        url: 'https://chadaalyasmin.ma/logo.png',
+        url: '/logo.png',
         width: 800,
         height: 600,
       },

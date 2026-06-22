@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { type Product } from '../data/products';
 import { ChevronLeft, ShoppingBag, ShieldCheck, MapPin, Truck, HelpCircle, Plus, Minus, X } from 'lucide-react';
@@ -11,30 +11,19 @@ import { cn } from '../lib/utils';
 import Image from 'next/image';
 
 interface ProductDetailPageProps {
-  products: Product[];
+  product: Product;
 }
 
-function ProductDetailPage({ products }: ProductDetailPageProps) {
-  const params = useParams();
-  const productId = params?.productId as string;
+function ProductDetailPage({ product }: ProductDetailPageProps) {
   const router = useRouter();
-  const product = products.find((p) => p.id === productId);
   const { addToQuote } = useCart();
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     setQuantity(1);
-  }, [productId]);
+  }, [product.id]);
 
-  if (!product || !productId) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-        <h2 className="text-3xl font-black text-blue-950 mb-4">Produit non trouvé</h2>
-        <Link href="/" className="text-amber-600 font-bold hover:underline">Retour au catalogue</Link>
-      </div>
-    );
-  }
 
   const handleIncrement = () => setQuantity(q => q + 1);
   const handleDecrement = () => setQuantity(q => Math.max(1, q - 1));
