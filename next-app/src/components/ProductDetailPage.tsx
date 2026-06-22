@@ -29,7 +29,7 @@ function ProductDetailPage({ product }: ProductDetailPageProps) {
   const handleDecrement = () => setQuantity(q => Math.max(1, q - 1));
 
   return (
-    <div className="min-h-screen bg-white pb-32">
+    <div className="min-h-screen bg-white pb-32 pt-20 lg:pt-32">
       {/* Navigation Header - Fixed to stick below global Navbar */}
       <div className="sticky top-20 lg:top-[80px] z-40 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 h-16 flex items-center justify-between">
