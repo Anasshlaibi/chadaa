@@ -83,7 +83,7 @@ export default async function ProductDetailPage({ params }: Props) {
     "@type": "Product",
     "name": product.name,
     "description": product.description,
-    "image": `https://chadaalyasmin.ma${product.image}`,
+    "image": product.image.startsWith('http') ? product.image : `https://chadaalyasmin.ma${product.image}`,
     "sku": product.id,
     "brand": {
       "@type": "Brand",
