@@ -65,14 +65,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     metadataBase: new URL('https://chadaalyasmin.ma'),
-    title: `${product.name} | Chada Alyasmin`,
-    description: `${product.description} Retrouvez nos solutions de trappe de visite et faux plafonds au Maroc.`,
+    title: `${product.name} | Chada Alyasmin Maroc - شادي الياسمين`,
+    description: `${product.description} Acheter ${product.name} au meilleur prix grossiste à Casablanca et livraison au Maroc. شادي الياسمين لمواد البناء.`,
     openGraph: {
-      title: `${product.name} | Chada Alyasmin`,
+      title: `${product.name} | Chada Alyasmin - شادي الياسمين`,
       description: product.description,
-      images: [{ url: product.image }],
+      images: [{ url: product.image.startsWith('http') ? product.image : `https://chadaalyasmin.ma${product.image}` }],
     },
-    keywords: ["trappe de visite", product.category, "Chada Alyasmin", "Maroc", "aménagement"],
+    keywords: [
+      product.name,
+      product.category,
+      "trappe de visite Casablanca",
+      "faux plafond BA13",
+      "شادي الياسمين",
+      "فتحات الزيارة المغرب",
+      "أسقف مستعارة الدار البيضاء",
+      "مواد البناء المغرب",
+      "Chada Alyasmin",
+      "Maroc"
+    ],
   };
 }
 
@@ -91,12 +102,14 @@ export default async function ProductDetailPage({ params }: Props) {
     );
   }
 
+  const imageUrl = product.image.startsWith('http') ? product.image : `https://chadaalyasmin.ma${product.image}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": product.name,
     "description": product.description || `Acheter ${product.name} au meilleur prix de gros au Maroc chez Chada Alyasmin.`,
-    "image": product.image.startsWith('http') ? product.image : `https://chadaalyasmin.ma${product.image}`,
+    "image": imageUrl,
     "sku": product.id,
     "mpn": product.id,
     "brand": {
@@ -121,6 +134,20 @@ export default async function ProductDetailPage({ params }: Props) {
         "name": "Chada Alyasmin"
       }
     }
+  };
+
+  const imageLd = {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    "contentUrl": imageUrl,
+    "license": "https://chadaalyasmin.ma",
+    "acquireLicensePage": `https://chadaalyasmin.ma/products/${product.id}`,
+    "creditText": "Chada Alyasmin Morocco",
+    "creator": {
+      "@type": "Organization",
+      "name": "Chada Alyasmin"
+    },
+    "copyrightNotice": "Chada Alyasmin"
   };
 
   const breadcrumbLd = {
@@ -153,6 +180,10 @@ export default async function ProductDetailPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(imageLd) }}
       />
       <script
         type="application/ld+json"
