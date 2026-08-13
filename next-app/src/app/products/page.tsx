@@ -1,14 +1,24 @@
 import { Metadata } from 'next';
-import { createClient } from '@/utils/supabase/server';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { mockProducts, type Product } from '@/data/products';
 import Catalog from '@/components/Catalog';
 
 export const metadata: Metadata = {
-  title: "Catalogue Produits | Chada Alyasmin - Faux Plafonds, Trappes, Isolation au Maroc",
-  description: "Découvrez notre catalogue complet : trappes de visite, faux plafonds, dalles, isolation, ossatures métalliques. Livraison au Maroc. Prix grossiste.",
+  title: "Matériaux de Construction & Second Œuvre Casablanca Maroc | Chada Alyasmin",
+  description: "Leader au Maroc : Trappes de visite alu/hydro, faux plafonds BA13, isolation laine de roche, joints creux & planchers techniques. Prix grossiste à Casablanca et livraison dans tout le Maroc.",
+  keywords: [
+    "trappe de visite Casablanca",
+    "faux plafond BA13 Maroc",
+    "isolation laine de roche Casablanca",
+    "joint creux profilé aluminium",
+    "plancher technique surélevé Maroc",
+    "plaques de plâtre grossiste Casablanca",
+    "matériaux de construction Maroc",
+    "second oeuvre Casablanca"
+  ],
   openGraph: {
-    title: "Catalogue Produits | Chada Alyasmin",
-    description: "Trappes de visite, faux plafonds, dalles, isolation, ossatures métalliques au Maroc.",
+    title: "Catalogue Matériaux de Construction & Second Œuvre | Chada Alyasmin Maroc",
+    description: "Trappes de visite sur mesure, faux plafonds BA13, isolation et planchers techniques à Casablanca.",
     url: "https://chadaalyasmin.ma/products",
     type: "website",
   },
@@ -19,19 +29,24 @@ export const metadata: Metadata = {
 
 async function getProducts(): Promise<Product[]> {
   try {
-    const supabase = await createClient();
-    const { data, error } = await supabase.from('products').select('*');
-    if (data && !error && data.length > 0) {
-      return data.map((p: any) => ({
-        id: p.id || p.ref,
-        name: p.name || 'Produit',
-        category: p.category || '',
-        description: p.description || '',
-        image: p.mainImage || p.image || '',
-        stockStatus: p.inStock ? 'En Stock' : 'En Rupture',
-        availability: p.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-        specs: p.specs || {},
-      }));
+    const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (supabaseUrl && supabaseKey) {
+      const supabase = createSupabaseClient(supabaseUrl, supabaseKey);
+      const { data, error } = await supabase.from('products').select('*');
+      if (data && !error && data.length > 0) {
+        return data.map((p: any) => ({
+          id: p.id || p.ref,
+          name: p.name || 'Produit',
+          category: p.category || '',
+          description: p.description || '',
+          image: p.mainImage || p.image || '',
+          stockStatus: p.inStock ? 'En Stock' : 'En Rupture',
+          availability: p.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+          specs: p.specs || {},
+        }));
+      }
     }
   } catch (err) {
     console.error('Supabase product fetch error (falling back to mock):', err);

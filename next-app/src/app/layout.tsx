@@ -18,17 +18,29 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chadaalyasmin.ma'),
-  title: "Chada Alyasmin | Leader du Second Œuvre au Maroc",
-  description: "Expertise en aménagement et finition : Faux plafonds, Trappes de visite, Isolation. Qualité certifiée NF et RT2020.",
+  title: {
+    default: "Chada Alyasmin | Leader du Second Œuvre au Maroc",
+    template: "%s | Chada Alyasmin"
+  },
+  description: "Expertise en aménagement et finition : Faux plafonds, Trappes de visite, Isolation. Qualité certifiée NF et RT2020. Livraison à Casablanca et partout au Maroc.",
   icons: {
     icon: '/logo.png',
     shortcut: '/logo.png',
     apple: '/logo.png',
   },
-  keywords: ["trappe de visite", "faux plafond", "isolation", "Maroc", "Casablanca", "second oeuvre", "aménagement", "BA13", "profilé aluminium"],
+  alternates: {
+    canonical: 'https://chadaalyasmin.ma',
+    languages: {
+      'fr-MA': 'https://chadaalyasmin.ma/fr',
+      'ar-MA': 'https://chadaalyasmin.ma/ma',
+      'en-MA': 'https://chadaalyasmin.ma/en',
+      'x-default': 'https://chadaalyasmin.ma/fr',
+    },
+  },
+  keywords: ["trappe de visite", "faux plafond", "isolation", "Maroc", "Casablanca", "second oeuvre", "aménagement", "BA13", "profilé aluminium", "joints creux"],
   openGraph: {
     title: "Chada Alyasmin | Leader du Second Œuvre au Maroc",
-    description: "Expertise en aménagement et finition : Faux plafonds, Trappes de visite, Isolation.",
+    description: "Expertise en aménagement et finition : Faux plafonds, Trappes de visite, Isolation. Qualité certifiée.",
     url: 'https://chadaalyasmin.ma',
     siteName: 'Chada Alyasmin',
     images: [
@@ -36,10 +48,28 @@ export const metadata: Metadata = {
         url: '/logo.png',
         width: 800,
         height: 600,
+        alt: 'Chada Alyasmin Logo - Second Oeuvre Maroc',
       },
     ],
     locale: 'fr_MA',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Chada Alyasmin | Leader du Second Œuvre au Maroc',
+    description: 'Faux plafonds, Trappes de visite sur-mesure et solutions d isolation au Maroc.',
+    images: ['/logo.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 

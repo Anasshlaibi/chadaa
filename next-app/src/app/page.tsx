@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import GlobalLandingPage from "@/components/GlobalLandingPage";
 
 export default function RootPage() {
-  redirect("/fr");
+  return <GlobalLandingPage lang="fr" />;
 }

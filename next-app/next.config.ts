@@ -48,6 +48,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: process.cwd(),
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "znhhzbpmqemappldctpw.supabase.co" },

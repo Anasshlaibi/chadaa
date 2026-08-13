@@ -128,8 +128,48 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
             <div ref={messagesEndRef} />
           </div>
 
+          {/* Quick AI Recommendation Suggestions */}
+          {messages.length < 3 && !isLoading && (
+            <div className="px-3 py-2 bg-slate-100/70 border-t border-slate-200/50 flex flex-wrap gap-1.5 shrink-0">
+              {[
+                "💧 Pièce humide / Salle de bain",
+                "🔥 Solution coupe-feu",
+                "📦 Demander un tarif de gros"
+              ].map((chip, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    setInput(chip);
+                    const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
+                    setTimeout(() => {
+                      const userMsg = chip;
+                      setInput('');
+                      setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
+                      setIsLoading(true);
+                      fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: userMsg }),
+                      })
+                        .then(res => res.json())
+                        .then(data => {
+                          if (data.response) setMessages(prev => [...prev, { role: 'assistant', content: data.response }]);
+                        })
+                        .catch(() => {})
+                        .finally(() => setIsLoading(false));
+                    }, 50);
+                  }}
+                  className="text-[11px] font-medium bg-white hover:bg-amber-50 hover:border-amber-400 text-slate-700 px-2.5 py-1 rounded-full border border-slate-200 transition-all text-left shadow-2xs"
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Input */}
-          <form onSubmit={handleSubmit} className="p-4 bg-white border-t border-slate-100 flex gap-2">
+          <form onSubmit={handleSubmit} className="p-3 bg-white border-t border-slate-100 flex gap-2">
             <input
               type="text"
               value={input}

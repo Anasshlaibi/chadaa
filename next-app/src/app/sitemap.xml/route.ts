@@ -35,8 +35,12 @@ export async function GET() {
   }
 
   const urls = [
-    { loc: `${baseUrl}/`, priority: '1.0', changefreq: 'monthly', image: null as string | null, title: '', description: '' },
-    { loc: `${baseUrl}/products`, priority: '0.9', changefreq: 'weekly', image: null as string | null, title: 'Catalogue Produits', description: 'Trappes de visite, faux plafonds, isolation, dalles au Maroc.' },
+    { loc: `${baseUrl}/`, priority: '1.0', changefreq: 'daily', image: null as string | null, title: 'Chada Alyasmin | Leader du Second Œuvre au Maroc', description: 'Fabricant et distributeur de trappes de visite, faux plafonds et isolation à Casablanca.' },
+    { loc: `${baseUrl}/fr`, priority: '0.9', changefreq: 'daily', image: null as string | null, title: 'Chada Alyasmin - Version Française', description: 'Spécialiste trappe de visite et faux plafond au Maroc.' },
+    { loc: `${baseUrl}/ma`, priority: '0.9', changefreq: 'daily', image: null as string | null, title: 'Chada Alyasmin - Grossiste Casablanca', description: 'Vente en gros de matériaux de construction au Maroc.' },
+    { loc: `${baseUrl}/en`, priority: '0.8', changefreq: 'weekly', image: null as string | null, title: 'Chada Alyasmin - English Version', description: 'Leading construction finishing partner in Morocco.' },
+    { loc: `${baseUrl}/devis`, priority: '0.9', changefreq: 'weekly', image: null as string | null, title: 'Demande de Devis Gratuit', description: 'Obtenez votre devis proforma personnalisé sous 24h.' },
+    { loc: `${baseUrl}/products`, priority: '0.9', changefreq: 'daily', image: null as string | null, title: 'Catalogue Produits', description: 'Trappes de visite, faux plafonds, isolation, dalles au Maroc.' },
     ...products.map(p => ({
       loc: `${baseUrl}/products/${p.id}`,
       priority: '0.8',

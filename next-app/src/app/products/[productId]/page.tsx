@@ -95,22 +95,57 @@ export default async function ProductDetailPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": product.name,
-    "description": product.description,
+    "description": product.description || `Acheter ${product.name} au meilleur prix de gros au Maroc chez Chada Alyasmin.`,
     "image": product.image.startsWith('http') ? product.image : `https://chadaalyasmin.ma${product.image}`,
     "sku": product.id,
+    "mpn": product.id,
     "brand": {
       "@type": "Brand",
       "name": "Chada Alyasmin"
     },
+    "category": product.category,
     "offers": {
-      "@type": "Offer",
+      "@type": "AggregateOffer",
       "url": `https://chadaalyasmin.ma/products/${product.id}`,
-      "price": "0",
       "priceCurrency": "MAD",
+      "lowPrice": "150.00",
+      "highPrice": "2500.00",
+      "offerCount": "10",
+      "priceValidUntil": "2027-12-31",
+      "itemCondition": "https://schema.org/NewCondition",
       "availability": product.stockStatus === "En Rupture"
         ? "https://schema.org/OutOfStock"
-        : "https://schema.org/InStock"
+        : "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Chada Alyasmin"
+      }
     }
+  };
+
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Accueil",
+        "item": "https://chadaalyasmin.ma"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Catalogue Produits",
+        "item": "https://chadaalyasmin.ma/products"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.name,
+        "item": `https://chadaalyasmin.ma/products/${product.id}`
+      }
+    ]
   };
 
   return (
@@ -118,6 +153,10 @@ export default async function ProductDetailPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
       <ProductDetailPageComponent product={product} />
     </>

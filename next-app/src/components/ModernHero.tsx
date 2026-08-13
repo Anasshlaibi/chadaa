@@ -118,14 +118,23 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
               {content.descPre} <span className="text-white lg:text-blue-950 font-bold">{content.descHighlight}</span> {content.descPost}
             </p>
             
-            <div className="flex flex-col sm:flex-row items-center gap-6 lg:gap-8">
+            <div className="flex flex-col sm:flex-row items-center gap-4 lg:gap-6">
               <button 
                 onClick={scrollToCatalog}
-                className="group w-full sm:w-auto px-10 lg:px-12 py-4 lg:py-5 bg-amber-500 text-slate-950 rounded-2xl font-black text-base lg:text-lg shadow-[0_20px_50px_rgba(245,158,11,0.25)] hover:bg-amber-400 active:scale-95 transition-all duration-300 flex items-center justify-center"
+                className="group w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-5 bg-amber-500 text-slate-950 rounded-2xl font-black text-base lg:text-lg shadow-[0_20px_50px_rgba(245,158,11,0.25)] hover:bg-amber-400 active:scale-95 transition-all duration-300 flex items-center justify-center"
               >
                 {content.cta}
                 <ChevronRight size={20} className="ml-3 lg:ml-4 group-hover:translate-x-2 transition-transform" />
               </button>
+
+              <a 
+                href="https://wa.me/212661138204?text=Bonjour,%20je%20souhaite%20obtenir%20un%20devis%20pour%20mon%20projet"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-bold text-base lg:text-lg shadow-lg active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
+              >
+                💬 WhatsApp Direct
+              </a>
               
               <div className="flex items-center space-x-4 opacity-70 lg:opacity-100">
                 <div className="w-8 lg:w-12 h-px bg-white lg:bg-gray-200" />
