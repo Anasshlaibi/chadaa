@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm --prefix next-app run build",
+    "vercel-build": "cd next-app && npm install && npm run build",
+    "build": "cd next-app && npm install && npm run build",
     "dev": "npm --prefix next-app run dev",
     "start": "npm --prefix next-app run start"
   },
