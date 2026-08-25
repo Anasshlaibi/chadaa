@@ -1,6 +1,5 @@
 {
   "cleanUrls": true,
-  "outputDirectory": "next-app/.next",
   "headers": [
     {
       "source": "/(.*)",
