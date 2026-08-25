@@ -1,735 +1,2149 @@
-// This file contains the extracted data from your old HTML files.
-// We will use this to populate the new React Catalog.
+// Source of truth & rich static data for Chada Alyasmin products
+
+export interface ProductPricing {
+  price?: number;
+  compareAtPrice?: number;
+  currency: "MAD";
+  unit: "pièce" | "m²" | "ml" | "rouleau" | "boîte" | "sac" | "panneau" | "plaque" | "kit";
+  priceType: "fixed" | "starting_at" | "quote";
+  isVerifiedPrice: boolean;
+  priceUpdatedAt?: string;
+  minimumQuantity?: number;
+}
 
 export interface Product {
   id: string;
+  ref?: string;
+  slug: string;
   name: string;
   category: string;
   description: string;
   image: string;
-  stockStatus: string;
-  // --- SEO & Schema Fields ---
-  oldUrl?: string; // Original URL for 301 redirect mapping
-//   price?: string;
-//   currency?: string;
-  availability?: "https://schema.org/InStock" | "https://schema.org/OutOfStock";
-  rating?: {
-    value: number;
-    count: number;
-  };
+  thumbnails?: string[];
+  stockStatus: "En Stock" | "Sur Commande" | "En Rupture";
+  availability: "https://schema.org/InStock" | "https://schema.org/OutOfStock";
+  inStock?: boolean;
+  oldUrl?: string;
+  brand?: string;
+  manufacturer?: string;
+  sku?: string;
   specs?: Record<string, string>;
+  material?: string;
+  finish?: string;
+  usage?: string;
+  origin?: string;
+  pricing: ProductPricing;
+  applications?: string[];
+  features?: string[];
+  relatedProductIds?: string[];
 }
 
 export interface CategoryGroup {
   name: string;
+  slug: string;
+  description: string;
   categories: string[];
 }
 
 export const CATEGORY_GROUPS: CategoryGroup[] = [
   {
-    name: "Systèmes de Plafonds",
-    categories: ["Dalles en Laine de Roche", "Dalles en Métal", "Dalles en Plâtre", "Dalles en Vinyle", "Joint Creux", "Ossature Métallique"]
-  },
-  {
-    name: "Cloisons & Doublages",
+    name: "Plaques de Plâtre & Cloisons",
+    slug: "plaques-de-platre",
+    description: "Systèmes de plaques BA13, BA15, BA06 standards, hydrofuges et coupe-feu pour cloisons et doublages au Maroc.",
     categories: ["Plaques de Plâtre", "Cloisons de Séparation"]
   },
   {
-    name: "Isolation Thermique",
-    categories: ["Laine de Verre", "Laine de Roche"]
+    name: "Trappes de Visite",
+    slug: "trappes-de-visite",
+    description: "Trappes de visite Aluplaster standard, hydrofuges et acier sur mesure pour accès technique aux gaines et faux plafonds.",
+    categories: ["Trappe de Visite"]
+  },
+  {
+    name: "Ossature Métallique",
+    slug: "ossature-metallique",
+    description: "Fourrures 60/47, montants 48, rails et profils modulaires T24/T15 pour faux plafonds et cloisons sèches.",
+    categories: ["Ossature Métallique"]
+  },
+  {
+    name: "Isolation Thermique & Acoustique",
+    slug: "isolation",
+    description: "Laine de roche et laine de verre haute densité pour isolation thermo-acoustique des bâtiments à Casablanca et au Maroc.",
+    categories: ["Laine de Roche", "Laine de Verre"]
+  },
+  {
+    name: "Dalles de Faux Plafond",
+    slug: "dalles-de-plafond",
+    description: "Dalles 600x600 en laine de roche (Rockfon), laine minérale (AMF Knauf), plâtre, vinyle et métal.",
+    categories: ["Dalles en Laine de Roche", "Dalles en Métal", "Dalles en Plâtre", "Dalles en Vinyle"]
+  },
+  {
+    name: "Joints Creux & Finitions",
+    slug: "joints-creux",
+    description: "Profilés d'ombrage et joints creux aluminium formes Z, U, L et Oméga pour finitions d'architecte.",
+    categories: ["Joint Creux"]
   },
   {
     name: "Planchers Techniques",
+    slug: "planchers-techniques",
+    description: "Systèmes de planchers surélevés en sulfate de calcium et aluminium moulé pour salles serveurs et bureaux.",
     categories: ["Plancher Technique", "Structure Plancher"]
   },
   {
-    name: "Accessoires & Finition",
-    categories: ["Bandes à Joints", "Accessoires de Fixation", "Accessoires de Projeter", "Enduits", "Trappe de Visite"]
+    name: "Accessoires, Bandes & Enduits",
+    slug: "accessoires",
+    description: "Bandes à joints papier/grillées/armées, enduits CE78, vis TTPC, suspentes et outillage de projection.",
+    categories: ["Bandes à Joints", "Accessoires de Fixation", "Accessoires de Projeter", "Enduits"]
   }
 ];
 
 export const mockProducts: Product[] = [
-  // --- TRAPPES DE VISITE (trappe de visite.html) ---
+  // ─── TRAPPES DE VISITE ──────────────────────────────────────────────────
   {
     id: "tr-alu-standard",
+    ref: "TR-ALU-STD",
+    slug: "trappe-de-visite-aluplaster",
     name: "TRAPPE DE VISITE ALUPLASTER",
     category: "Trappe de Visite",
-    description: "Trappe de visite avec cadre en aluminium et plaque de plâtre standard. Idéale pour plafonds et cloisons.",
+    description: "Trappe de visite avec cadre en aluminium extrudé et plaque de plâtre standard 12.5 mm. Système d'ouverture pousser-lâcher invisible (clic-clac). Idéale pour faux plafonds et cloisons techniques.",
     image: "/assets/assetstrappe/img/work-4.jpg",
     stockStatus: "En Stock",
     oldUrl: "/trappe%20de%20visite.html",
     availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Chada Alyasmin",
+    manufacturer: "Chada Alyasmin",
+    sku: "CA-TR-ALU-STD",
+    material: "Aluminium & Plâtre",
+    finish: "Standard blanc",
+    usage: "Accès technique faux plafond / cloison",
+    origin: "Fabrication Maroc",
+    pricing: {
+      price: 156,
+      currency: "MAD",
+      unit: "pièce",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-25",
+      minimumQuantity: 1
+    },
     specs: {
-      "Matériau": "Aluminium & Plâtre",
-      "Épaisseur": "12.5 mm",
-      "Usage": "Accès technique"
-    }
+      "Matériau cadre": "Aluminium extrudé brut",
+      "Plaque intégrée": "Plâtre standard 12.5 mm",
+      "Système d'ouverture": "Mécanisme Pousser-Lâcher (Clic-Clac)",
+      "Dimensions standard": "20x20, 30x30, 40x40, 50x50, 60x60 cm",
+      "Fabrication sur mesure": "Disponible sur demande",
+      "Usage": "Accès gaines techniques, plafonds BA13"
+    },
+    applications: ["Faux plafonds suspendus", "Gaines techniques", "Cloisons sèches", "Bâtiments tertiaires & résidentiels"],
+    relatedProductIds: ["fp-std-ba13", "om-plf-60", "jc-std-z", "af-vis-25"]
   },
   {
     id: "tr-alu-hydro",
+    ref: "TR-ALU-HYD",
+    slug: "trappe-de-visite-aluplaster-hydrofuge",
     name: "TRAPPE ALUPLASTER HYDROFUGE",
     category: "Trappe de Visite",
-    description: "Trappe de visite étanche avec plaque de plâtre hydrofuge (verte). Parfaite pour zones humides.",
+    description: "Trappe de visite étanche avec cadre aluminium et plaque de plâtre hydrofuge verte (traitée silicone). Conçue spécialement pour les pièces humides : salles de bain, cuisines, spas et locaux techniques.",
     image: "/assets/assetstrappe/img/work-1.jpg",
     stockStatus: "En Stock",
     oldUrl: "/trappe%20de%20visite.html",
     availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Chada Alyasmin",
+    manufacturer: "Chada Alyasmin",
+    sku: "CA-TR-ALU-HYD",
+    material: "Aluminium & Plâtre vert hydrofuge",
+    finish: "Hydrofuge",
+    usage: "Pièces humides & sanitaires",
+    origin: "Fabrication Maroc",
+    pricing: {
+      price: 185,
+      currency: "MAD",
+      unit: "pièce",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-10",
+      minimumQuantity: 1
+    },
     specs: {
-      "Type": "Hydrofuge",
-      "Matériau": "Aluminium & Plâtre vert"
-    }
+      "Matériau": "Aluminium & Plâtre hydrofuge vert",
+      "Épaisseur plaque": "12.5 mm hydrofuge (H1)",
+      "Joint d'étanchéité": "Joint périphérique anti-poussière",
+      "Dimensions": "20x20 à 60x60 cm et sur-mesure",
+      "Résistance à l'humidité": "100% RH certifié"
+    },
+    applications: ["Salles de bain & douches", "Cuisines professionnelles", "Centres aquatiques", "Locaux techniques humides"],
+    relatedProductIds: ["fp-hydro-ba13", "jc-hydro-z", "om-plf-60", "af-vis-25"]
   },
   {
     id: "tr-acier",
+    ref: "TR-ACIER-BLC",
+    slug: "trappe-en-acier-laque",
     name: "TRAPPE EN ACIER LAQUÉ",
     category: "Trappe de Visite",
-    description: "Trappe de visite en acier blanc haute résistance avec fermeture sécurisée.",
+    description: "Trappe de visite métallique en tôle d'acier électro-zinguée laquée blanc époxy (RAL 9016). Ouverture battante avec serrure carrée ou clé ronde. Haute résistance mécanique.",
     image: "/assets/assetstrappe/img/work-33.jpg",
     stockStatus: "En Stock",
     oldUrl: "/trappe%20de%20visite.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Chada Alyasmin",
+    manufacturer: "Chada Alyasmin",
+    sku: "CA-TR-ACIER",
+    material: "Acier électro-zingué",
+    finish: "Laqué blanc époxy RAL 9016",
+    usage: "Murs et plafonds résistants",
+    origin: "Certifié",
+    pricing: {
+      price: 190,
+      currency: "MAD",
+      unit: "pièce",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-10",
+      minimumQuantity: 1
+    },
+    specs: {
+      "Matériau": "Tôle d'acier 1 mm",
+      "Finition": "Peinture poudre polyester cuite au four",
+      "Verrouillage": "Batchette quart de tour ou serrure à clé",
+      "Pose": "Murs en maçonnerie ou cloisons sèches"
+    },
+    applications: ["Couloirs d'immeubles", "Hôpitaux", "Établissements scolaires", "Gaines techniques murales"],
+    relatedProductIds: ["cl-montant-48", "cl-rail-48", "is-rockmur-kraft"]
   },
 
-  // --- FAUX PLAFONDS (faux plafond.html) ---
+  // ─── PLAQUES DE PLÂTRE ──────────────────────────────────────────────────
   {
     id: "fp-std-ba13",
+    ref: "PL-BA13-STD",
+    slug: "plaque-de-platre-ba13-standard",
     name: "PLAQUE DE PLATRE BA13 STANDARD",
     category: "Plaques de Plâtre",
-    description: "Plaque de plâtre standard blanche pour aménagements intérieurs : cloisons, plafonds et doublages.",
+    description: "Plaque de plâtre standard à bords amincis (BA13) de dimensions 1200 x 2500 mm (épaisseur 12.5 mm). Destinée à la réalisation de cloisons distributives, doublages sur ossature et faux plafonds suspendus.",
     image: "/assets/img/portfolio/portfolio-1.jpg",
     stockStatus: "En Stock",
     oldUrl: "/faux%20plafond.html",
     availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Sinca",
+    sku: "PL-BA13-250",
+    material: "Plâtre & parements cartonné",
+    finish: "Standard ivoire",
+    usage: "Plafonds & cloisons intérieures",
+    origin: "Maroc / Import certifié",
+    pricing: {
+      price: 34,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
     specs: {
-      "Type": "BA13",
-      "Usage": "Intérieur",
-      "Finition": "Standard"
-    }
+      "Type": "BA13 Standard (Bords Amincis)",
+      "Épaisseur": "12.5 mm",
+      "Largeur": "1200 mm",
+      "Longueur": "2500 mm / 3000 mm",
+      "Poids": "environ 8.5 kg/m²",
+      "Réaction au feu": "A2-s1, d0"
+    },
+    applications: ["Faux plafonds suspendus", "Cloisons de séparation", "Doublages de murs", "Aménagements de bureaux & logements"],
+    relatedProductIds: ["om-plf-60", "cl-montant-48", "cl-rail-48", "af-vis-25", "ba-papier", "en-ce78"]
   },
   {
     id: "fp-hydro-ba13",
+    ref: "PL-BA13-HYD",
+    slug: "plaque-de-platre-ba13-hydrofuge",
     name: "PLAQUE DE PLATRE BA13 HYDROFUGE",
     category: "Plaques de Plâtre",
-    description: "Plaque de plâtre hydrofuge pour pièces humides (salle de bain, cuisine).",
+    description: "Plaque de plâtre hydrofuge (verte) de type H1 selon la norme EN 520, formulée avec un cœur de plâtre hydrofugé et parements cartonnés traités anti-humidité. Absorption d'eau < 5%.",
     image: "/assets/img/portfolio/portfolio-2.jpg",
     stockStatus: "En Stock",
     oldUrl: "/faux%20plafond.html",
     availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Sinca",
+    sku: "PL-BA13-HYD-250",
+    material: "Plâtre hydrofugé",
+    finish: "Carton vert hydrofuge",
+    usage: "Salles de bain, cuisines, pièces humides",
+    origin: "Maroc / Import certifié",
+    pricing: {
+      price: 52,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
     specs: {
-      "Type": "BA13 Hydro",
-      "Usage": "Pièce humide"
-    }
+      "Type": "BA13 Hydrofuge (H1)",
+      "Épaisseur": "12.5 mm",
+      "Dimensions": "1200 x 2500 mm",
+      "Absorption superficielle d'eau": "< 5%",
+      "Couleur parement": "Vert"
+    },
+    applications: ["Salles de bain", "Sanitaires", "Cuisines", "Buanderies", "Locaux non chauffés"],
+    relatedProductIds: ["tr-alu-hydro", "jc-hydro-z", "om-plf-60", "af-vis-25", "ba-grillage"]
   },
   {
     id: "fp-coupe-feu-ba13",
+    ref: "PL-BA13-CF",
+    slug: "plaque-de-platre-ba13-coupe-feu",
     name: "PLAQUE DE PLATRE BA13 COUPE-FEU",
     category: "Plaques de Plâtre",
-    description: "Plaque de plâtre avec résistance au feu renforcée pour gaines techniques et cloisons coupe-feu.",
+    description: "Plaque de plâtre ignifuge (rose) renforcée de fibres de verre et vermiculite pour une résistance au feu accrue. Indispensable pour gaines techniques, ERP et cloisons coupe-feu.",
     image: "/assets/img/portfolio/portfolio-3.jpg",
     stockStatus: "En Stock",
     oldUrl: "/faux%20plafond.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Sinca",
+    sku: "PL-BA13-CF",
+    material: "Plâtre armé fibre de verre",
+    finish: "Carton rose ignifugé",
+    usage: "Protection incendie & gaines ERP",
+    origin: "Certifié",
+    pricing: {
+      price: 62,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: {
+      "Type": "BA13 Coupe-Feu (F / DF)",
+      "Épaisseur": "12.5 mm / 15 mm",
+      "Dimensions": "1200 x 2500 mm",
+      "Résistance au feu": "Jusqu'à EI 120 (selon montage)",
+      "Couleur parement": "Rose"
+    },
+    applications: ["Gaines techniques", "Parkings souterrains", "Hôtels & ERP", "Cloisons séparatives coupe-feu"],
+    relatedProductIds: ["is-rockmur-kraft", "cl-montant-48", "af-vis-25"]
   },
   {
     id: "fp-std-ba06",
+    ref: "PL-BA06-FLEX",
+    slug: "plaque-de-platre-ba06-cintree",
     name: "PLAQUE DE PLATRE BA06",
     category: "Plaques de Plâtre",
-    description: "Plaque de plâtre mince pour la réalisation d'ouvrages courbes et décoratifs.",
+    description: "Plaque de plâtre mince de 6 mm d'épaisseur spécialement conçue pour les réalisations cintrées, voûtes, dômes et ouvrages décoratifs à faible rayon de courbure.",
     image: "/assets/img/portfolio/portfolio-4.jpg",
     stockStatus: "En Stock",
     oldUrl: "/faux%20plafond.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Knauf",
+    sku: "PL-BA06-FLEX",
+    material: "Plâtre haute flexibilité",
+    finish: "Standard",
+    usage: "Plafonds courbes & décors architecturaux",
+    origin: "Certifié",
+    pricing: {
+      price: 46,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 5
+    },
+    specs: {
+      "Épaisseur": "6 mm",
+      "Dimensions": "1200 x 2500 mm / 3000 mm",
+      "Rayon de courbure minimal": "300 mm à sec",
+      "Usage": "Plafonds voûtés, arches, colonnes"
+    },
+    applications: ["Plafonds décoratifs courbes", "Voûtes et coupoles", "Piliers et arches", "Design intérieur d'hôtellerie"],
+    relatedProductIds: ["om-plf-60", "ba-papier", "en-ce78"]
   },
   {
     id: "fp-std-ba15",
+    ref: "PL-BA15-HR",
+    slug: "plaque-de-platre-ba15-haute-densite",
     name: "PLAQUE DE PLATRE BA15",
     category: "Plaques de Plâtre",
-    description: "Plaque de plâtre haute résistance pour cloisons distributives exigeantes.",
+    description: "Plaque de plâtre de 15 mm haute résistance mécanique et acoustique. Idéale pour les cloisons de grande hauteur et les environnements à forte sollicitation.",
     image: "/assets/img/portfolio/portfolio-5.jpg",
     stockStatus: "En Stock",
     oldUrl: "/faux%20plafond.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Sinca",
+    sku: "PL-BA15-HR",
+    material: "Plâtre haute densité",
+    finish: "Standard ivoire",
+    usage: "Cloisons grande hauteur & acoustiques",
+    origin: "Certifié",
+    pricing: {
+      price: 49,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: {
+      "Épaisseur": "15 mm",
+      "Dimensions": "1200 x 2500 mm",
+      "Poids": "environ 12 kg/m²",
+      "Performances": "Haute dureté superficielle"
+    },
+    applications: ["Établissements scolaires", "Hôpitaux", "Salles de cinéma", "Cloisons grande hauteur > 3.5m"],
+    relatedProductIds: ["cl-montant-48", "cl-rail-48", "is-rockmur-kraft"]
   },
   {
     id: "fp-bordex",
+    ref: "PL-BORDEX-EXT",
+    slug: "plaque-de-platre-bordex-exterieure",
     name: "PLAQUE DE PLATRE BORDEX",
     category: "Plaques de Plâtre",
-    description: "Plaque de plâtre extérieure haute résistance aux intempéries.",
-    image: "/assets/img/portfolio/portfolio-1.jpg", // MISSING bordex.jpg, using portfolio-1.jpg as placeholder
+    description: "Plaque extérieure à base de plâtre spécial revêtu d'un voile de fibre de verre incombustible. Résiste aux intempéries, aux UV, aux moisissures et à l'eau.",
+    image: "/assets/img/portfolio/portfolio-1.jpg",
     stockStatus: "En Stock",
     oldUrl: "/faux%20plafond.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Knauf",
+    sku: "PL-BORDEX-EXT",
+    material: "Plâtre armé voile de verre",
+    finish: "Voile technique orange/jaune",
+    usage: "Façades extérieures & sous-faces d'auvent",
+    origin: "Certifié",
+    pricing: {
+      price: 110,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: {
+      "Épaisseur": "12.5 mm",
+      "Dimensions": "1200 x 2400 mm",
+      "Incombustibilité": "Classe A1",
+      "Résistance intempéries": "12 mois d'exposition directe sans finition"
+    },
+    applications: ["Sous-faces d'auvents et préaux", "Bardages ventilés", "Façades extérieures", "Passages couverts"],
+    relatedProductIds: ["om-plf-60", "af-vis-25"]
   },
 
-  // --- OSSATURES MÉTALLIQUES (faux plafond.html) ---
+  // ─── OSSATURE MÉTALLIQUE ────────────────────────────────────────────────
   {
     id: "om-plf-60",
+    ref: "OSS-FOUR-60",
+    slug: "fourrure-plafond-60",
     name: "FOURRURE PLAFOND 60",
     category: "Ossature Métallique",
-    description: "Profilé métallique galvanisé pour structure de faux plafond suspendu.",
+    description: "Profilé métallique en acier galvanisé Z140/Z275 pour ossature de faux plafond suspendu et doublage de mur. Largeur 60 mm, longueur 3.00 m ou 4.00 m.",
     image: "/assets/img/portfolio/portfolio-9.jpg",
     stockStatus: "En Stock",
     oldUrl: "/faux%20plafond.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "OM-F60-300",
+    material: "Acier galvanisé DX51D",
+    finish: "Galvanisé zingué",
+    usage: "Structure de faux plafond suspendu",
+    origin: "Fabrication certifiée Maroc",
+    pricing: {
+      price: 18,
+      currency: "MAD",
+      unit: "ml",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: {
+      "Largeur semelle": "60 mm",
+      "Hauteur aile": "27 mm",
+      "Épaisseur acier": "0.55 mm / 0.60 mm standard",
+      "Longueur": "3000 mm / 4000 mm",
+      "Conditionnement": "Botte de 10 ou 12 pièces"
+    },
+    applications: ["Plafonds suspendus continus BA13", "Doublages sur suspentes", "Aménagements de combles"],
+    relatedProductIds: ["fp-std-ba13", "af-cavalier", "af-manchon", "af-suspente", "af-vis-25"]
   },
   {
     id: "om-plf-47",
+    ref: "OSS-FOUR-47",
+    slug: "fourrure-plafond-47",
     name: "FOURRURE PLAFOND 47",
     category: "Ossature Métallique",
-    description: "Profilé métallique léger pour plafonds et doublages.",
+    description: "Profilé métallique pour plafond suspendu et doublage thermique mince. Largeur 47 mm.",
     image: "/assets/img/portfolio/portfolio-10.jpg",
     stockStatus: "En Stock",
     oldUrl: "/faux%20plafond.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "OM-F47-300",
+    material: "Acier galvanisé",
+    finish: "Zingué",
+    usage: "Plafonds & doublages étroits",
+    origin: "Certifié",
+    pricing: {
+      price: 16,
+      currency: "MAD",
+      unit: "ml",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: {
+      "Largeur": "47 mm",
+      "Longueur": "3000 mm",
+      "Épaisseur": "0.55 mm"
+    },
+    applications: ["Plafonds légers", "Doublages minces"],
+    relatedProductIds: ["fp-std-ba13", "af-vis-25"]
   },
-
-  // --- FAUX PLAFONDS MODULAIRES (OSSATURE T24-T15.html) ---
   {
     id: "om-t24",
+    ref: "OSS-T24-MOD",
+    slug: "ossature-t24-faux-plafond",
     name: "OSSATURE T24",
     category: "Ossature Métallique",
-    description: "Système d'ossature apparente pour dalles de plafond modulaires 600x600.",
+    description: "Système d'ossature apparente T24 pour dalles de plafond modulaires 600x600 mm. Comprend porteurs de 3.60 m, entretoises de 1.20 m et 0.60 m, et cornières de rive.",
     image: "/assets/img/portfolio/ossature-t24.jpg",
     stockStatus: "En Stock",
     oldUrl: "/OSSATURE%20T24-T15.html",
     availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "OM-T24-KIT",
+    material: "Acier galvanisé et capot aluminium blanc",
+    finish: "Blanc RAL 9003",
+    usage: "Faux plafond démontable 600x600",
+    origin: "Certifié TS EN13964",
+    pricing: {
+      price: 24,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 20
+    },
     specs: {
       "Norme": "TS EN13964",
-      "Charge": "14.14 kg/m",
-      "Système": "Apparent"
-    }
+      "Largeur semelle": "24 mm",
+      "Capacité de charge": "14.14 kg/m",
+      "Composants": "Porteur 3600 mm, Entretoise 1200 mm, Entretoise 600 mm, Rive 3000 mm"
+    },
+    applications: ["Bureaux", "Banques", "Centres commerciaux", "Établissements scolaires", "Hôpitaux"],
+    relatedProductIds: ["lr-artic", "lr-pacific", "amf-prime", "dp-vinyle-iso", "dp-metal"]
   },
   {
     id: "om-t15",
+    ref: "OSS-T15-MOD",
+    slug: "ossature-t15-faux-plafond",
     name: "OSSATURE T15",
     category: "Ossature Métallique",
-    description: "Ossature fine pour un rendu esthétique plus discret.",
+    description: "Ossature fine T15 (largeur 15 mm) pour un rendu moderne et minimaliste avec dalles à bord feuilluré (Tégular ou Microlook).",
     image: "/assets/img/portfolio/ossature-t15.jpg",
     stockStatus: "En Stock",
     oldUrl: "/OSSATURE%20T24-T15.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "OM-T15-KIT",
+    material: "Acier galvanisé laqué",
+    finish: "Blanc mat / Noir",
+    usage: "Plafonds démontables haut de gamme",
+    origin: "Certifié",
+    pricing: {
+      price: 28,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 20
+    },
+    specs: {
+      "Largeur": "15 mm",
+      "Compatibilité dalles": "Bords droits ou feuillurés",
+      "Finition": "Blanc pur / Noir mat"
+    },
+    applications: ["Bureaux de direction", "Salles de conférence", "Hôtels de standing"],
+    relatedProductIds: ["lr-ekla", "amf-eff-pro", "dp-metal"]
   },
   {
     id: "om-ultraline",
+    ref: "OSS-ULTRALINE",
+    slug: "system-ultraline-ossature",
     name: "SYSTEM ULTRALINE",
     category: "Ossature Métallique",
-    description: "Ossature design avec joint creux central pour plafonds haut de gamme.",
+    description: "Ossature design avec joint creux central intégré (bicolore blanc/noir ou uni). Idéale pour les projets d'architecture intérieure exigeants.",
     image: "/assets/img/portfolio/system-ultraline.jpg",
     stockStatus: "En Stock",
     oldUrl: "/OSSATURE%20T24-T15.html",
-    availability: "https://schema.org/InStock"
-  },
-
-  // --- ACCESSOIRES PROJETER (accessoires de projeter.html) ---
-  {
-    id: "ap-chemise",
-    name: "CHEMISE PFT PROLOG",
-    category: "Accessoires de Projeter",
-    description: "Stator et Rotor pour machine à projeter PFT (D6-3). Pièces d'usure haute qualité.",
-    image: "/assets/img/portfolio/camisa.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/accessoires%20de%20projeter.html",
-    availability: "https://schema.org/InStock"
-  },
-  {
-    id: "ap-regle",
-    name: "RÈGLE EN H 2.5M",
-    category: "Accessoires de Projeter",
-    description: "Règle à dresser en aluminium pour un surfaçage parfait des enduits projetés.",
-    image: "/assets/img/portfolio/regle-hc-2.5.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/accessoires%20de%20projeter.html",
-    availability: "https://schema.org/InStock"
-  },
-  {
-    id: "ap-vis",
-    name: "VIS PFT",
-    category: "Accessoires de Projeter",
-    description: "Vis de transport pour machine à projeter PFT.",
-    image: "/assets/img/portfolio/vis-pft.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/accessoires%20de%20projeter.html",
-    availability: "https://schema.org/InStock"
-  },
-  {
-    id: "af-manchon",
-    name: "MANCHON TIGE FILETÉE",
-    category: "Accessoires de Fixation",
-    description: "Raccorde 2 tiges filetées de 6 mm pour suspensions de grande hauteur.",
-    image: "/assets/img/portfolio/portfolio-13.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/ACCESSOIRES%20DE%20FIXATION.html",
-    availability: "https://schema.org/InStock"
-  },
-  {
-    id: "af-cavalier",
-    name: "CAVALIER PIVOT",
-    category: "Accessoires de Fixation",
-    description: "Assure le lien entre la fourrure et la tige filetée.",
-    image: "/assets/img/portfolio/portfolio-15.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/ACCESSOIRES%20DE%20FIXATION.html",
-    availability: "https://schema.org/InStock"
-  },
-  {
-    id: "af-vis-25",
-    name: "VIS TTPC 3,5 X 25 MM",
-    category: "Accessoires de Fixation",
-    description: "Vis auto-perceuse pour fixation des plaques de plâtre sur ossature métallique.",
-    image: "/assets/img/portfolio/portfolio-19.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/ACCESSOIRES%20DE%20FIXATION.html",
     availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "OM-ULTRALINE",
+    material: "Acier & aluminium profilé",
+    finish: "Bicolore Blanc / Ligne d'ombre noire",
+    usage: "Faux plafonds architecturaux",
+    origin: "Certifié",
+    pricing: {
+      price: 45,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 20
+    },
     specs: {
-      "Type": "TTPC",
-      "Dimensions": "3.5 x 25 mm"
-    }
+      "Profil": "T15 avec décrochement central 6 mm",
+      "Effet visuel": "Ligne d'ombre continue",
+      "Norme": "EN 13964"
+    },
+    applications: ["Sièges sociaux", "Boutiques de luxe", "Showrooms"],
+    relatedProductIds: ["lr-ekla", "dp-metal"]
   },
-  {
-    id: "af-suspente",
-    name: "SUSPENTE ARTICULÉE",
-    category: "Accessoires de Fixation",
-    description: "Lien entre la charpente bois et l'ossature métallique.",
-    image: "/assets/img/portfolio/portfolio-31.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/ACCESSOIRES%20DE%20FIXATION.html",
-    availability: "https://schema.org/InStock"
-  },
-
-  // --- PLANCHERS TECHNIQUES (plancher technique.html) ---
-  {
-    id: "pt-sulfate",
-    name: "DALLE EN SULFATE DE CALCIUM",
-    category: "Plancher Technique",
-    description: "Dalle de plancher surélevé haute performance, ininflammable et acoustique.",
-    image: "/assets/img/portfolio/dalle-en-sulfate-de-ccalsuim.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/plancher%20technique.html",
-    availability: "https://schema.org/InStock"
-  },
-  {
-    id: "pt-alu",
-    name: "PLANCHER EN ALUMINIUM MOULÉ",
-    category: "Plancher Technique",
-    description: "Dalle en aluminium moulé pour salles blanches et environnements techniques.",
-    image: "/assets/img/portfolio/plancher-technique-en-aluminium-moule.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/plancher%20technique.html",
-    availability: "https://schema.org/InStock"
-  },
-
-  // --- STRUCTURE PLANCHER (Structure pour plancher sureleve.html) ---
-  {
-    id: "sp-verin-std",
-    name: "VÉRIN GAMMA STANDARD",
-    category: "Structure Plancher",
-    description: "Vérin réglable en acier zingué pour support de plancher technique.",
-    image: "/assets/img/portfolio/verin-standard.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/Structure%20pour%20plancher%20sureleve.html",
-    availability: "https://schema.org/InStock",
-    specs: {
-      "Matériau": "Acier zingué",
-      "Type": "Réglable"
-    }
-  },
-
-  // --- DALLE LAINE DE ROCHE (dalle en laine de roche.html) ---
-  {
-    id: "lr-artic",
-    name: "ARTIC® ROCKFON",
-    category: "Dalles en Laine de Roche",
-    description: "Dalle de plafond Rockwool-Rockfon ARTIC. Performance acoustique et design sobre.",
-    image: "/assets/img/portfolio/artic.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/dalle%20en%20laine%20de%20roche.html",
-    availability: "https://schema.org/InStock"
-  },
-  {
-    id: "lr-ekla",
-    name: "EKLA® ROCKFON",
-    category: "Dalles en Laine de Roche",
-    description: "Dalle de plafond Rockfon EKLA blanc mat. Uniformité visuelle parfaite.",
-    image: "/assets/img/portfolio/ekla.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/dalle%20en%20laine%20de%20roche.html",
-    availability: "https://schema.org/InStock"
-  },
-  {
-    id: "lr-pacific",
-    name: "PACIFIC® ROCKFON",
-    category: "Dalles en Laine de Roche",
-    description: "Dalle de plafond Rockfon PACIFIC. Économique et performante.",
-    image: "/assets/img/portfolio/pacific.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/dalle%20en%20laine%20de%20roche.html",
-    availability: "https://schema.org/InStock"
-  },
-  {
-    id: "lr-mediacare",
-    name: "MEDIACARE® STANDARD",
-    category: "Dalles en Laine de Roche",
-    description: "Dalle de plafond pour milieux hospitaliers et salles propres.",
-    image: "/assets/img/portfolio/mediacare.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/dalle%20en%20laine%20de%20roche.html",
-    availability: "https://schema.org/InStock"
-  },
-
-  // --- AMF TOPIQ (dalle en laine de roche.html) ---
-  {
-    id: "amf-prime",
-    name: "TOPIC® PRIME",
-    category: "Dalles en Laine de Roche",
-    description: "Dalle minérale AMF TOPIQ® PRIME avec voile premium.",
-    image: "/assets/img/portfolio/topic-prime.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/dalle%20en%20laine%20de%20roche.html",
-    availability: "https://schema.org/InStock"
-  },
-  {
-    id: "amf-eff-pro",
-    name: "TOPIC® EFFICIENT PRO",
-    category: "Dalles en Laine de Roche",
-    description: "Dalle haute performance acoustique TOPIQ® EFFICIENT PRO.",
-    image: "/assets/img/portfolio/topic-efficient-pro.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/dalle%20en%20laine%20de%20roche.html",
-    availability: "https://schema.org/InStock"
-  },
-
-  // --- DALLE LAINE MINÉRALE (dalle en laine minerale.html) ---
-  {
-    id: "lm-plain",
-    name: "THERMATEX® PLAIN",
-    category: "Dalles en Laine de Roche",
-    description: "Dalle en laine minérale THERMATEX® PLAIN de AMF Knauf. Surface lisse premium.",
-    image: "/assets/img/portfolio/dalle-sanfonia.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/dalle%20en%20laine%20minerale.html",
-    availability: "https://schema.org/InStock",
-    specs: {
-      "Marque": "AMF Knauf",
-      "Finition": "Lisse"
-    }
-  },
-  {
-    id: "lm-laguna",
-    name: "THERMATEX® LAGUNA",
-    category: "Dalles en Laine de Roche",
-    description: "Dalle minérale THERMATEX® LAGUNA avec texture sablée.",
-    image: "/assets/img/portfolio/dalle-brillanto-1.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/dalle%20en%20laine%20minerale.html",
-    availability: "https://schema.org/InStock"
-  },
-  {
-    id: "lm-stratos",
-    name: "THERMATEX® FINE STRATOS MICRO",
-    category: "Dalles en Laine de Roche",
-    description: "Dalle minérale micro-perforée pour correction acoustique optimale.",
-    image: "/assets/img/portfolio/dalle-brillanto-2.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/dalle%20en%20laine%20minerale.html",
-    availability: "https://schema.org/InStock"
-  },
-
-  // --- CLOISONS (cloisons de separation doublages.html) ---
   {
     id: "cl-montant-48",
+    ref: "OSS-MONT-48",
+    slug: "montant-48-cloison",
     name: "MONTANT 48",
     category: "Ossature Métallique",
-    description: "Montant métallique 48mm pour cloisons et doublages.",
+    description: "Profilé vertical en acier galvanisé de largeur 48 mm avec ouvertures (lumières) pour le passage des gaines électriques et tuyauteries. Élément porteur des cloisons Placostil.",
     image: "/assets/img/portfolio/montant-48.jpg",
     stockStatus: "En Stock",
     oldUrl: "/cloisons%20de%20separation%20doublages.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "OM-M48-300",
+    material: "Acier galvanisé DX51D",
+    finish: "Galvanisé",
+    usage: "Montant vertical de cloison",
+    origin: "Fabrication Maroc",
+    pricing: {
+      price: 22,
+      currency: "MAD",
+      unit: "ml",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: {
+      "Largeur": "48 mm",
+      "Ailes": "35 mm",
+      "Longueurs standard": "2600 mm, 3000 mm, 3500 mm",
+      "Passage de gaines": "Perforations normalisées tous les 50 cm"
+    },
+    applications: ["Cloisons de distribution 72/48", "Doublages thermo-acoustiques", "Gaines techniques"],
+    relatedProductIds: ["cl-rail-48", "fp-std-ba13", "is-rockmur-kraft", "af-vis-25"]
   },
   {
     id: "cl-rail-48",
+    ref: "OSS-RAIL-48",
+    slug: "rail-48-cloison",
     name: "RAIL 48",
     category: "Ossature Métallique",
-    description: "Rail métallique 48mm pour guidage des montants.",
+    description: "Profilé horizontal en U de 48 mm fixé au sol et au plafond, guidant et maintenant les montants de 48 mm.",
     image: "/assets/img/portfolio/rail-48.jpg",
     stockStatus: "En Stock",
     oldUrl: "/cloisons%20de%20separation%20doublages.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "OM-R48-300",
+    material: "Acier galvanisé",
+    finish: "Galvanisé",
+    usage: "Rail sol et plafond pour cloison",
+    origin: "Fabrication Maroc",
+    pricing: {
+      price: 19,
+      currency: "MAD",
+      unit: "ml",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: {
+      "Largeur": "48 mm",
+      "Hauteur ailes": "30 mm",
+      "Longueur standard": "3000 mm"
+    },
+    applications: ["Fixation sol et plafond de cloisons BA13"],
+    relatedProductIds: ["cl-montant-48", "fp-std-ba13", "af-vis-25"]
   },
   {
     id: "cl-corniere-angle",
+    ref: "OSS-CORN-ANG",
+    slug: "corniere-d-angle-metallique",
     name: "CORNIÈRE D'ANGLE MÉTALLIQUE",
     category: "Ossature Métallique",
-    description: "Cornière d'angle métallique pour renfort des angles sortants.",
+    description: "Cornière d'angle perforée en acier galvanisé pour la protection et la netteté des angles saillants de cloisons et retombées de faux plafonds.",
     image: "/assets/img/portfolio/corniere-d'angle-metal.jpg",
     stockStatus: "En Stock",
     oldUrl: "/cloisons%20de%20separation%20doublages.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "OM-CORN-300",
+    material: "Acier galvanisé perforé",
+    finish: "Perforé pour enduit",
+    usage: "Protection d'angle",
+    origin: "Certifié",
+    pricing: {
+      price: 12,
+      currency: "MAD",
+      unit: "ml",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: {
+      "Section": "25 x 25 mm ou 30 x 30 mm",
+      "Longueur": "3000 mm"
+    },
+    applications: ["Angles sortants de murs et cloisons", "Retombées de plafonds BA13"],
+    relatedProductIds: ["fp-std-ba13", "en-ce78"]
   },
 
-  // --- ISOLATION (laine de verre minerale.html & laine de roche.html) ---
+  // ─── ISOLATION ──────────────────────────────────────────────────────────
   {
     id: "is-rockmur-kraft",
+    ref: "ISO-ROCK-KRAFT",
+    slug: "panneau-laine-de-roche-rockmur-kraft",
     name: "ROCKMUR KRAFT",
     category: "Laine de Roche",
-    description: "Panneau isolant en laine de roche mono densité, semi-rigide, revêtu d'un kraft polyéthylène.",
+    description: "Panneau isolant en laine de roche mono-densité semi-rigide, revêtu d'un pare-vapeur kraft polyéthylène. Performance thermique lambda 0.035 W/m.K et excellente absorption acoustique.",
     image: "/assets/img/portfolio/rockmur-kraft.jpg",
     stockStatus: "En Stock",
     oldUrl: "/laine%20de%20roche.html",
     availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Rockwool",
+    sku: "RW-ROCKMUR-KRAFT",
+    material: "Laine de roche basaltique",
+    finish: "Kraft quadrillé pare-vapeur",
+    usage: "Isolation thermique des murs & cloisons",
+    origin: "Certifié CE & NF",
+    pricing: {
+      price: 48,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
     specs: {
-      "Performance": "λ35",
-      "Classe Air": "A+"
-    }
+      "Conductivité thermique (λ)": "0.035 W/m.K",
+      "Épaisseurs disponibles": "40 mm, 50 mm, 75 mm, 100 mm",
+      "Dimensions panneau": "1350 x 600 mm",
+      "Incombustibilité cœur": "Euroclasse A1 (nu)",
+      "Qualité de l'air": "Classe A+"
+    },
+    applications: ["Doublages de murs périphériques", "Cloisons séparatives acoustiques", "Aménagement de combles"],
+    relatedProductIds: ["cl-montant-48", "cl-rail-48", "fp-std-ba13"]
   },
   {
     id: "is-rockmur-nu",
+    ref: "ISO-ROCK-NU",
+    slug: "panneau-laine-de-roche-rockmur-nu",
     name: "ROCKMUR NU",
     category: "Laine de Roche",
-    description: "Panneau isolant en laine de roche semi-rigide non revêtu. Multi-application.",
+    description: "Panneau en laine de roche semi-rigide non revêtu, incombustible (Euroclasse A1). Idéal pour l'isolation acoustique et la protection incendie des cloisons séparatives.",
     image: "/assets/img/portfolio/rockmur-nu.jpg",
     stockStatus: "En Stock",
     oldUrl: "/laine%20de%20roche.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Rockwool",
+    sku: "RW-ROCKMUR-NU",
+    material: "Laine de roche pure",
+    finish: "Nu incombustible A1",
+    usage: "Cloisons distributives & gaines coupe-feu",
+    origin: "Certifié",
+    pricing: {
+      price: 44,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: {
+      "Lambda": "0.035 W/m.K",
+      "Classement feu": "A1 (incombustible)",
+      "Dimensions": "1350 x 600 mm"
+    },
+    applications: ["Cloisons de bureaux", "Salles de réunion", "Gaines techniques"],
+    relatedProductIds: ["cl-montant-48", "fp-coupe-feu-ba13"]
   },
-
-  // --- ISOLATION (laine de verre minerale.html) ---
   {
     id: "is-ti212",
+    ref: "ISO-TI212-VERRE",
+    slug: "rouleau-laine-de-verre-ti212",
     name: "LAINE DE VERRE - TI 212",
     category: "Laine de Verre",
-    description: "Rouleau de laine de verre pour isolation thermique et acoustique des combles.",
+    description: "Matelas de laine de verre minérale en rouleau avec surfaçage kraft pare-vapeur pour l'isolation thermique et acoustique des combles perdus et faux plafonds.",
     image: "/assets/img/portfolio/laine-TI212.jpg",
     stockStatus: "En Stock",
     oldUrl: "/laine%20de%20verre%20minerale.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Knauf Insulation",
+    sku: "KI-TI212",
+    material: "Laine de verre avec liant végétal",
+    finish: "Kraft pare-vapeur",
+    usage: "Plafonds, combles & toitures",
+    origin: "Certifié",
+    pricing: {
+      price: 38,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 20
+    },
+    specs: {
+      "Conductivité thermique": "λ 0.040 W/m.K",
+      "Épaisseur": "50 mm / 100 mm / 200 mm",
+      "Format": "Rouleau compressible gain de volume"
+    },
+    applications: ["Isolation sur faux plafond suspendu", "Combles perdus", "Toitures métalliques"],
+    relatedProductIds: ["om-plf-60", "fp-std-ba13"]
   },
   {
     id: "is-smart",
+    ref: "ISO-SMART-32R",
+    slug: "laine-de-verre-smartfacade-32r",
     name: "LAINE - SMARTFACADE 32 R",
     category: "Laine de Verre",
-    description: "Panneau de laine minérale rigide pour isolation par l'extérieur.",
+    description: "Panneau rigide de laine minérale haute densité revêtu d'un voile noir hydrofuge, conçu pour l'isolation par l'extérieur sous bardage ventilé.",
     image: "/assets/img/portfolio/laine-smartfacade32r.jpg",
     stockStatus: "En Stock",
     oldUrl: "/laine%20de%20verre%20minerale.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Knauf Insulation",
+    sku: "KI-SMART-32R",
+    material: "Laine minérale rigide",
+    finish: "Voile de verre noir hydrofuge",
+    usage: "Façade ventilée extérieure (ITE)",
+    origin: "Certifié",
+    pricing: {
+      price: 68,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 20
+    },
+    specs: {
+      "Lambda": "λ 0.032 W/m.K (haute performance)",
+      "Hydrophobe": "WS (non hydrophile)",
+      "Voile de verre": "Noir résistant aux UV"
+    },
+    applications: ["Façades ventilées", "Bardages métalliques et composites"],
+    relatedProductIds: ["fp-bordex"]
   },
 
-  // --- DALLES PLAFOND (DALLE EN PLATRE.html, etc.) ---
+  // ─── DALLES DE PLAFOND (ROCKFON / KNAUF / PLATRE / METAL) ───────────────
+  {
+    id: "lr-artic",
+    ref: "DALLE-RF-ARTIC",
+    slug: "dalle-laine-de-roche-artic-rockfon",
+    name: "ARTIC® ROCKFON",
+    category: "Dalles en Laine de Roche",
+    description: "Dalle de plafond acoustique 600x600 mm en laine de roche avec voile peint en blanc lisse standard. Absorption acoustique alpha w = 0.80 et 100% résistance à l'humidité.",
+    image: "/assets/img/portfolio/artic.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/dalle%20en%20laine%20de%20roche.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Rockfon",
+    sku: "RF-ARTIC-600",
+    material: "Laine de roche Rockfon",
+    finish: "Blanc lisse mat",
+    usage: "Bureaux, commerces, écoles",
+    origin: "Certifié Rockfon",
+    pricing: {
+      price: 65,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 15
+    },
+    specs: {
+      "Dimensions": "600 x 600 x 15 mm",
+      "Bords": "A24 (bords droits pour ossature T24)",
+      "Absorption acoustique": "aw = 0.80 (Classe B)",
+      "Résistance à l'humidité": "100% RH sans fléchissement",
+      "Réflexion lumineuse": "85%"
+    },
+    applications: ["Bureaux paysagers", "Salles de classe", "Commerces et boutiques"],
+    relatedProductIds: ["om-t24", "af-cavalier"]
+  },
+  {
+    id: "lr-ekla",
+    ref: "DALLE-RF-EKLA",
+    slug: "dalle-laine-de-roche-ekla-rockfon",
+    name: "EKLA® ROCKFON",
+    category: "Dalles en Laine de Roche",
+    description: "Dalle de plafond haut de gamme en laine de roche blanche ultra-mate et lisse, sans perforation visible. Absorption acoustique maximale classe A (alpha w = 1.00).",
+    image: "/assets/img/portfolio/ekla.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/dalle%20en%20laine%20de%20roche.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Rockfon",
+    sku: "RF-EKLA-600",
+    material: "Laine de roche haute densité",
+    finish: "Blanc ultra-mat soyeux",
+    usage: "Espaces tertiaires premium & auditoriums",
+    origin: "Certifié Rockfon",
+    pricing: {
+      price: 95,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 15
+    },
+    specs: {
+      "Dimensions": "600 x 600 x 20 mm",
+      "Absorption acoustique": "aw = 1.00 (Classe A)",
+      "Bords": "A24 / E15 / E24 feuillurés"
+    },
+    applications: ["Salles de conseil", "Halls de sièges sociaux", "Auditoriums", "Cabinets médicaux"],
+    relatedProductIds: ["om-t15", "om-t24"]
+  },
+  {
+    id: "lr-pacific",
+    ref: "DALLE-RF-PACIFIC",
+    slug: "dalle-laine-de-roche-pacific-rockfon",
+    name: "PACIFIC® ROCKFON",
+    category: "Dalles en Laine de Roche",
+    description: "Dalle acoustique Rockfon économique et performante en laine de roche (alpha w = 0.80). Idéale pour les grands volumes de plafonds modulaires.",
+    image: "/assets/img/portfolio/pacific.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/dalle%20en%20laine%20de%20roche.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Rockfon",
+    sku: "RF-PACIFIC-600",
+    material: "Laine de roche",
+    finish: "Blanc standard",
+    usage: "Projets tertiaires à fort volume",
+    origin: "Certifié",
+    pricing: {
+      price: 55,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 20
+    },
+    specs: {
+      "Dimensions": "600 x 600 x 12 mm",
+      "Bords": "A24 (droit)"
+    },
+    applications: ["Open spaces", "Supermarchés", "Centres d'appels"],
+    relatedProductIds: ["om-t24"]
+  },
+  {
+    id: "lr-mediacare",
+    ref: "DALLE-RF-MEDIC",
+    slug: "dalle-laine-de-roche-mediacare-standard",
+    name: "MEDIACARE® STANDARD",
+    category: "Dalles en Laine de Roche",
+    description: "Dalle acoustique traitée pour les exigences strictes d'hygiène en milieu hospitalier et salles propres. Émission particulaire ISO Classe 5 et lavable.",
+    image: "/assets/img/portfolio/mediacare.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/dalle%20en%20laine%20de%20roche.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Rockfon",
+    sku: "RF-MEDICARE",
+    material: "Laine de roche bactéricide",
+    finish: "Revêtement étanche et lavable",
+    usage: "Hôpitaux, cliniques, laboratoires",
+    origin: "Certifié ISO 5",
+    pricing: {
+      price: 125,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 15
+    },
+    specs: {
+      "Classe de salle propre": "ISO 5 (ISO 14644-1)",
+      "Microbiologie": "Classe M1 / NF S 90-351 zone 4",
+      "Nettoyabilité": "Résistant aux désinfectants hospitaliers"
+    },
+    applications: ["Chambres d'hôpitaux", "Laboratoires d'analyses", "Salles de soins", "Industrie pharmaceutique"],
+    relatedProductIds: ["om-t24"]
+  },
+  {
+    id: "amf-prime",
+    ref: "DALLE-AMF-TOPIQ",
+    slug: "dalle-topiq-prime-amf",
+    name: "TOPIQ® PRIME",
+    category: "Dalles en Laine de Roche",
+    description: "Dalle minérale légère AMF TOPIQ® PRIME avec voile polaire haute performance. Grande stabilité dimensionnelle et absorption sonore classe A.",
+    image: "/assets/img/portfolio/topic-prime.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/dalle%20en%20laine%20de%20roche.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "AMF Knauf",
+    sku: "AMF-TOPIQ-PRIME",
+    material: "Laine minérale expansée",
+    finish: "Voile polaire blanc",
+    usage: "Tertiaire & hôtellerie",
+    origin: "Certifié Knauf AMF",
+    pricing: {
+      price: 85,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 15
+    },
+    specs: {
+      "Dimensions": "600 x 600 x 15 mm",
+      "Absorption": "aw = 0.90",
+      "Poids": "2.1 kg/m²"
+    },
+    applications: ["Bureaux", "Hôtels", "Restaurants"],
+    relatedProductIds: ["om-t24", "om-t15"]
+  },
+  {
+    id: "amf-eff-pro",
+    ref: "DALLE-AMF-EFFPRO",
+    slug: "dalle-topiq-efficient-pro-amf",
+    name: "TOPIQ® EFFICIENT PRO",
+    category: "Dalles en Laine de Roche",
+    description: "Dalle acoustique de prestige TOPIQ® EFFICIENT PRO. Épaisseur 20 mm, absorption acoustique intégrale.",
+    image: "/assets/img/portfolio/topic-efficient-pro.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/dalle%20en%20laine%20de%20roche.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "AMF Knauf",
+    sku: "AMF-TOPIQ-EFFPRO",
+    material: "Laine minérale premium",
+    finish: "Voile blanc pur soigné",
+    usage: "Acoustique exigeante",
+    origin: "Certifié",
+    pricing: {
+      price: 110,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 15
+    },
+    specs: {
+      "Absorption acoustique": "aw = 1.00",
+      "Épaisseur": "20 mm"
+    },
+    applications: ["Salles de conférence", "Cinéma", "Bureaux de direction"],
+    relatedProductIds: ["om-t15"]
+  },
+  {
+    id: "lm-plain",
+    ref: "DALLE-TM-PLAIN",
+    slug: "dalle-thermatex-plain-knauf",
+    name: "THERMATEX® PLAIN",
+    category: "Dalles en Laine de Roche",
+    description: "Dalle minérale THERMATEX® PLAIN de AMF Knauf. Surface lisse noble d'une blancheur éclatante.",
+    image: "/assets/img/portfolio/dalle-sanfonia.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/dalle%20en%20laine%20minerale.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "AMF Knauf",
+    sku: "KM-PLAIN-600",
+    material: "Laine minérale biosoluble",
+    finish: "Lisse blanc pur",
+    usage: "Espaces de travail contemporains",
+    origin: "Certifié",
+    pricing: {
+      price: 78,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 15
+    },
+    specs: {
+      "Dimensions": "600 x 600 x 15 mm",
+      "Atténuation latérale": "Dn,f,w = 34 dB"
+    },
+    applications: ["Bureaux individuels", "Espaces de coworking"],
+    relatedProductIds: ["om-t24"]
+  },
+  {
+    id: "lm-laguna",
+    ref: "DALLE-TM-LAGUNA",
+    slug: "dalle-thermatex-laguna-knauf",
+    name: "THERMATEX® LAGUNA",
+    category: "Dalles en Laine de Roche",
+    description: "Dalle minérale THERMATEX® LAGUNA avec texture sablée fine micro-fissurée.",
+    image: "/assets/img/portfolio/dalle-brillanto-1.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/dalle%20en%20laine%20minerale.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "AMF Knauf",
+    sku: "KM-LAGUNA-600",
+    material: "Laine minérale",
+    finish: "Sablée fine",
+    usage: "Bureaux et espaces tertiaires",
+    origin: "Certifié",
+    pricing: {
+      price: 62,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 20
+    },
+    specs: {
+      "Dimensions": "600 x 600 x 15 mm"
+    },
+    applications: ["Espaces commerciaux", "Bureaux administratifs"],
+    relatedProductIds: ["om-t24"]
+  },
+  {
+    id: "lm-stratos",
+    ref: "DALLE-TM-STRATOS",
+    slug: "dalle-thermatex-fine-stratos-micro",
+    name: "THERMATEX® FINE STRATOS MICRO",
+    category: "Dalles en Laine de Roche",
+    description: "Dalle minérale micro-perforée THERMATEX® FINE STRATOS pour une excellente absorption acoustique et un aspect sobre.",
+    image: "/assets/img/portfolio/dalle-brillanto-2.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/dalle%20en%20laine%20minerale.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "AMF Knauf",
+    sku: "KM-STRATOS-600",
+    material: "Laine minérale",
+    finish: "Micro-perforée",
+    usage: "Correction acoustique",
+    origin: "Certifié",
+    pricing: {
+      price: 66,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 20
+    },
+    specs: {
+      "Absorption": "aw = 0.60"
+    },
+    applications: ["Bureaux", "Banques", "Salles d'attente"],
+    relatedProductIds: ["om-t24"]
+  },
   {
     id: "dp-platre-fissure",
+    ref: "DALLE-PL-FISS",
+    slug: "dalle-de-platre-fissuree",
     name: "DALLE DE PLATRE FISSURÉE",
     category: "Dalles en Plâtre",
-    description: "Dalle 600x600 fissurée pour faux plafonds démontables.",
+    description: "Dalle 600x600 mm en plâtre moulé renforcé motif fissuré classique pour faux plafonds démontables économiques.",
     image: "/assets/img/portfolio/dalle-fissure.jpg",
     stockStatus: "En Stock",
     oldUrl: "/DALLE%20EN%20PLATRE.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "DP-PL-FISS",
+    material: "Plâtre moulé armé",
+    finish: "Peint blanc motif fissuré",
+    usage: "Plafonds démontables économiques",
+    origin: "Maroc",
+    pricing: {
+      price: 36,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 20
+    },
+    specs: {
+      "Dimensions": "600 x 600 mm",
+      "Poids": "environ 6 kg/m²"
+    },
+    applications: ["Commerces", "Entrepôts", "Bureaux économiques"],
+    relatedProductIds: ["om-t24"]
   },
   {
     id: "dp-platre-med",
+    ref: "DALLE-PL-MED",
+    slug: "dalle-de-platre-mediterranee",
     name: "DALLE DE PLATRE MÉDITERANNÉE",
     category: "Dalles en Plâtre",
-    description: "Dalle décorative type Méditerrannée en plâtre renforcé.",
+    description: "Dalle décorative en plâtre moulé renforcé motif relief Méditerranée.",
     image: "/assets/img/portfolio/dalle-mediterane.jpg",
     stockStatus: "En Stock",
     oldUrl: "/DALLE%20EN%20PLATRE.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "DP-PL-MED",
+    material: "Plâtre moulé",
+    finish: "Relief méditerranéen",
+    usage: "Décoration intérieure",
+    origin: "Maroc",
+    pricing: {
+      price: 38,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 20
+    },
+    specs: {
+      "Dimensions": "600 x 600 mm"
+    },
+    applications: ["Salons marocains", "Restaurants", "Halls de réception"],
+    relatedProductIds: ["om-t24"]
   },
   {
     id: "dp-platre-perf",
+    ref: "DALLE-PL-PERF",
+    slug: "dalle-perforee-acoustique-platre",
     name: "DALLE PERFORÉE ACOUSTIQUE",
     category: "Dalles en Plâtre",
-    description: "Dalle de plâtre perforée pour une correction acoustique optimale.",
+    description: "Dalle de plâtre perforée 600x600 mm avec voile acoustique au dos pour un contrôle optimal de la réverbération.",
     image: "/assets/img/portfolio/dalle-perforee-acoustique.jpg",
     stockStatus: "En Stock",
     oldUrl: "/DALLE%20EN%20PLATRE.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "DP-PL-PERF",
+    material: "Plâtre perforé et voile non-tissé",
+    finish: "Perforations rondes ou carrées",
+    usage: "Traitement acoustique",
+    origin: "Certifié",
+    pricing: {
+      price: 58,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 15
+    },
+    specs: {
+      "Perforations": "8/18R ou 12/25Q",
+      "Voile acoustique": "Noir intégré"
+    },
+    applications: ["Salles de cours", "Réfectoires", "Bureaux ouverts"],
+    relatedProductIds: ["om-t24"]
+  },
+  {
+    id: "dp-platre-soleil",
+    ref: "DALLE-PL-SOL",
+    slug: "dalle-de-platre-soleil",
+    name: "DALLE DE PLATRE SOLEIL",
+    category: "Dalles en Plâtre",
+    description: "Dalle décorative en plâtre armé avec motif soleil en relief.",
+    image: "/assets/img/portfolio/dalle-soleil.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/DALLE%20EN%20PLATRE.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "DP-PL-SOL",
+    material: "Plâtre moulé",
+    finish: "Motif soleil",
+    usage: "Plafonds décoratifs",
+    origin: "Maroc",
+    pricing: {
+      price: 38,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 20
+    },
+    specs: { "Dimensions": "600 x 600 mm" },
+    applications: ["Habitat", "Hôtellerie"],
+    relatedProductIds: ["om-t24"]
+  },
+  {
+    id: "dp-platre-tourbillon",
+    ref: "DALLE-PL-TB",
+    slug: "dalle-de-platre-tourbillon",
+    name: "DALLE DE PLATRE TOURBILLON",
+    category: "Dalles en Plâtre",
+    description: "Dalle en plâtre avec motif tourbillon dynamique.",
+    image: "/assets/img/portfolio/dalle-tourbillon.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/DALLE%20EN%20PLATRE.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "DP-PL-TB",
+    material: "Plâtre moulé",
+    finish: "Motif tourbillon",
+    usage: "Décoration intérieure",
+    origin: "Maroc",
+    pricing: {
+      price: 38,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 20
+    },
+    specs: { "Dimensions": "600 x 600 mm" },
+    applications: ["Commerces", "Résidentiel"],
+    relatedProductIds: ["om-t24"]
   },
   {
     id: "dp-vinyle-iso",
+    ref: "DALLE-VIN-ISO",
+    slug: "dalle-vinyle-iso-tone-hygiene",
     name: "ISO-TONE HYGIÈNE",
     category: "Dalles en Vinyle",
-    description: "Dalle en vinyle traitée anti-bactérien pour milieux hospitaliers et alimentaires.",
+    description: "Dalle de plâtre recouverte d'un film PVC vinyle blanc lisse lavable et dos aluminium pare-vapeur. Idéale pour cuisines, laboratoires et sanitaires.",
     image: "/assets/img/portfolio/iso-tone.jpg",
     stockStatus: "En Stock",
     oldUrl: "/dalle%20en%20vinyle.html",
     availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "DP-VIN-ISO",
+    material: "Plâtre laminé PVC vinyle & aluminium",
+    finish: "Laminé blanc étanche lavable",
+    usage: "Cuisines, hôpitaux, pièces humides",
+    origin: "Certifié DIN 68861",
+    pricing: {
+      price: 42,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 20
+    },
     specs: {
-      "Surface": "Laminé blanc traité",
+      "Face visible": "Film PVC blanc 100 microns",
+      "Face arrière": "Feuille d'aluminium pare-vapeur",
+      "Nettoyabilité": "Lavable à l'éponge et détergents doux",
       "Norme": "DIN 68861"
-    }
+    },
+    applications: ["Cuisines collectives & restaurants", "Laboratoires", "Sanitaires publics", "Vestiaires sportifs"],
+    relatedProductIds: ["om-t24"]
   },
   {
     id: "dp-metal",
+    ref: "DALLE-MET-PERF",
+    slug: "dalle-de-plafond-en-metal",
     name: "DALLE DE PLAFOND EN MÉTAL",
     category: "Dalles en Métal",
-    description: "Dalle métallique perforée avec voile acoustique noir.",
+    description: "Bac métallique en acier laqué perforé avec voile acoustique thermo-collé noir. Robuste, durable et d'une esthétique contemporaine épurée.",
     image: "/assets/img/portfolio/dalle-metal.jpg",
     stockStatus: "En Stock",
     oldUrl: "/DALLE%20EN%20METAL.html",
-    availability: "https://schema.org/InStock"
-  },
-  {
-    id: "dp-platre-soleil",
-    name: "DALLE DE PLATRE SOLEIL",
-    category: "Dalles en Plâtre",
-    description: "Dalle décorative en plâtre avec motif soleil pour plafonds élégants.",
-    image: "/assets/img/portfolio/dalle-soleil.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/DALLE%20EN%20PLATRE.html",
-    availability: "https://schema.org/InStock"
-  },
-  {
-    id: "dp-platre-tourbillon",
-    name: "DALLE DE PLATRE TOURBILLON",
-    category: "Dalles en Plâtre",
-    description: "Dalle en plâtre avec motif tourbillon pour un rendu dynamique.",
-    image: "/assets/img/portfolio/dalle-tourbillon.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/DALLE%20EN%20PLATRE.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "DP-MET-600",
+    material: "Acier électro-zingué laqué",
+    finish: "Blanc RAL 9010 perforé + voile noir",
+    usage: "Plafonds métalliques haut de gamme",
+    origin: "Certifié",
+    pricing: {
+      price: 135,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 15
+    },
+    specs: {
+      "Dimensions": "600 x 600 mm",
+      "Perforations": "Micro-perforation 1.5 mm (18% de vide)",
+      "Absorption acoustique": "aw = 0.75 avec voile acoustique",
+      "Résistance aux chocs": "Très élevée"
+    },
+    applications: ["Gares et aéroports", "Bureaux modernes", "Centres commerciaux", "Stations de métro"],
+    relatedProductIds: ["om-t24", "om-t15"]
   },
 
-  // --- JOINTS CREUX (JOINT CREUX.html) ---
+  // ─── JOINTS CREUX ───────────────────────────────────────────────────────
   {
     id: "jc-std-z",
+    ref: "JC-STD-Z",
+    slug: "joint-creux-ba13-standard-forme-z",
     name: "JOINT CREUX BA13 STANDARD FORME Z",
     category: "Joint Creux",
-    description: "Profilé joint creux en forme de Z pour finitions de plafonds suspendus standard.",
+    description: "Profilé d'ombrage en forme de Z en aluminium extrudé pour créer une ligne de découplage esthétique et nette entre plafond BA13 et mur maçonné.",
     image: "/assets/img/portfolio/jointcreux1.jpg",
     stockStatus: "En Stock",
     oldUrl: "/JOINT%20CREUX.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Chada Alyasmin",
+    manufacturer: "Chada Alyasmin",
+    sku: "CA-JC-STD-Z",
+    material: "Aluminium extrudé brut / laqué",
+    finish: "Forme Z pour BA13 standard",
+    usage: "Découplage plafond / mur",
+    origin: "Fabrication Maroc Chada Alyasmin",
+    pricing: {
+      price: 28,
+      currency: "MAD",
+      unit: "ml",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: {
+      "Profil": "Forme Z",
+      "Compatibilité": "Plaque BA13 (12.5 mm)",
+      "Longueur standard": "3000 mm",
+      "Effet visuel": "Ligne d'ombre régulière de 15x15 ou 20x20 mm"
+    },
+    applications: ["Plafonds suspendus contemporains", "Villas & résidences de standing", "Bureaux d'architecte"],
+    relatedProductIds: ["fp-std-ba13", "om-plf-60", "tr-alu-standard"]
   },
   {
     id: "jc-std-u",
+    ref: "JC-STD-U",
+    slug: "joint-creux-ba13-standard-forme-u",
     name: "JOINT CREUX BA13 STANDARD FORME U",
     category: "Joint Creux",
-    description: "Profilé joint creux en forme de U pour finitions de plafonds suspendus standard.",
+    description: "Profilé joint creux en U pour intégration de bandeaux LED ou séparation d'ouvrages en plaques de plâtre.",
     image: "/assets/img/portfolio/jointceux2.jpg",
     stockStatus: "En Stock",
     oldUrl: "/JOINT%20CREUX.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Chada Alyasmin",
+    manufacturer: "Chada Alyasmin",
+    sku: "CA-JC-STD-U",
+    material: "Aluminium extrudé",
+    finish: "Forme U",
+    usage: "Gorge lumineuse & joint creux",
+    origin: "Fabrication Maroc",
+    pricing: {
+      price: 32,
+      currency: "MAD",
+      unit: "ml",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: { "Profil": "Forme U", "Longueur": "3000 mm" },
+    applications: ["Gorges lumineuses LED", "Séparations architecturales"],
+    relatedProductIds: ["fp-std-ba13"]
   },
   {
     id: "jc-std-l",
+    ref: "JC-STD-L",
+    slug: "joint-creux-ba13-standard-forme-l",
     name: "JOINT CREUX BA13 STANDARD FORME L",
     category: "Joint Creux",
-    description: "Profilé joint creux en forme de L pour finitions de plafonds suspendus standard.",
+    description: "Profilé joint creux en L pour arrêt de cloison et finition périphérique.",
     image: "/assets/img/portfolio/jointcreux3.jpg",
     stockStatus: "En Stock",
     oldUrl: "/JOINT%20CREUX.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Chada Alyasmin",
+    manufacturer: "Chada Alyasmin",
+    sku: "CA-JC-STD-L",
+    material: "Aluminium extrudé",
+    finish: "Forme L",
+    usage: "Finition périphérique",
+    origin: "Fabrication Maroc",
+    pricing: {
+      price: 26,
+      currency: "MAD",
+      unit: "ml",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: { "Profil": "Forme L", "Longueur": "3000 mm" },
+    applications: ["Rives de plafonds", "Arrêts de cloisons"],
+    relatedProductIds: ["fp-std-ba13"]
   },
   {
     id: "jc-hydro-z",
+    ref: "JC-HYD-Z",
+    slug: "joint-creux-ba13-hydrofuge-forme-z",
     name: "JOINT CREUX BA13 HYDROFUGE FORME Z",
     category: "Joint Creux",
-    description: "Profilé joint creux en forme de Z pour plafonds en milieu humide.",
+    description: "Profilé joint creux en aluminium anodisé / traité anti-corrosion adapté aux plaques hydrofuges en milieu humide.",
     image: "/assets/img/portfolio/hydroz.jpg",
     stockStatus: "En Stock",
     oldUrl: "/JOINT%20CREUX.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Chada Alyasmin",
+    manufacturer: "Chada Alyasmin",
+    sku: "CA-JC-HYD-Z",
+    material: "Aluminium anodisé",
+    finish: "Hydrofuge Forme Z",
+    usage: "Pièces humides & extérieurs abrités",
+    origin: "Fabrication Maroc",
+    pricing: {
+      price: 34,
+      currency: "MAD",
+      unit: "ml",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: { "Profil": "Forme Z Hydro", "Traitement": "Anodisation anti-corrosion" },
+    applications: ["Salles de bain", "Piscines intérieures", "Cuisines"],
+    relatedProductIds: ["fp-hydro-ba13", "tr-alu-hydro"]
   },
   {
     id: "jc-hydro-u",
+    ref: "JC-HYD-U",
+    slug: "joint-creux-ba13-hydrofuge-forme-u",
     name: "JOINT CREUX BA13 HYDROFUGE FORME U",
     category: "Joint Creux",
-    description: "Profilé joint creux en forme de U pour plafonds en milieu humide.",
+    description: "Profilé joint creux en U traité anti-humidité pour gorge lumineuse en pièces d'eau.",
     image: "/assets/img/portfolio/hydrou.jpg",
     stockStatus: "En Stock",
     oldUrl: "/JOINT%20CREUX.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Chada Alyasmin",
+    manufacturer: "Chada Alyasmin",
+    sku: "CA-JC-HYD-U",
+    material: "Aluminium",
+    finish: "Hydrofuge Forme U",
+    usage: "Pièces humides",
+    origin: "Fabrication Maroc",
+    pricing: {
+      price: 36,
+      currency: "MAD",
+      unit: "ml",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: { "Profil": "Forme U Hydro", "Longueur": "3000 mm" },
+    applications: ["Salles de bain luxueuses", "Spas"],
+    relatedProductIds: ["fp-hydro-ba13"]
   },
   {
     id: "jc-hydro-l",
+    ref: "JC-HYD-L",
+    slug: "joint-creux-ba13-hydrofuge-forme-l",
     name: "JOINT CREUX BA13 HYDROFUGE FORME L",
     category: "Joint Creux",
-    description: "Profilé joint creux en forme de L pour plafonds en milieu humide.",
+    description: "Profilé en L traité hydrofuge pour rives en milieu humide.",
     image: "/assets/img/portfolio/hydrol.jpg",
     stockStatus: "En Stock",
     oldUrl: "/JOINT%20CREUX.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Chada Alyasmin",
+    manufacturer: "Chada Alyasmin",
+    sku: "CA-JC-HYD-L",
+    material: "Aluminium",
+    finish: "Hydrofuge Forme L",
+    usage: "Pièces humides",
+    origin: "Fabrication Maroc",
+    pricing: {
+      price: 30,
+      currency: "MAD",
+      unit: "ml",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: { "Profil": "Forme L Hydro" },
+    applications: ["Salles d'eau"],
+    relatedProductIds: ["fp-hydro-ba13"]
   },
   {
     id: "jc-omega",
+    ref: "JC-OMEGA-SPEC",
+    slug: "joint-creux-omega",
     name: "JOINT CREUX OMEGA",
     category: "Joint Creux",
-    description: "Joint creux spécifique pour hôpitaux, établissements scolaires et milieux exigeants.",
+    description: "Profilé Oméga spécifique pour plafonds techniques et cloisons en milieu hospitalier et scolaire, facilitant la fixation et le nettoyage.",
     image: "/assets/img/portfolio/jointcreuxomega.jpg",
     stockStatus: "En Stock",
     oldUrl: "/JOINT%20CREUX.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Chada Alyasmin",
+    manufacturer: "Chada Alyasmin",
+    sku: "CA-JC-OMEGA",
+    material: "Aluminium haute résistance",
+    finish: "Forme Oméga",
+    usage: "Milieux hospitaliers & tertiaires",
+    origin: "Fabrication Maroc",
+    pricing: {
+      price: 38,
+      currency: "MAD",
+      unit: "ml",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 10
+    },
+    specs: { "Profil": "Forme Oméga", "Longueur": "3000 mm" },
+    applications: ["Cliniques", "Laboratoires", "Établissements scolaires"],
+    relatedProductIds: ["fp-std-ba13", "lr-mediacare"]
   },
 
-  // --- ENDUITS (enduits pour joints.html) ---
+  // ─── ENDUITS & BANDES À JOINTS ──────────────────────────────────────────
   {
     id: "en-ce78",
+    ref: "END-CE78-8H",
+    slug: "enduit-ce-78-universelle",
     name: "CE 78 UNIVERSELLE",
     category: "Enduits",
-    description: "Enduit pour joints de plaques de plâtre. Temps de prise 8 heures.",
+    description: "Enduit en poudre à prise rapide (8 heures) pour le traitement des joints de plaques de plâtre avec bande armée ou papier. Excellente glisse et ponçage facile.",
     image: "/assets/img/portfolio/enduit-8h.jpg",
     stockStatus: "En Stock",
     oldUrl: "/enduits%20pour%20joints.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Semin",
+    sku: "SEM-CE78-25KG",
+    material: "Poudre à base de plâtre et résines",
+    finish: "Blanc extra fin",
+    usage: "Collage et finition des bandes à joints",
+    origin: "Certifié EN 13963",
+    pricing: {
+      price: 135,
+      currency: "MAD",
+      unit: "sac",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 2
+    },
+    specs: {
+      "Temps de prise": "8 heures",
+      "Conditionnement": "Sac de 25 kg",
+      "Consommation": "environ 300 à 500 g/m² de plaque",
+      "Taux de gâchage": "11 à 12 litres d'eau par sac"
+    },
+    applications: ["Jointoiement des plaques BA13", "Rattrapage d'irrégularités", "Finition lisse des murs"],
+    relatedProductIds: ["fp-std-ba13", "ba-papier", "ba-grillage"]
   },
   {
     id: "en-isocol",
+    ref: "END-ISOCOL-M",
+    slug: "mortier-adhesif-isocol-m",
     name: "ISOCOL M",
     category: "Enduits",
-    description: "Mortier adhésif pour collage de plaques de plâtre.",
+    description: "Mortier adhésif pour le collage direct de plaques de plâtre et doublages thermo-acoustiques sur maçonnerie brute.",
     image: "/assets/img/portfolio/isocol-m.jpg",
     stockStatus: "En Stock",
     oldUrl: "/enduits%20pour%20joints.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Placo / Semin",
+    sku: "END-ISOCOL-25KG",
+    material: "Mortier-colle gypseux",
+    finish: "Gris clair",
+    usage: "Collage de plaques sur mur maçonné",
+    origin: "Certifié",
+    pricing: {
+      price: 95,
+      currency: "MAD",
+      unit: "sac",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 5
+    },
+    specs: { "Conditionnement": "Sac de 25 kg", "Consommation": "1.5 à 3 kg/m²" },
+    applications: ["Doublage collé sur briques ou parpaings"],
+    relatedProductIds: ["fp-std-ba13"]
   },
   {
     id: "en-accrofix",
+    ref: "END-ACCROFIX",
+    slug: "resine-accrochage-accrofix-15",
     name: "ACCROFIX-15",
     category: "Enduits",
-    description: "Résine d'accrochage pour supports peu absorbants (béton).",
+    description: "Primaire d'accrochage à base de résine acrylique pour supports lisses et peu absorbants (béton banché).",
     image: "/assets/img/portfolio/yes-innov.jpg",
     stockStatus: "En Stock",
     oldUrl: "/enduits%20pour%20joints.html",
-    availability: "https://schema.org/InStock"
-  },
-
-  // --- BANDES A JOINTS (bandes a joints.html) ---
-  {
-    id: "ba-grillage",
-    name: "BANDE GRILLAGÉE",
-    category: "Bandes à Joints",
-    description: "Bande auto-adhésive pour joints de plaques de plâtre.",
-    image: "/assets/img/portfolio/bande-grillagee.jpg",
-    stockStatus: "En Stock",
-    oldUrl: "/bandes%20a%20joints.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "END-ACCROFIX-15L",
+    material: "Résine synthétique avec silice",
+    finish: "Aspect granuleux rose/bleu",
+    usage: "Primaire d'adhérence béton",
+    origin: "Certifié",
+    pricing: {
+      price: 280,
+      currency: "MAD",
+      unit: "boîte",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 1
+    },
+    specs: { "Conditionnement": "Seau de 15 kg / 20 kg" },
+    applications: ["Préparation des voiles béton avant plâtre"],
+    relatedProductIds: ["en-isocol"]
   },
   {
     id: "ba-papier",
+    ref: "BANDE-PAP-150",
+    slug: "bande-a-joint-papier",
     name: "BANDE A JOINT PAPIER",
     category: "Bandes à Joints",
-    description: "Bande papier haute résistance pour pose rapide.",
+    description: "Bande en papier kraft micro-perforé de haute résistance mécanique avec rainure centrale pour pliage précis dans les angles.",
     image: "/assets/img/portfolio/bande-a-joint.jpg",
     stockStatus: "En Stock",
     oldUrl: "/bandes%20a%20joints.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "Semin",
+    sku: "SEM-BAND-PAP-150",
+    material: "Papier kraft micro-perforé",
+    finish: "Rainuré au centre",
+    usage: "Jointoiement de plaques BA13",
+    origin: "Certifié",
+    pricing: {
+      price: 45,
+      currency: "MAD",
+      unit: "rouleau",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 5
+    },
+    specs: { "Longueur": "150 mètres", "Largeur": "50 mm" },
+    applications: ["Joints à plat et angles rentrants"],
+    relatedProductIds: ["en-ce78", "fp-std-ba13"]
+  },
+  {
+    id: "ba-grillage",
+    ref: "BANDE-GRILL-90",
+    slug: "bande-grillagee-auto-adhesive",
+    name: "BANDE GRILLAGÉE",
+    category: "Bandes à Joints",
+    description: "Bande autocollante en fibre de verre grillagée pour pose rapide des joints et réparations de fissures.",
+    image: "/assets/img/portfolio/bande-grillagee.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/bandes%20a%20joints.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "BA-GRILL-90M",
+    material: "Fibre de verre auto-adhésive",
+    finish: "Grillage blanc",
+    usage: "Joints rapides et réparations",
+    origin: "Certifié",
+    pricing: {
+      price: 35,
+      currency: "MAD",
+      unit: "rouleau",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 5
+    },
+    specs: { "Longueur": "90 mètres", "Largeur": "50 mm" },
+    applications: ["Joints de plaques de plâtre", "Réparations"],
+    relatedProductIds: ["en-ce78"]
   },
   {
     id: "ba-armee",
+    ref: "BANDE-ARM-30",
+    slug: "bande-armee-renforcee",
     name: "BANDE ARMÉE",
     category: "Bandes à Joints",
-    description: "Bande armée avec armature acier pour le renfort des angles.",
+    description: "Bande papier renforcée par deux feuillards en acier flexible pour la protection et la finition irréprochable des angles saillants.",
     image: "/assets/img/portfolio/bande-armee.jpg",
     stockStatus: "En Stock",
     oldUrl: "/bandes%20a%20joints.html",
-    availability: "https://schema.org/InStock"
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "BA-ARM-30M",
+    material: "Papier kraft et feuillards d'acier zingué",
+    finish: "Double bande acier flexible",
+    usage: "Angles saillants et retombées",
+    origin: "Certifié",
+    pricing: {
+      price: 95,
+      currency: "MAD",
+      unit: "rouleau",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 2
+    },
+    specs: { "Longueur": "30 mètres", "Largeur": "50 mm" },
+    applications: ["Angles sortants de cloisons et plafonds"],
+    relatedProductIds: ["en-ce78", "fp-std-ba13"]
+  },
+
+  // ─── ACCESSOIRES DE FIXATION & PROJECTION ────────────────────────────────
+  {
+    id: "af-vis-25",
+    ref: "VIS-TTPC-25",
+    slug: "vis-ttpc-3-5-x-25-mm",
+    name: "VIS TTPC 3,5 X 25 MM",
+    category: "Accessoires de Fixation",
+    description: "Vis trompette auto-perforante en acier phosphaté noir pour fixation des plaques de plâtre sur ossatures métalliques jusqu'à 0.8 mm d'épaisseur.",
+    image: "/assets/img/portfolio/portfolio-19.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/ACCESSOIRES%20DE%20FIXATION.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "VIS-TTPC-25-1000",
+    material: "Acier trempé phosphaté",
+    finish: "Noir anti-corrosion",
+    usage: "Fixation plaques sur fourrures et montants",
+    origin: "Certifié",
+    pricing: {
+      price: 75,
+      currency: "MAD",
+      unit: "boîte",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 2
+    },
+    specs: { "Dimensions": "3.5 x 25 mm", "Conditionnement": "Boîte de 1000 pièces", "Empreinte": "PH2" },
+    applications: ["Fixation de BA13 sur ossatures métalliques"],
+    relatedProductIds: ["fp-std-ba13", "om-plf-60", "cl-montant-48"]
+  },
+  {
+    id: "af-manchon",
+    ref: "FIX-MANCH-6",
+    slug: "manchon-tige-filetee-6mm",
+    name: "MANCHON TIGE FILETÉE",
+    category: "Accessoires de Fixation",
+    description: "Manchon taraudé M6 en acier zingué pour le raccordement bout à bout de 2 tiges filetées lors des suspensions de faux plafonds à grande hauteur.",
+    image: "/assets/img/portfolio/portfolio-13.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/ACCESSOIRES%20DE%20FIXATION.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "AF-MANCHON-M6",
+    material: "Acier zingué",
+    finish: "Zingué blanc",
+    usage: "Suspension faux plafond grande hauteur",
+    origin: "Certifié",
+    pricing: {
+      price: 1.5,
+      currency: "MAD",
+      unit: "pièce",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 50
+    },
+    specs: { "Diamètre": "M6", "Longueur": "25 mm", "Conditionnement": "Boîte de 100 pièces" },
+    applications: ["Plafonds hauts sous dalle"],
+    relatedProductIds: ["om-plf-60", "af-cavalier"]
+  },
+  {
+    id: "af-cavalier",
+    ref: "FIX-CAVAL-PIVOT",
+    slug: "cavalier-pivot-suspension",
+    name: "CAVALIER PIVOT",
+    category: "Accessoires de Fixation",
+    description: "Cavalier pivot clipsable sur fourrure F60 avec taraudage M6 pour raccordement à la tige filetée.",
+    image: "/assets/img/portfolio/portfolio-15.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/ACCESSOIRES%20DE%20FIXATION.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "AF-CAVALIER-F60",
+    material: "Acier galvanisé",
+    finish: "Zingué",
+    usage: "Liaison tige filetée et fourrure F60",
+    origin: "Certifié",
+    pricing: {
+      price: 2.2,
+      currency: "MAD",
+      unit: "pièce",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 50
+    },
+    specs: { "Compatibilité": "Fourrure 60 mm et tige M6", "Conditionnement": "Boîte de 100" },
+    applications: ["Plafonds suspendus F60"],
+    relatedProductIds: ["om-plf-60", "af-manchon"]
+  },
+  {
+    id: "af-suspente",
+    ref: "FIX-SUSP-ART",
+    slug: "suspente-articulee",
+    name: "SUSPENTE ARTICULÉE",
+    category: "Accessoires de Fixation",
+    description: "Suspente métallique articulée pour la fixation de fourrures sous charpente bois ou métallique inclinée.",
+    image: "/assets/img/portfolio/portfolio-31.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/ACCESSOIRES%20DE%20FIXATION.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "AF-SUSP-ART",
+    material: "Acier galvanisé",
+    finish: "Galvanisé",
+    usage: "Sous-toiture et charpente inclinée",
+    origin: "Certifié",
+    pricing: {
+      price: 3.5,
+      currency: "MAD",
+      unit: "pièce",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 50
+    },
+    specs: { "Longueur": "170 mm à 300 mm" },
+    applications: ["Plafonds sous rampants"],
+    relatedProductIds: ["om-plf-60"]
+  },
+  {
+    id: "ap-chemise",
+    ref: "PROJ-CHEM-PFT",
+    slug: "chemise-pft-prolog-rotor-stator",
+    name: "CHEMISE PFT PROLOG",
+    category: "Accessoires de Projeter",
+    description: "Ensemble stator et rotor D6-3 haute qualité pour machine à projeter les plâtres et enduits (PFT G4 / Ritmo).",
+    image: "/assets/img/portfolio/camisa.jpg",
+    stockStatus: "Sur Commande",
+    oldUrl: "/accessoires%20de%20projeter.html",
+    availability: "https://schema.org/OutOfStock",
+    inStock: false,
+    brand: "PFT",
+    sku: "PFT-D6-3",
+    material: "Acier trempé et élastomère",
+    finish: "Haute résistance à l'abrasion",
+    usage: "Projection mécanique d'enduit et plâtre",
+    origin: "Allemagne / Certifié",
+    pricing: {
+      price: 1450,
+      currency: "MAD",
+      unit: "kit",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 1
+    },
+    specs: { "Modèle": "D6-3 Twister", "Débit": "environ 20 l/min à 400 tr/min" },
+    applications: ["Machines à projeter PFT, Putzmeister"],
+    relatedProductIds: ["ap-vis", "ap-regle"]
+  },
+  {
+    id: "ap-regle",
+    ref: "PROJ-REGLE-25",
+    slug: "regle-en-h-2-5m-aluminium",
+    name: "RÈGLE EN H 2.5M",
+    category: "Accessoires de Projeter",
+    description: "Règle à dresser profilée en H en aluminium renforcé de 2.50 m pour un surfaçage net et régulier des enduits projetés.",
+    image: "/assets/img/portfolio/regle-hc-2.5.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/accessoires%20de%20projeter.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "AP-REGLE-H-25",
+    material: "Aluminium profilé en H",
+    finish: "Anodisé",
+    usage: "Dressage et surfaçage plâtre",
+    origin: "Certifié",
+    pricing: {
+      price: 240,
+      currency: "MAD",
+      unit: "pièce",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 1
+    },
+    specs: { "Longueur": "2500 mm", "Profil": "H ergonomique" },
+    applications: ["Dressage des murs et plafonds plâtrés"],
+    relatedProductIds: ["en-ce78"]
+  },
+  {
+    id: "ap-vis",
+    ref: "PROJ-VIS-PFT",
+    slug: "vis-transport-pft",
+    name: "VIS PFT",
+    category: "Accessoires de Projeter",
+    description: "Vis d'alimentation et mélange pour machine à projeter PFT.",
+    image: "/assets/img/portfolio/vis-pft.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/accessoires%20de%20projeter.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    brand: "PFT",
+    sku: "PFT-VIS-ALIM",
+    material: "Acier traité",
+    finish: "Usiné",
+    usage: "Alimentation plâtre machine",
+    origin: "Certifié",
+    pricing: {
+      price: 450,
+      currency: "MAD",
+      unit: "pièce",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 1
+    },
+    specs: { "Compatibilité": "PFT G4 / G5" },
+    applications: ["Machines de projection"],
+    relatedProductIds: ["ap-chemise"]
+  },
+
+  // ─── PLANCHERS TECHNIQUES ───────────────────────────────────────────────
+  {
+    id: "pt-sulfate",
+    ref: "PT-SULF-600",
+    slug: "dalle-plancher-sulfate-de-calcium",
+    name: "DALLE EN SULFATE DE CALCIUM",
+    category: "Plancher Technique",
+    description: "Dalle de plancher surélevé haute performance en sulfate de calcium haute densité (1500 kg/m³). Incombustible A1, isolation phonique et résistance aux charges lourdes.",
+    image: "/assets/img/portfolio/dalle-en-sulfate-de-ccalsuim.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/plancher%20technique.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "PT-SULFATE-600",
+    material: "Sulfate de calcium haute densité",
+    finish: "Feuille d'aluminium inférieure / Revêtement supérieur au choix",
+    usage: "Salles serveurs, banques, plateaux de bureaux",
+    origin: "Certifié EN 12825",
+    pricing: {
+      price: 320,
+      currency: "MAD",
+      unit: "m²",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 50
+    },
+    specs: {
+      "Dimensions": "600 x 600 x 30 mm ou 36 mm",
+      "Masse volumique": "1500 kg/m³",
+      "Charge ponctuelle admissible": "3 kN à 5 kN (Classe 3 à 5 selon EN 12825)",
+      "Comportement au feu": "Incombustible A1",
+      "Conductivité électrostatique": "Disponible"
+    },
+    applications: ["Data Centers & salles serveurs", "Immeubles tertiaires de standing", "Salles de contrôle"],
+    relatedProductIds: ["sp-verin-std", "pt-alu"]
+  },
+  {
+    id: "pt-alu",
+    ref: "PT-ALU-MOULE",
+    slug: "dalle-plancher-aluminium-moule",
+    name: "PLANCHER EN ALUMINIUM MOULÉ",
+    category: "Plancher Technique",
+    description: "Dalle de plancher technique en alliage d'aluminium moulé sous pression. Ultra-légère, amagnétique, imputrescible et spécialement conçue pour les salles blanches et environnements hospitaliers stériles.",
+    image: "/assets/img/portfolio/plancher-technique-en-aluminium-moule.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/plancher%20technique.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "PT-ALU-600",
+    material: "Alliage d'aluminium moulé sous pression",
+    finish: "Brut usiné ou perforé pour flux laminaire",
+    usage: "Salles blanches, IRM, milieux stériles",
+    origin: "Certifié ISO 14644",
+    pricing: {
+      currency: "MAD",
+      unit: "m²",
+      priceType: "quote",
+      isVerifiedPrice: false
+    },
+    specs: {
+      "Dimensions": "600 x 600 mm",
+      "Propriétés": "Amagnétique, 100% recyclable, Zéro émission de poussières",
+      "Versions": "Pleine ou perforée à taux d'ouverture variable"
+    },
+    applications: ["Salles d'imagerie médicale (IRM)", "Salles blanches classe 100", "Industrie des semi-conducteurs"],
+    relatedProductIds: ["sp-verin-std", "pt-sulfate"]
+  },
+  {
+    id: "sp-verin-std",
+    ref: "PT-VERIN-GAMMA",
+    slug: "verin-gamma-standard-plancher",
+    name: "VÉRIN GAMMA STANDARD",
+    category: "Structure Plancher",
+    description: "Vérin réglable en acier zingué avec platine d'embase et tête cruciforme pour supporter les dalles de plancher surélevé.",
+    image: "/assets/img/portfolio/verin-standard.jpg",
+    stockStatus: "En Stock",
+    oldUrl: "/Structure%20pour%20plancher%20sureleve.html",
+    availability: "https://schema.org/InStock",
+    inStock: true,
+    sku: "PT-VERIN-STD",
+    material: "Acier zingué bichromaté",
+    finish: "Zingué haute résistance",
+    usage: "Supportage et réglage en hauteur plancher surélevé",
+    origin: "Certifié",
+    pricing: {
+      price: 35,
+      currency: "MAD",
+      unit: "pièce",
+      priceType: "starting_at",
+      isVerifiedPrice: true,
+      priceUpdatedAt: "2026-02-15",
+      minimumQuantity: 50
+    },
+    specs: {
+      "Plage de réglage": "De 80 mm à 600 mm (hauteur finie)",
+      "Platine de tête": "Équipée d'un joint amortisseur conducteur",
+      "Charge de rupture axiale": "> 25 kN"
+    },
+    applications: ["Structure porteuse sous plancher technique"],
+    relatedProductIds: ["pt-sulfate", "pt-alu"]
   }
 ];
 
+// Helper to get category list
 export const getCategories = () => {
   const categories = mockProducts.map(product => product.category);
-  return ["Tous", ...new Set(categories)];
+  return ["Tous", ...Array.from(new Set(categories))];
 };
 
 export const getCategoryGroups = () => CATEGORY_GROUPS;
+
+export const ID_TO_SLUG_MAP: Record<string, string> = Object.fromEntries(
+  mockProducts.map((p) => [p.id, p.slug])
+);
+

@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
@@ -10,39 +12,38 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
     if (catalogElement) catalogElement.scrollIntoView({ behavior: isMobile ? 'instant' : 'smooth' });
   };
 
-  // Force rebuild for UX Fix Step 2 verification
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
 
   const content = {
     fr: {
-      tag: "Leader du Second Œuvre au Maroc • Qualité Certifiée",
-      titleTop: "L'Art de",
-      titleBottom: "Bâtir.",
-      descPre: "Expertise en",
-      descHighlight: "Aménagement & Finition",
-      descPost: "pour vos projets d'exception.",
-      cta: "Voir nos Produits",
-      projects: "Projets 2024"
+      tag: "Matériaux de Second Œuvre & Finition au Maroc",
+      titleTop: "Matériaux de",
+      titleBottom: "Second Œuvre.",
+      descPre: "Fabricant et distributeur spécialisé en",
+      descHighlight: "Faux Plafonds, Trappes & Isolation",
+      descPost: "pour les professionnels du bâtiment à Casablanca et partout au Maroc.",
+      cta: "Voir nos Produits & Prix",
+      projects: "Stock Casablanca"
     },
     ma: {
-      tag: "Partenaire B2B Maroc • Qualité Sinca",
-      titleTop: "Qualité &",
-      titleBottom: "Prix m2.",
-      descPre: "Grossiste",
-      descHighlight: "BA13 & Profilés",
-      descPost: "directement de l'usine à Casablanca.",
-      cta: "Voir le Stock",
-      projects: "Stock Local"
+      tag: "مواد البناء والتشطيب الداخلي بالمغرب",
+      titleTop: "مواد البناء و",
+      titleBottom: "التشطيب بالدار البيضاء.",
+      descPre: "المزود الرائد لـ",
+      descHighlight: "فتحات الزيارة، ألواح الجبس والعزل",
+      descPost: "بأفضل أسعار الجملة للشركات والمهنيين بالمغرب.",
+      cta: "مشاهدة المنتجات والأسعار",
+      projects: "مخزون الدار البيضاء"
     },
     en: {
-      tag: "Leading Construction Partner • Certified Quality",
-      titleTop: "The Art of",
-      titleBottom: "Building.",
-      descPre: "Expertise in",
-      descHighlight: "Fit-out & Finishing",
-      descPost: "for your exceptional projects.",
-      cta: "View our Products",
-      projects: "2024 Projects"
+      tag: "Construction Finishing Materials in Morocco",
+      titleTop: "Finishing Works &",
+      titleBottom: "Building Solutions.",
+      descPre: "Leading manufacturer and distributor of",
+      descHighlight: "Ceilings, Access Panels & Insulation",
+      descPost: "for construction professionals in Casablanca and across Morocco.",
+      cta: "View Products & Prices",
+      projects: "Casablanca Stock"
     }
   }[lang];
 
@@ -50,7 +51,7 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
     hidden: { x: isMobile ? 0 : 100, y: isMobile ? 10 : 0, opacity: 0 },
     visible: { 
       x: 0, 
-      y: 0,
+      y: 0, 
       opacity: 1,
       transition: { duration: isMobile ? 0.3 : 0.8, ease: "easeOut" }
     }
@@ -60,7 +61,7 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
     hidden: { x: isMobile ? 0 : 150, y: isMobile ? 30 : 0, opacity: 0 },
     visible: { 
       x: 0, 
-      y: 0,
+      y: 0, 
       opacity: 1,
       transition: { duration: 0.5, delay: 0, ease: "easeOut" }
     }
@@ -70,7 +71,7 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
     hidden: { x: 200, opacity: 0 },
     visible: { 
       x: 0, 
-      opacity: 1,
+      opacity: 1, 
       transition: { duration: 0.5, delay: 0.1, ease: "easeOut" }
     }
   };
@@ -101,7 +102,7 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
               <span className="text-[9px] lg:text-[10px] font-black uppercase tracking-[0.2em] lg:tracking-[0.5em] text-white lg:text-blue-950">{content.tag}</span>
             </motion.div>
             
-            <h1 className="text-[2.75rem] sm:text-5xl lg:text-[4.75rem] xl:text-[5.75rem] 2xl:text-[6.25rem] font-black tracking-tighter text-white lg:text-blue-950 leading-none mb-4 lg:mb-4 drop-shadow-[0_2px_10px_rgba(0,0,0,0.3)] lg:drop-shadow-none">
+            <h1 className="text-[2.5rem] sm:text-5xl lg:text-[4.25rem] xl:text-[5.25rem] 2xl:text-[5.75rem] font-black tracking-tighter text-white lg:text-blue-950 leading-none mb-4 lg:mb-4 drop-shadow-[0_2px_10px_rgba(0,0,0,0.3)] lg:drop-shadow-none">
               {content.titleTop.split('&').map((part: string, i: number, arr: string[]) => (
                 <span key={i} className="lg:inline-block lg:whitespace-nowrap">
                   {part}
@@ -121,7 +122,7 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
             <div className="flex flex-col sm:flex-row items-center gap-4 lg:gap-6">
               <button 
                 onClick={scrollToCatalog}
-                className="group w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-5 bg-amber-500 text-slate-950 rounded-2xl font-black text-base lg:text-lg shadow-[0_20px_50px_rgba(245,158,11,0.25)] hover:bg-amber-400 active:scale-95 transition-all duration-300 flex items-center justify-center"
+                className="group w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-5 bg-amber-500 text-slate-950 rounded-2xl font-black text-base lg:text-lg shadow-[0_20px_50px_rgba(245,158,11,0.25)] hover:bg-amber-400 active:scale-95 transition-all duration-300 flex items-center justify-center cursor-pointer"
               >
                 {content.cta}
                 <ChevronRight size={20} className="ml-3 lg:ml-4 group-hover:translate-x-2 transition-transform" />
@@ -153,8 +154,8 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
                 </svg>
               </div>
               <div className="flex flex-col">
-                <span className="text-xl lg:text-2xl font-black text-blue-950 leading-none tracking-tight">10+ Années</span>
-                <span className="text-sm font-semibold text-slate-500 mt-1">D'Expertise</span>
+                <span className="text-xl lg:text-2xl font-black text-blue-950 leading-none tracking-tight">Depuis 2017</span>
+                <span className="text-sm font-semibold text-slate-500 mt-1">Expertise Maroc</span>
               </div>
             </div>
 
@@ -167,7 +168,7 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
             >
               <Image 
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" 
-                alt="Architecture de Luxe"
+                alt="Matériaux de second œuvre Casablanca Maroc - Chada Alyasmin" 
                 fill
                 priority={true}
                 className="object-cover lg:grayscale-[0.2] lg:hover:grayscale-0 transition-all duration-700 lg:hover:scale-105" 
@@ -188,7 +189,7 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
             >
               <Image 
                 src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=800" 
-                alt="Detail Architectural"
+                alt="Faux plafond et finition intérieure Casablanca" 
                 fill
                 className="object-cover" 
                 sizes="30vw"
@@ -201,5 +202,4 @@ export default function ModernHero({ lang = 'fr' }: { lang?: 'fr' | 'ma' | 'en' 
       </div>
     </section>
   );
-};
-
+}

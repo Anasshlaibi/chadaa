@@ -1,206 +1,286 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { type Product } from '../data/products';
-import { ChevronLeft, ShoppingBag, ShieldCheck, MapPin, Truck, HelpCircle, Plus, Minus, X } from 'lucide-react';
+import {
+  ChevronRight,
+  ShoppingBag,
+  ShieldCheck,
+  MapPin,
+  Truck,
+  Plus,
+  Minus,
+  X,
+  Calendar,
+  Layers,
+  ArrowRight,
+  MessageSquare
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCart } from '../hooks/useCart';
 import { cn } from '../lib/utils';
 import Image from 'next/image';
+import { formatPriceDisplay } from '../lib/products';
 
 interface ProductDetailPageProps {
   product: Product;
+  relatedProducts?: Product[];
+  categoryGroupSlug?: string;
 }
 
-function ProductDetailPage({ product }: ProductDetailPageProps) {
-  const router = useRouter();
+export default function ProductDetailPage({
+  product,
+  relatedProducts = [],
+  categoryGroupSlug
+}: ProductDetailPageProps) {
   const { addToQuote } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const [activeImage, setActiveImage] = useState(product.image);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setQuantity(1);
   }, [product.id]);
-
 
   const handleIncrement = () => setQuantity(q => q + 1);
   const handleDecrement = () => setQuantity(q => Math.max(1, q - 1));
 
+  const priceInfo = formatPriceDisplay(product.pricing);
+
+  const imagesList = product.thumbnails && product.thumbnails.length > 0
+    ? [product.image, ...product.thumbnails.filter(t => t !== product.image)]
+    : [product.image];
+
+  const whatsappMessage = encodeURIComponent(
+    `Bonjour Chada Alyasmin, je souhaite un devis pour le produit : ${product.name} (REF: ${product.id.toUpperCase()}) - Quantité: ${quantity}`
+  );
+
   return (
-    <div className="min-h-screen bg-white pb-32 pt-20 lg:pt-32">
-      {/* Navigation Header - Fixed to stick below global Navbar */}
-      <div className="sticky top-20 lg:top-[80px] z-40 bg-white/80 backdrop-blur-md border-b border-gray-100">
-        <div className="max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 h-16 flex items-center justify-between">
-          <button 
-            onClick={() => router.back()} 
-            className="flex items-center text-blue-950 font-black uppercase text-[10px] tracking-widest min-h-[44px]"
-          >
-            <ChevronLeft size={18} className="mr-2" />
-            Retour
-          </button>
-          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
-            Détails du Produit
-          </div>
-          <div className="w-10 h-10" /> {/* Spacer */}
+    <div key={product.id} className="min-h-screen bg-white pb-32 pt-20 lg:pt-28 font-sans">
+      {/* Visible Breadcrumbs Header */}
+      <div className="bg-slate-50 border-b border-gray-100 py-3">
+        <div className="max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20">
+          <nav aria-label="Fil d'Ariane" className="flex items-center space-x-2 text-xs font-medium text-gray-500 overflow-x-auto whitespace-nowrap py-1">
+            <Link href="/" className="hover:text-amber-600 transition-colors">
+              Accueil
+            </Link>
+            <ChevronRight size={14} className="text-gray-400 shrink-0" />
+            <Link href="/products" className="hover:text-amber-600 transition-colors">
+              Produits
+            </Link>
+            {categoryGroupSlug && (
+              <>
+                <ChevronRight size={14} className="text-gray-400 shrink-0" />
+                <Link href={`/products/${categoryGroupSlug}`} className="hover:text-amber-600 transition-colors">
+                  {product.category}
+                </Link>
+              </>
+            )}
+            <ChevronRight size={14} className="text-gray-400 shrink-0" />
+            <span className="text-blue-950 font-bold truncate max-w-[200px] sm:max-w-xs md:max-w-md">
+              {product.name}
+            </span>
+          </nav>
         </div>
       </div>
 
       <div className="max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 pt-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-          {/* Left: Dynamic Image Showcase */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20">
+          {/* Left Column: Image Showcase */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             className="space-y-6"
           >
-            <div className="relative w-full aspect-square bg-gray-50 rounded-[3rem] flex items-center justify-center p-12 border border-gray-100 shadow-sm overflow-hidden group">
-              <Image 
-                src={product.image} 
-                alt={`${product.name} - Solution technique Chada Alyasmin Casablanca`}
+            <div className="relative w-full aspect-square bg-slate-50 rounded-3xl lg:rounded-[3rem] flex items-center justify-center p-8 lg:p-12 border border-gray-100 shadow-sm overflow-hidden group">
+              <Image
+                src={activeImage}
+                alt={`${product.name} - Matériau de second œuvre Chada Alyasmin Maroc`}
                 fill
-                className="object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105 p-12"
+                className="object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105 p-8 lg:p-12"
                 priority={true}
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
-              {/* 100% RH Badge pinned to top-right corner */}
-              <div className="absolute top-6 right-6 px-4 py-1.5 bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg z-10">
-                100% RH
-              </div>
-              
-              {/* High Resolution View Button */}
-              <button 
-                disabled={true}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 bg-blue-950/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-[0.2em] px-8 py-3 rounded-full opacity-0 group-hover:opacity-50 translate-y-4 group-hover:translate-y-0 cursor-not-allowed"
-              >
-                Vue Haute Résolution
-              </button>
 
-              <div className="absolute top-8 left-8 w-12 h-12">
-                <Image src="/logo.png" alt="Chada" fill className="object-contain opacity-20" />
+              {product.brand && (
+                <div className="absolute top-6 left-6 px-3.5 py-1.5 bg-blue-950 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-md z-10">
+                  {product.brand}
+                </div>
+              )}
+
+              <div className="absolute top-6 right-6 px-3.5 py-1.5 bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-md z-10">
+                100% Conforme
               </div>
             </div>
-            
-            <div className="grid grid-cols-3 gap-4">
-              {[product.image, product.image, product.image].map((img, i) => (
-                <div key={i} className="relative aspect-square rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center p-4 cursor-pointer hover:border-amber-500 transition-all hover:shadow-md overflow-hidden">
-                  <Image 
-                    src={img} 
-                    alt="" 
-                    fill
-                    className="object-contain opacity-30 mix-blend-multiply p-4" 
-                  />
-                </div>
-              ))}
-            </div>
+
+            {imagesList.length > 1 && (
+              <div className="grid grid-cols-4 gap-3">
+                {imagesList.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveImage(img)}
+                    className={cn(
+                      "relative aspect-square rounded-2xl bg-gray-50 border p-2 overflow-hidden transition-all",
+                      activeImage === img ? "border-amber-500 ring-2 ring-amber-500/20" : "border-gray-200 hover:border-gray-300"
+                    )}
+                  >
+                    <Image
+                      src={img}
+                      alt={`${product.name} vue ${i + 1}`}
+                      fill
+                      className="object-contain mix-blend-multiply p-2"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </motion.div>
 
-          {/* Right: Premium B2B Content */}
+          {/* Right Column: Technical & B2B Content */}
           <div className="flex flex-col">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+              transition={{ delay: 0.05 }}
             >
-              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-amber-600 mb-4">
-                {product.category}
-              </p>
-              <h1 className="text-4xl lg:text-6xl font-black text-blue-950 tracking-tighter leading-none mb-6">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs font-black uppercase tracking-[0.3em] text-amber-600">
+                  {product.category}
+                </p>
+                <span className="text-xs font-mono font-bold text-gray-400 uppercase tracking-wider">
+                  REF: {product.ref || product.id.toUpperCase()}
+                </span>
+              </div>
+
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-blue-950 tracking-tight leading-tight mb-4">
                 {product.name}
               </h1>
-              <div className="flex items-center space-x-4 mb-8">
+
+              {/* Status & Price Highlight Section */}
+              <div className="flex flex-wrap items-center gap-3 mb-6">
                 <div className={cn(
-                  "flex items-center space-x-1.5 px-3 py-1.5 rounded-full border shadow-sm",
-                  product.stockStatus === 'En Rupture' 
-                    ? "bg-red-50 border-red-100 text-red-700" 
-                    : "bg-green-50 border-green-100 text-green-700"
+                  "flex items-center space-x-1.5 px-3 py-1 rounded-full border text-xs font-bold",
+                  product.stockStatus === 'En Rupture'
+                    ? "bg-red-50 border-red-200 text-red-700"
+                    : "bg-emerald-50 border-emerald-200 text-emerald-700"
                 )}>
                   {product.stockStatus === 'En Rupture' ? (
                     <X size={14} className="text-red-500" />
                   ) : (
-                    <div className="w-2 h-2 rounded-full bg-green-500" />
+                    <div className="w-2 h-2 rounded-full bg-emerald-500" />
                   )}
-                  <span className="text-[10px] font-black uppercase tracking-widest leading-none">
-                    {product.stockStatus}
-                  </span>
+                  <span>{product.stockStatus}</span>
                 </div>
-                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                  REF: {product.id.toUpperCase()}
+
+                {/* Price Display */}
+                <div className="px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-950 font-black text-sm sm:text-base inline-flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                  {priceInfo.display}
                 </div>
               </div>
-              
-              <p className="text-lg text-gray-500 font-medium leading-relaxed mb-10">
-                {product.description} Explorez notre gamme complète pour une installation professionnelle de second œuvre au Maroc. Qualité certifiée et durabilité garantie.
+
+              {/* B2B Pricing Guarantee Badge */}
+              <div className="flex items-center space-x-2 text-xs text-slate-600 mb-6 bg-slate-100/80 border border-slate-200/60 px-3.5 py-2 rounded-xl">
+                <ShieldCheck size={15} className="text-amber-600 shrink-0" />
+                <span>
+                  <strong>Tarifs dégressifs pour professionnels :</strong> Chiffrage proforma personnalisé sous 24h selon volume de chantier.
+                </span>
+              </div>
+
+              {/* Factual Description */}
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-8">
+                {product.description}
               </p>
             </motion.div>
 
-            {/* Technical Specs Accordion (Dynamic) */}
-            <div className="space-y-4 mb-12">
-              <div className="p-6 rounded-3xl bg-gray-50 border border-gray-100">
-                <h3 className="text-xs font-black uppercase tracking-widest text-blue-950 mb-4 flex items-center">
-                  <ShieldCheck size={16} className="mr-2 text-amber-600" />
-                  Spécifications Techniques
-                </h3>
-                <div className="grid grid-cols-2 gap-y-4 gap-x-8 mb-8">
-                  {product.specs ? (
-                    Object.entries(product.specs).map(([key, value]) => (
-                      <div key={key}>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase mb-1">{key}</p>
-                        <p className="text-sm font-black text-blue-950">{String(value)}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <>
-                      <div>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase mb-1">Matériau</p>
-                        <p className="text-sm font-black text-blue-950">Standard Industriel</p>
-                      </div>
-                      <div>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase mb-1">Finition</p>
-                        <p className="text-sm font-black text-blue-950">Blanc Premium</p>
-                      </div>
-                      <div>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase mb-1">Usage</p>
-                        <p className="text-sm font-black text-blue-950">Divers Second Œuvre</p>
-                      </div>
-                      <div>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase mb-1">Origine</p>
-                        <p className="text-sm font-black text-blue-950">Certifié Maroc</p>
-                      </div>
-                    </>
-                  )}
-                </div>
+            {/* Technical Specifications Table */}
+            <div className="mb-8 rounded-3xl bg-slate-50 border border-slate-100 p-6">
+              <h2 className="text-xs font-black uppercase tracking-widest text-blue-950 mb-4 flex items-center">
+                <ShieldCheck size={16} className="mr-2 text-amber-600" />
+                Fiche & Spécifications Techniques
+              </h2>
 
-                {/* NEW: PDF Download Button for B2B Buyers */}
-                <button 
-                  disabled={true}
-                  className="flex items-center justify-center gap-3 w-full py-4 px-6 bg-gray-100 border-2 border-transparent text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl cursor-not-allowed opacity-60"
-                >
-                  <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                  Télécharger Fiche Technique (Indisponible)
-                </button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {product.specs && Object.keys(product.specs).length > 0 ? (
+                  Object.entries(product.specs).map(([key, value]) => (
+                    <div key={key} className="bg-white p-3 rounded-2xl border border-slate-100">
+                      <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">{key}</p>
+                      <p className="text-sm font-black text-blue-950">{String(value)}</p>
+                    </div>
+                  ))
+                ) : (
+                  <>
+                    {product.material && (
+                      <div className="bg-white p-3 rounded-2xl border border-slate-100">
+                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Matériau</p>
+                        <p className="text-sm font-black text-blue-950">{product.material}</p>
+                      </div>
+                    )}
+                    {product.finish && (
+                      <div className="bg-white p-3 rounded-2xl border border-slate-100">
+                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Finition</p>
+                        <p className="text-sm font-black text-blue-950">{product.finish}</p>
+                      </div>
+                    )}
+                    {product.usage && (
+                      <div className="bg-white p-3 rounded-2xl border border-slate-100">
+                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Usage Recommandé</p>
+                        <p className="text-sm font-black text-blue-950">{product.usage}</p>
+                      </div>
+                    )}
+                    {product.origin && (
+                      <div className="bg-white p-3 rounded-2xl border border-slate-100">
+                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Origine & Norme</p>
+                        <p className="text-sm font-black text-blue-950">{product.origin}</p>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
 
-            {/* B2B Action Card - DESKTOP ONLY */}
-            <div className="hidden lg:block mt-auto p-8 rounded-[2.5rem] bg-blue-950 text-white shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-              <h3 className="text-xl font-black mb-2 tracking-tight">Besoin d'un devis personnalisé ?</h3>
-              <p className="text-blue-200 text-sm font-medium mb-6 opacity-80">Nos agents commerciaux vous répondent sous 24h pour vos projets de grande envergure.</p>
-              
-              <div className="flex flex-col space-y-6">
+            {/* Applications List */}
+            {product.applications && product.applications.length > 0 && (
+              <div className="mb-8">
+                <h3 className="text-xs font-black uppercase tracking-widest text-blue-950 mb-3 flex items-center">
+                  <Layers size={15} className="mr-2 text-amber-600" />
+                  Domaines d&apos;application
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {product.applications.map((app, idx) => (
+                    <span
+                      key={idx}
+                      className="px-3 py-1.5 bg-blue-50 text-blue-900 text-xs font-semibold rounded-xl border border-blue-100/80"
+                    >
+                      {app}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* B2B Action Box */}
+            <div className="mt-auto p-6 sm:p-8 rounded-3xl bg-blue-950 text-white shadow-xl">
+              <h3 className="text-lg font-black mb-1 tracking-tight">Demander un Devis Proforma</h3>
+              <p className="text-blue-200 text-xs font-medium mb-6">
+                Tarifs dégressifs pour chantiers et grossistes. Réponse rapide sous 24h ouvrées.
+              </p>
+
+              <div className="space-y-4">
                 {/* Quantity Control */}
-                <div className="flex items-center justify-between bg-white/5 rounded-2xl p-2 border border-white/10">
-                  <span className="ml-4 text-[10px] font-black uppercase tracking-[0.2em] text-blue-200">Quantité</span>
+                <div className="flex items-center justify-between bg-white/10 rounded-2xl p-2 border border-white/10">
+                  <span className="ml-3 text-xs font-black uppercase tracking-wider text-blue-200">
+                    Quantité {product.pricing?.unit ? `(${product.pricing.unit})` : ''}
+                  </span>
                   <div className="flex items-center space-x-1">
-                    <button 
+                    <button
                       onClick={handleDecrement}
                       className="w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-xl transition-all"
+                      aria-label="Diminuer la quantité"
                     >
                       <Minus size={16} />
                     </button>
-                    <input 
+                    <input
                       type="text"
                       inputMode="numeric"
                       value={quantity === 0 ? '' : quantity}
@@ -209,106 +289,163 @@ function ProductDetailPage({ product }: ProductDetailPageProps) {
                         if (val === '') {
                           setQuantity(0);
                         } else {
-                          const num = parseInt(val);
+                          const num = parseInt(val, 10);
                           if (!isNaN(num)) setQuantity(num);
                         }
                       }}
                       onBlur={() => {
                         if (quantity < 1) setQuantity(1);
                       }}
-                      className="w-16 h-10 bg-white/10 rounded-xl text-center font-black text-white text-lg outline-none focus:bg-white/20 transition-all border border-white/10"
-                      placeholder="1"
+                      className="w-16 h-10 bg-white/10 rounded-xl text-center font-black text-white text-base outline-none focus:bg-white/20 transition-all border border-white/10"
+                      aria-label="Quantité de produit"
                     />
-                    <button 
+                    <button
                       onClick={handleIncrement}
                       className="w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-xl transition-all"
+                      aria-label="Augmenter la quantité"
                     >
                       <Plus size={16} />
                     </button>
                   </div>
                 </div>
 
-                <div className="flex gap-4 group">
-                  <button 
+                {/* CTA Buttons */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <button
                     onClick={() => addToQuote(product, Math.max(1, quantity))}
-                    className="grow min-h-[54px] bg-amber-500 hover:bg-amber-400 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center space-x-3 shadow-lg shadow-amber-500/30 active:scale-95 group-hover:shadow-amber-500/40"
+                    className="min-h-[50px] bg-amber-500 hover:bg-amber-400 text-blue-950 rounded-2xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center space-x-2 shadow-lg shadow-amber-500/20 active:scale-95 cursor-pointer"
                   >
                     <ShoppingBag size={18} />
-                    <span>Demander un Devis</span>
+                    <span>Ajouter au Devis</span>
                   </button>
-                  <button 
-                    disabled={true}
-                    className="grow min-h-[54px] bg-white/5 text-gray-500 rounded-2xl font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center space-x-3 backdrop-blur-md cursor-not-allowed opacity-50"
+
+                  <a
+                    href={`https://wa.me/212661138204?text=${whatsappMessage}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="min-h-[50px] bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center space-x-2 shadow-lg shadow-emerald-600/20 active:scale-95"
                   >
-                    <HelpCircle size={18} />
-                    <span>Assistance</span>
-                  </button>
+                    <MessageSquare size={18} />
+                    <span>WhatsApp Direct</span>
+                  </a>
                 </div>
               </div>
-            </div>
-            
-            {/* Logistics Info */}
-            <div className="grid grid-cols-2 gap-4 mt-8">
-              <div className="flex items-center space-x-3 text-gray-400">
-                <Truck size={16} />
-                <span className="text-[9px] font-black uppercase tracking-widest">Livraison Maroc Entier</span>
-              </div>
-              <div className={cn("flex items-center space-x-3", product.stockStatus === 'En Rupture' ? "text-red-400" : "text-gray-400")}>
-                <MapPin size={16} />
-                <span className="text-[9px] font-black uppercase tracking-widest">
-                  {product.stockStatus === 'En Rupture' ? "Indisponible actuellement" : "Stock Casablanca"}
-                </span>
+
+              {/* Logistics note */}
+              <div className="grid grid-cols-2 gap-3 mt-6 pt-4 border-t border-white/10 text-xs text-blue-200">
+                <div className="flex items-center space-x-2">
+                  <Truck size={15} className="text-amber-400 shrink-0" />
+                  <span>Livraison partout au Maroc</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <MapPin size={15} className="text-amber-400 shrink-0" />
+                  <span>Stock & dépôt Casablanca</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Related Products Section */}
+        {relatedProducts.length > 0 && (
+          <section className="mt-24 pt-16 border-t border-gray-100">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-xs font-black uppercase tracking-[0.3em] text-amber-600 mb-1">
+                  Compléments techniques
+                </h2>
+                <p className="text-2xl font-black text-blue-950">
+                  Produits fréquemment associés
+                </p>
+              </div>
+              <Link
+                href="/products"
+                className="text-xs font-bold text-blue-950 hover:text-amber-600 transition-colors flex items-center gap-1"
+              >
+                Tout le catalogue <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {relatedProducts.map((relProduct) => {
+                const relPrice = formatPriceDisplay(relProduct.pricing);
+                return (
+                  <Link
+                    key={relProduct.id}
+                    href={`/products/${relProduct.slug}`}
+                    className="group bg-slate-50 hover:bg-white rounded-3xl p-5 border border-slate-100 hover:border-gray-200 hover:shadow-xl transition-all flex flex-col"
+                  >
+                    <div className="relative aspect-square w-full rounded-2xl bg-white mb-4 overflow-hidden p-4 flex items-center justify-center">
+                      <Image
+                        src={relProduct.image}
+                        alt={relProduct.name}
+                        fill
+                        className="object-contain mix-blend-multiply p-4 transition-transform group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      />
+                    </div>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-amber-600 mb-1">
+                      {relProduct.category}
+                    </p>
+                    <h3 className="text-sm font-black text-blue-950 leading-snug mb-2 group-hover:text-amber-600 transition-colors line-clamp-2">
+                      {relProduct.name}
+                    </h3>
+                    <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+                      <span className="font-bold text-gray-700">
+                        {relPrice.display}
+                      </span>
+                      <span className="text-[10px] font-bold text-amber-600 uppercase">
+                        Voir fiche →
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
       </div>
 
-      {/* STICKY MOBILE CTA - Refactored */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 pb-8 bg-white/95 backdrop-blur-md border-t border-gray-100 z-[110] flex items-center gap-3 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
-        <div className="flex items-center bg-gray-50 rounded-2xl p-1.5 border border-gray-100 shrink-0">
-          <button 
+      {/* STICKY MOBILE BAR */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur-md border-t border-gray-200 z-50 shadow-2xl flex items-center gap-2">
+        <div className="flex items-center bg-gray-100 rounded-xl p-1 shrink-0">
+          <button
             onClick={handleDecrement}
-            className="w-12 h-12 flex items-center justify-center text-blue-950 active:bg-white rounded-xl transition-all shadow-sm"
+            className="w-9 h-9 flex items-center justify-center text-blue-950 font-bold"
+            aria-label="Moins"
           >
-            <Minus size={20} />
+            <Minus size={16} />
           </button>
-          <input 
-            type="text"
-            inputMode="numeric"
-            value={quantity === 0 ? '' : quantity}
-            onChange={(e) => {
-              const val = e.target.value.replace(/\D/g, '');
-              if (val === '') {
-                setQuantity(0);
-              } else {
-                const num = parseInt(val);
-                if (!isNaN(num)) setQuantity(num);
-              }
-            }}
-            onBlur={() => {
-              if (quantity < 1) setQuantity(1);
-            }}
-            className="w-16 h-12 bg-white rounded-xl text-center font-black text-blue-950 text-lg outline-none border border-gray-100 mx-1"
-            placeholder="1"
-          />
-          <button 
+          <span className="w-8 text-center text-xs font-black text-blue-950">
+            {quantity}
+          </span>
+          <button
             onClick={handleIncrement}
-            className="w-12 h-12 flex items-center justify-center text-blue-950 active:bg-white rounded-xl transition-all shadow-sm"
+            className="w-9 h-9 flex items-center justify-center text-blue-950 font-bold"
+            aria-label="Plus"
           >
-            <Plus size={20} />
+            <Plus size={16} />
           </button>
         </div>
-        <button 
+
+        <button
           onClick={() => addToQuote(product, Math.max(1, quantity))}
-          className="grow h-14 bg-amber-500 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-amber-500/20 flex items-center justify-center space-x-3 active:scale-95 transition-transform"
+          className="grow h-11 bg-amber-500 text-blue-950 rounded-xl font-black text-xs uppercase tracking-wider flex items-center justify-center space-x-2 active:scale-95 transition-transform"
         >
-          <ShoppingBag size={20} />
-          <span>Demander un Devis</span>
+          <ShoppingBag size={16} />
+          <span>Devis ({priceInfo.rawPrice ? `${(priceInfo.rawPrice * quantity).toLocaleString('fr-MA')} MAD` : 'Sur devis'})</span>
         </button>
+
+        <a
+          href={`https://wa.me/212661138204?text=${whatsappMessage}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-11 h-11 bg-emerald-600 text-white rounded-xl flex items-center justify-center shrink-0 active:scale-95"
+          aria-label="WhatsApp"
+        >
+          <MessageSquare size={18} />
+        </a>
       </div>
     </div>
   );
 }
-
-export default ProductDetailPage;

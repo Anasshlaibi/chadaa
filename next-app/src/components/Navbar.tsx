@@ -26,8 +26,8 @@ function Navbar() {
     : pathname.startsWith('/ma') ? 'ma' : pathname.startsWith('/en') ? 'en' : 'fr';
   
   const languages = [
-    { code: 'fr', flag: '🇫🇷', name: 'Français', href: pathname.startsWith('/products') ? '/products?lang=fr' : '/fr' },
-    { code: 'ma', flag: '🇲🇦', name: 'Maroc', href: pathname.startsWith('/products') ? '/products?lang=ma' : '/ma' },
+    { code: 'fr', flag: '🇲🇦', name: 'Français (MA)', href: pathname.startsWith('/products') ? '/products?lang=fr' : '/' },
+    { code: 'ma', flag: '🇲🇦', name: 'العربية (المغرب)', href: pathname.startsWith('/products') ? '/products?lang=ma' : '/ma' },
     { code: 'en', flag: '🇬🇧', name: 'English', href: pathname.startsWith('/products') ? '/products?lang=en' : '/en' }
   ];
 
@@ -40,7 +40,7 @@ function Navbar() {
   const handleCategoryClick = (category: string) => {
     const hash = `#catalog?filter=${encodeURIComponent(category)}`;
     if (pathname !== '/fr' && pathname !== '/') {
-      router.push('/fr' + hash);
+      router.push('/' + hash);
     } else {
       window.location.hash = hash;
       const el = document.getElementById('catalog');
@@ -103,7 +103,7 @@ function Navbar() {
                 )}>
                   <Image 
                     src="/logo.png" 
-                    alt="Chada Alyasmin Logo" 
+                    alt="Chada Alyasmin Logo - Second Oeuvre Maroc" 
                     fill
                     className="object-contain"
                   />
@@ -126,22 +126,23 @@ function Navbar() {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-[10px] uppercase tracking-[0.3em] font-black text-yellow-600 mt-1 hidden lg:block"
                   >
-                    Construction & Design
+                    Second Œuvre & Finition
                   </motion.span>
                 )}
               </div>
             </Link>
 
             {/* Navigation Links */}
-            <div className="hidden lg:flex items-center space-x-12">
+            <div className="hidden lg:flex items-center space-x-10 xl:space-x-12">
               <Link 
                 href="/" 
                 onClick={() => setActiveDropdown(null)}
-                className="flex items-center text-[11px] font-black uppercase tracking-[0.2em] text-blue-950"
+                className="flex items-center text-[11px] font-black uppercase tracking-[0.2em] text-blue-950 hover:text-amber-600 transition-colors"
               >
                 Accueil
               </Link>
               
+              {/* Products Dropdown */}
               <div 
                 className="relative group"
                 onMouseEnter={() => setActiveDropdown('products')}
@@ -152,7 +153,7 @@ function Navbar() {
                   onClick={() => setActiveDropdown(null)}
                   className={cn(
                     "flex items-center text-[11px] font-black uppercase tracking-[0.2em] transition-colors",
-                    activeDropdown === 'products' ? "text-yellow-600" : "text-gray-400 hover:text-blue-950"
+                    activeDropdown === 'products' ? "text-yellow-600" : "text-gray-600 hover:text-blue-950"
                   )}
                 >
                   <span>Produits</span>
@@ -179,7 +180,7 @@ function Navbar() {
                               <li key={cat}>
                                 <button 
                                   onClick={() => handleCategoryClick(cat)}
-                                  className="text-sm font-bold text-gray-400 hover:text-blue-950 transition-colors flex items-center group/item"
+                                  className="text-sm font-bold text-gray-500 hover:text-blue-950 transition-colors flex items-center group/item text-left"
                                 >
                                   <span className="w-1.5 h-1.5 rounded-full bg-gray-200 mr-3 group-hover/item:bg-yellow-500 transition-colors" />
                                   {cat}
@@ -194,16 +195,33 @@ function Navbar() {
                 </AnimatePresence>
               </div>
 
+              {/* Prix link */}
+              <Link 
+                href="/prix" 
+                onClick={() => setActiveDropdown(null)}
+                className="flex items-center text-[11px] font-black uppercase tracking-[0.2em] text-gray-600 hover:text-blue-950 transition-colors"
+              >
+                Prix
+              </Link>
+
+              {/* Guides link */}
+              <Link 
+                href="/guide" 
+                onClick={() => setActiveDropdown(null)}
+                className="flex items-center text-[11px] font-black uppercase tracking-[0.2em] text-gray-600 hover:text-blue-950 transition-colors"
+              >
+                Guides
+              </Link>
+
               {[
                 { label: 'À Propos', id: 'about' },
-                { label: 'Projets', id: 'projets' },
                 { label: 'Contact', id: 'contact' }
               ].map((item) => (
                 <Link 
                   key={item.label} 
                   href={`/#${item.id}`}
                   onClick={() => setActiveDropdown(null)}
-                  className="flex items-center text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-blue-950 transition-colors"
+                  className="flex items-center text-[11px] font-black uppercase tracking-[0.2em] text-gray-600 hover:text-blue-950 transition-colors"
                 >
                   {item.label}
                 </Link>
@@ -229,7 +247,7 @@ function Navbar() {
                       initial={{ opacity: 0, y: 10, scale: 0.98 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.98 }}
-                      className="absolute top-full right-0 mt-2 w-40 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden py-2 z-[1000]"
+                      className="absolute top-full right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden py-2 z-[1000]"
                     >
                       {sortedLanguages.map((lang) => (
                         <Link key={lang.code} href={lang.href} className="flex items-center px-4 py-2 hover:bg-gray-50 transition-colors">
@@ -241,32 +259,28 @@ function Navbar() {
                   )}
                 </AnimatePresence>
               </div>
-              <button 
-                onClick={() => {
-                  const el = document.getElementById('catalog');
-                  el?.scrollIntoView({ behavior: 'smooth' });
-                  setTimeout(() => {
-                    const input = el?.querySelector('input');
-                    (input as HTMLInputElement)?.focus();
-                  }, 800);
-                }}
+
+              <Link
+                href="/products"
                 className="hidden sm:flex items-center justify-center min-w-[44px] min-h-[44px] p-2.5 text-blue-950 hover:bg-gray-100 rounded-full transition-all"
+                title="Rechercher des matériaux"
               >
                 <Search size={20} />
-              </button>
+              </Link>
               
               <div className="h-6 w-[1px] bg-gray-200 hidden sm:block mx-1"></div>
 
               <button 
                 onClick={() => setIsPanelOpen(true)}
                 className="relative group min-w-[44px] min-h-[44px] flex items-center justify-center bg-blue-950 text-white rounded-2xl hover:bg-amber-500 transition-all duration-300 shadow-xl hover:shadow-amber-500/20"
+                aria-label="Voir le devis en cours"
               >
                 <ShoppingCart size={20} className="group-hover:scale-110 transition-transform" />
                 {itemCount > 0 && (
                   <motion.span 
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[10px] font-black text-blue-950 shadow-lg group-hover:bg-blue-950 group-hover:text-white transition-colors"
+                    className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-[10px] font-black text-blue-950 shadow-lg group-hover:bg-blue-950 group-hover:text-white transition-colors"
                   >
                     {itemCount}
                   </motion.span>
@@ -276,6 +290,7 @@ function Navbar() {
               <button 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center text-blue-950 hover:bg-gray-100 rounded-xl transition-colors"
+                aria-label="Menu principal"
               >
                 <Menu size={24} />
               </button>
@@ -298,28 +313,31 @@ function Navbar() {
               <button 
                 onClick={() => setIsMenuOpen(false)} 
                 className="min-w-[44px] min-h-[44px] flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+                aria-label="Fermer le menu"
               >
                 <X size={24} />
               </button>
             </div>
             
-            <div className="space-y-12">
+            <div className="space-y-10">
               {/* Main Site Links */}
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <h3 className="text-xs font-black uppercase tracking-widest text-yellow-600">Navigation</h3>
-                <div className="flex flex-col space-y-4">
+                <div className="flex flex-col space-y-3">
                   {[
                     { label: 'Accueil', href: '/' },
                     { label: 'Produits', href: '/products' },
+                    { label: 'Prix des Matériaux', href: '/prix' },
+                    { label: 'Guides Techniques', href: '/guide' },
+                    { label: 'Demande de Devis', href: '/devis' },
                     { label: 'À Propos', href: '/#about' },
-                    { label: 'Projets', href: '/#projets' },
                     { label: 'Contact', href: '/#contact' }
                   ].map((link) => (
                     <Link 
                       key={link.label}
                       href={link.href}
                       onClick={() => setIsMenuOpen(false)}
-                      className="text-3xl font-black text-blue-950 hover:text-yellow-600 transition-colors"
+                      className="text-2xl font-black text-blue-950 hover:text-yellow-600 transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -330,9 +348,9 @@ function Navbar() {
               <div className="h-px bg-gray-100 w-full" />
               
               {/* Mobile Language Switcher */}
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <h3 className="text-xs font-black uppercase tracking-widest text-yellow-600">Langue / Région</h3>
-                <div className="flex space-x-4">
+                <div className="flex space-x-3">
                   {sortedLanguages.map((lang) => (
                     <Link key={lang.code} href={lang.href} onClick={() => setIsMenuOpen(false)} className={cn("flex items-center justify-center p-3 border-2 rounded-xl transition-colors", lang.code === currentLang ? "border-amber-500 bg-amber-50" : "border-gray-100 hover:border-blue-950")}>
                       <span className="text-2xl">{lang.flag}</span>
@@ -342,15 +360,17 @@ function Navbar() {
               </div>
 
               <div className="h-px bg-gray-100 w-full" />
+
+              {/* Categories */}
               {categoryGroups.map((group) => (
-                <div key={group.name} className="space-y-6">
+                <div key={group.name} className="space-y-4">
                   <h3 className="text-xs font-black uppercase tracking-widest text-yellow-600">{group.name}</h3>
-                  <div className="grid grid-cols-1 gap-4">
+                  <div className="grid grid-cols-1 gap-2">
                     {group.categories.map((cat) => (
                       <button 
                         key={cat} 
                         onClick={() => handleCategoryClick(cat)}
-                        className="text-left text-xl font-black text-blue-950 hover:text-yellow-600 transition-colors"
+                        className="text-left text-lg font-bold text-blue-950 hover:text-yellow-600 transition-colors"
                       >
                         {cat}
                       </button>

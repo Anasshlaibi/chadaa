@@ -1,11 +1,12 @@
 import { Metadata } from 'next';
-import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import { mockProducts, type Product } from '@/data/products';
+import { getAllProducts } from '@/lib/products';
 import Catalog from '@/components/Catalog';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: "Matériaux de Construction & Second Œuvre Casablanca Maroc | Chada Alyasmin",
-  description: "Leader au Maroc : Trappes de visite alu/hydro, faux plafonds BA13, isolation laine de roche, joints creux & planchers techniques. Prix grossiste à Casablanca et livraison dans tout le Maroc.",
+  metadataBase: new URL('https://chadaalyasmin.ma'),
+  title: "Catalogue Matériaux de Construction & Second Œuvre Casablanca Maroc | Chada Alyasmin",
+  description: "Catalogue complet de matériaux de second œuvre au Maroc : Trappes de visite Aluplaster, faux plafonds BA13, ossatures métalliques F60/M48, isolation laine de roche et dalles 600x600. Devis usine Casablanca.",
   keywords: [
     "trappe de visite Casablanca",
     "faux plafond BA13 Maroc",
@@ -14,7 +15,8 @@ export const metadata: Metadata = {
     "plancher technique surélevé Maroc",
     "plaques de plâtre grossiste Casablanca",
     "matériaux de construction Maroc",
-    "second oeuvre Casablanca"
+    "second oeuvre Casablanca",
+    "fournisseur btp maroc"
   ],
   openGraph: {
     title: "Catalogue Matériaux de Construction & Second Œuvre | Chada Alyasmin Maroc",
@@ -27,33 +29,6 @@ export const metadata: Metadata = {
   },
 };
 
-async function getProducts(): Promise<Product[]> {
-  try {
-    const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-    if (supabaseUrl && supabaseKey) {
-      const supabase = createSupabaseClient(supabaseUrl, supabaseKey);
-      const { data, error } = await supabase.from('products').select('*');
-      if (data && !error && data.length > 0) {
-        return data.map((p: any) => ({
-          id: p.id || p.ref,
-          name: p.name || 'Produit',
-          category: p.category || '',
-          description: p.description || '',
-          image: p.mainImage || p.image || '',
-          stockStatus: p.inStock ? 'En Stock' : 'En Rupture',
-          availability: p.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-          specs: p.specs || {},
-        }));
-      }
-    }
-  } catch (err) {
-    console.error('Supabase product fetch error (falling back to mock):', err);
-  }
-  return mockProducts;
-}
-
 export default async function ProductsPage({
   searchParams,
 }: {
@@ -63,13 +38,13 @@ export default async function ProductsPage({
   const lang: 'fr' | 'ma' | 'en' =
     langQuery === 'en' || langQuery === 'ma' ? langQuery : 'fr';
 
-  const products = await getProducts();
+  const products = await getAllProducts();
 
   const content = {
     fr: {
       tag: "Notre Catalogue",
-      title: "Tous Nos Produits",
-      desc: "Découvrez notre gamme complète de matériaux de second œuvre, conçus pour l'excellence et la durabilité de vos chantiers.",
+      title: "Catalogue Matériaux de Second Œuvre",
+      desc: "Découvrez notre gamme complète de matériaux de second œuvre, conçus pour l'excellence technique et la durabilité de vos chantiers au Maroc.",
     },
     ma: {
       tag: "Notre Stock",
@@ -83,36 +58,74 @@ export default async function ProductsPage({
     },
   }[lang];
 
+  const itemListLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Catalogue Matériaux Second Œuvre Maroc',
+    itemListElement: products.map((p, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      name: p.name,
+      url: `https://chadaalyasmin.ma/products/${p.slug}`,
+    })),
+  };
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Accueil',
+        item: 'https://chadaalyasmin.ma',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Produits',
+        item: 'https://chadaalyasmin.ma/products',
+      },
+    ],
+  };
+
   return (
-    <main className="min-h-screen bg-slate-50 font-sans">
-      {/* Page Header — rendered server-side, fully visible to Googlebot */}
-      <div className="pt-32 pb-10 bg-blue-950 text-white px-6">
+    <main className="min-h-screen bg-slate-50 font-sans pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd).replace(/</g, '\\u003c') }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd).replace(/</g, '\\u003c') }}
+      />
+
+      {/* Page Header */}
+      <div className="pt-32 pb-14 bg-blue-950 text-white px-6">
         <div className="max-w-7xl mx-auto">
-          <p className="text-[10px] font-black uppercase tracking-[0.5em] text-amber-500 mb-4 inline-block">
+          {/* Breadcrumb */}
+          <nav aria-label="Fil d'Ariane" className="flex items-center space-x-2 text-xs text-blue-200 mb-6">
+            <Link href="/" className="hover:text-white transition-colors">
+              Accueil
+            </Link>
+            <span>/</span>
+            <span className="text-amber-400 font-bold">Produits</span>
+          </nav>
+
+          <p className="text-[10px] font-black uppercase tracking-[0.5em] text-amber-500 mb-3 inline-block">
             {content.tag}
           </p>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter mb-4">
             {content.title}
           </h1>
-          <p className="text-blue-200 max-w-2xl text-lg font-medium">
+          <p className="text-blue-200 max-w-2xl text-base sm:text-lg font-medium leading-relaxed">
             {content.desc}
           </p>
         </div>
       </div>
 
-      {/* Hidden SEO product link list — all products indexed by Google, invisible to users */}
-      <nav aria-label="Product index" className="sr-only">
-        <ul>
-          {products.map((p) => (
-            <li key={p.id}>
-              <a href={`/products/${p.id}`}>{p.name} — {p.category}</a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      {/* Interactive Catalog — client component, gets full product list as prop */}
-      <div className="bg-slate-50 relative -top-20">
+      {/* Interactive Catalog */}
+      <div className="bg-slate-50 relative -top-8 px-4 sm:px-6">
         <Catalog products={products} isLoading={false} lang={lang} />
       </div>
     </main>

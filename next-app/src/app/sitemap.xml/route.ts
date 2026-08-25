@@ -1,69 +1,148 @@
-import { mockProducts } from '@/data/products';
-import { createClient } from '@supabase/supabase-js';
+import { getAllProducts } from '@/lib/products';
+import { CATEGORY_GROUPS } from '@/data/products';
+import { GUIDES } from '@/data/guides';
 
-export const revalidate = 3600; // Cache sitemap statically, revalidate hourly
+export const revalidate = 3600;
 
 export async function GET() {
   const baseUrl = 'https://chadaalyasmin.ma';
-  
-  // Try to fetch products from Supabase using public credentials without cookies
-  let products = mockProducts;
-  try {
-    const cleanEnv = (val: string | undefined) => (val && val.trim() !== "") ? val.trim() : undefined;
-    const supabaseUrl = cleanEnv(process.env.NEXT_PUBLIC_SUPABASE_URL) || cleanEnv(process.env.SUPABASE_URL);
-    const supabaseKey = cleanEnv(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) || cleanEnv(process.env.SUPABASE_KEY);
-    
-    if (!supabaseUrl || !supabaseKey) {
-      throw new Error("Supabase credentials missing in env");
-    }
-    
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    const { data, error } = await supabase.from('products').select('*');
+  const products = await getAllProducts();
+  const today = new Date().toISOString().split('T')[0];
 
-    if (data && !error) {
-      products = data.map((p: any) => ({
-        id: p.id || p.ref,
-        name: p.name || "Produit",
-        category: p.category || "",
-        description: p.description || "",
-        image: p.mainImage || p.image || "",
-        stockStatus: p.inStock ? "En Stock" : "En Rupture"
-      }));
-    }
-  } catch (err) {
-    console.error("Sitemap generation error:", err);
+  interface SitemapUrl {
+    loc: string;
+    lastmod?: string;
+    changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly';
+    priority: string;
+    image?: string | null;
+    title?: string;
+    caption?: string;
   }
 
-  const urls = [
-    { loc: `${baseUrl}/`, priority: '1.0', changefreq: 'daily', image: null as string | null, title: 'Chada Alyasmin | Leader du Second Œuvre au Maroc', description: 'Fabricant et distributeur de trappes de visite, faux plafonds et isolation à Casablanca.' },
-    { loc: `${baseUrl}/fr`, priority: '0.9', changefreq: 'daily', image: null as string | null, title: 'Chada Alyasmin - Version Française', description: 'Spécialiste trappe de visite et faux plafond au Maroc.' },
-    { loc: `${baseUrl}/ma`, priority: '0.9', changefreq: 'daily', image: null as string | null, title: 'Chada Alyasmin - Grossiste Casablanca', description: 'Vente en gros de matériaux de construction au Maroc.' },
-    { loc: `${baseUrl}/en`, priority: '0.8', changefreq: 'weekly', image: null as string | null, title: 'Chada Alyasmin - English Version', description: 'Leading construction finishing partner in Morocco.' },
-    { loc: `${baseUrl}/devis`, priority: '0.9', changefreq: 'weekly', image: null as string | null, title: 'Demande de Devis Gratuit', description: 'Obtenez votre devis proforma personnalisé sous 24h.' },
-    { loc: `${baseUrl}/products`, priority: '0.9', changefreq: 'daily', image: null as string | null, title: 'Catalogue Produits', description: 'Trappes de visite, faux plafonds, isolation, dalles au Maroc.' },
-    ...products.map(p => ({
-      loc: `${baseUrl}/products/${p.id}`,
+  const urls: SitemapUrl[] = [
+    // 1. Core pages
+    {
+      loc: `${baseUrl}`,
+      lastmod: today,
+      changefreq: 'daily',
+      priority: '1.0',
+    },
+    {
+      loc: `${baseUrl}/products`,
+      lastmod: today,
+      changefreq: 'daily',
+      priority: '0.9',
+    },
+    {
+      loc: `${baseUrl}/prix`,
+      lastmod: today,
+      changefreq: 'weekly',
+      priority: '0.9',
+    },
+    {
+      loc: `${baseUrl}/guide`,
+      lastmod: today,
+      changefreq: 'weekly',
       priority: '0.8',
+    },
+    {
+      loc: `${baseUrl}/devis`,
+      lastmod: today,
       changefreq: 'monthly',
-      image: p.image ? (p.image.startsWith('http') ? p.image : `${baseUrl}${p.image}`) : null as string | null,
+      priority: '0.9',
+    },
+    {
+      loc: `${baseUrl}/about`,
+      lastmod: today,
+      changefreq: 'monthly',
+      priority: '0.8',
+    },
+    {
+      loc: `${baseUrl}/faq`,
+      lastmod: today,
+      changefreq: 'monthly',
+      priority: '0.8',
+    },
+    {
+      loc: `${baseUrl}/contact`,
+      lastmod: today,
+      changefreq: 'monthly',
+      priority: '0.8',
+    },
+    {
+      loc: `${baseUrl}/ma`,
+      lastmod: today,
+      changefreq: 'weekly',
+      priority: '0.8',
+    },
+    {
+      loc: `${baseUrl}/en`,
+      lastmod: today,
+      changefreq: 'weekly',
+      priority: '0.8',
+    },
+
+    // 2. Category Landing Pages
+    ...CATEGORY_GROUPS.map((group) => ({
+      loc: `${baseUrl}/products/${group.slug}`,
+      lastmod: today,
+      changefreq: 'weekly' as const,
+      priority: '0.8',
+    })),
+
+    // 3. Category Pricing Pages
+    ...CATEGORY_GROUPS.map((group) => ({
+      loc: `${baseUrl}/prix/${group.slug}`,
+      lastmod: today,
+      changefreq: 'weekly' as const,
+      priority: '0.8',
+    })),
+
+    // 4. Technical Guides
+    ...GUIDES.map((guide) => ({
+      loc: `${baseUrl}/guide/${guide.slug}`,
+      lastmod: guide.publishedAt || today,
+      changefreq: 'monthly' as const,
+      priority: '0.7',
+      image: guide.image.startsWith('http') ? guide.image : `${baseUrl}${guide.image}`,
+      title: guide.title,
+      caption: guide.description,
+    })),
+
+    // 5. Canonical Product Pages (Slugs ONLY)
+    ...products.map((p) => ({
+      loc: `${baseUrl}/products/${p.slug}`,
+      lastmod: p.pricing.priceUpdatedAt || today,
+      changefreq: 'weekly' as const,
+      priority: '0.8',
+      image: p.image.startsWith('http') ? p.image : `${baseUrl}${p.image}`,
       title: p.name,
-      description: p.description || ''
-    }))
+      caption: p.description ? p.description.slice(0, 150) : '',
+    })),
   ];
 
-  const xmlItems = urls.map(item => {
-    let imageXml = '';
-    if (item.image) {
-      const captionXml = item.description ? `\n      <image:caption>${escapeXml(item.description.slice(0, 200))}</image:caption>` : '';
-      imageXml = `\n    <image:image>\n      <image:loc>${item.image.startsWith('http') ? item.image : `${baseUrl}${item.image}`}</image:loc>\n      <image:title>${escapeXml(item.title)}</image:title>${captionXml}\n    </image:image>`;
-    }
-    
-    return `  <url>
-    <loc>${item.loc}</loc>
+  const xmlItems = urls
+    .map((item) => {
+      let imageXml = '';
+      if (item.image) {
+        const captionXml = item.caption
+          ? `\n      <image:caption>${escapeXml(item.caption)}</image:caption>`
+          : '';
+        const titleXml = item.title
+          ? `\n      <image:title>${escapeXml(item.title)}</image:title>`
+          : '';
+        imageXml = `\n    <image:image>\n      <image:loc>${item.image}</image:loc>${titleXml}${captionXml}\n    </image:image>`;
+      }
+
+      const lastmodXml = item.lastmod ? `\n    <lastmod>${item.lastmod}</lastmod>` : '';
+
+      return `  <url>
+    <loc>${item.loc}</loc>${lastmodXml}
     <changefreq>${item.changefreq}</changefreq>
     <priority>${item.priority}</priority>${imageXml}
   </url>`;
-  }).join('\n');
+    })
+    .join('\n');
 
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -73,21 +152,27 @@ ${xmlItems}
 
   return new Response(sitemapXml, {
     headers: {
-      'Content-Type': 'application/xml',
-      'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=600'
-    }
+      'Content-Type': 'application/xml; charset=utf-8',
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=600',
+    },
   });
 }
 
 function escapeXml(unsafe: string): string {
   return unsafe.replace(/[<>&'"]/g, (c) => {
     switch (c) {
-      case '<': return '&lt;';
-      case '>': return '&gt;';
-      case '&': return '&amp;';
-      case '\'': return '&apos;';
-      case '"': return '&quot;';
-      default: return c;
+      case '<':
+        return '&lt;';
+      case '>':
+        return '&gt;';
+      case '&':
+        return '&amp;';
+      case "'":
+        return '&apos;';
+      case '"':
+        return '&quot;';
+      default:
+        return c;
     }
   });
 }

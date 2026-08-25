@@ -1,18 +1,17 @@
 import React from 'react';
-import { MapPin, Phone, Mail, ArrowRight, Instagram, Facebook, Twitter, Linkedin } from 'lucide-react';
+import Link from 'next/link';
 import Image from 'next/image';
+import { Phone, Mail, ArrowRight, Instagram, Facebook, MapPin, ShieldCheck, Tag, BookOpen } from 'lucide-react';
+import { CATEGORY_GROUPS } from '../data/products';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-corporate-blue-dark text-white pt-24 pb-12 overflow-hidden relative">
-      {/* Decorative background element */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-corporate-blue opacity-5 -skew-x-12 translate-x-1/2"></div>
-      
+    <footer className="bg-blue-950 text-white pt-20 pb-12 overflow-hidden relative font-sans">
       <div className="max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
-          {/* Brand Presence */}
-          <div className="lg:col-span-5">
-            <div className="flex items-center space-x-3 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 mb-16">
+          {/* Brand & Mission */}
+          <div className="lg:col-span-4 space-y-6">
+            <div className="flex items-center space-x-3">
               <div className="relative w-10 h-10 shadow-lg">
                 <Image 
                   src="/logo.png" 
@@ -21,71 +20,141 @@ const Footer: React.FC = () => {
                   className="object-contain"
                 />
               </div>
-              <span className="text-2xl font-black tracking-tighter">CHADA <span className="text-corporate-blue-light">ALYASMIN</span></span>
+              <span className="text-2xl font-black tracking-tight text-white">
+                CHADA <span className="text-amber-500">ALYASMIN</span>
+              </span>
             </div>
-            <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-md">
-              Spécialiste des solutions de construction haut de gamme et des finitions intérieures. En partenariat avec les leaders du secteur pour offrir l'excellence depuis 2017.
+            
+            <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
+              Fabricant et distributeur de référence en matériaux de second œuvre au Maroc depuis 2017. Trappes de visite sur mesure, faux plafonds BA13, ossatures métalliques et isolation thermique à Casablanca.
             </p>
-            <div className="flex space-x-5">
-              {[Instagram, Facebook, Twitter, Linkedin].map((Icon, i) => (
-                <a key={i} href="#" className="p-2 border border-white/10 rounded-full text-gray-400 hover:bg-white hover:text-corporate-blue-dark transition-all duration-300">
-                  <Icon size={20} />
-                </a>
+
+            <div className="flex space-x-3 pt-2">
+              <a
+                href="https://www.facebook.com/chadaalyasmin"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-amber-500 hover:text-blue-950 transition-all"
+                aria-label="Facebook"
+              >
+                <Facebook size={18} />
+              </a>
+              <a
+                href="https://www.instagram.com/chadaalyasmin"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-amber-500 hover:text-blue-950 transition-all"
+                aria-label="Instagram"
+              >
+                <Instagram size={18} />
+              </a>
+            </div>
+          </div>
+
+          {/* Categories */}
+          <div className="lg:col-span-3">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-amber-500 mb-6 flex items-center gap-2">
+              <ShieldCheck size={14} />
+              <span>Nos Produits</span>
+            </h4>
+            <ul className="space-y-3 text-xs text-gray-400 font-medium">
+              {CATEGORY_GROUPS.slice(0, 6).map((group) => (
+                <li key={group.slug}>
+                  <Link
+                    href={`/products/${group.slug}`}
+                    className="hover:text-white transition-colors flex items-center group"
+                  >
+                    <ArrowRight size={12} className="mr-1.5 opacity-0 group-hover:opacity-100 transition-opacity text-amber-500" />
+                    <span>{group.name}</span>
+                  </Link>
+                </li>
               ))}
-            </div>
+              <li>
+                <Link
+                  href="/products"
+                  className="text-amber-400 hover:underline font-bold inline-block mt-1"
+                >
+                  Tous les produits →
+                </Link>
+              </li>
+            </ul>
           </div>
 
-          {/* Quick Nav */}
-          <div className="lg:col-span-3 sm:grid sm:grid-cols-2 lg:block sm:gap-8">
-            <div className="mb-10 lg:mb-12">
-              <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-corporate-gold mb-6">Explorer</h4>
-              <ul className="space-y-4 text-gray-400 font-medium">
-                <li><a href="#catalog" className="hover:text-white flex items-center group transition-colors"><ArrowRight size={14} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" /> Catalogue Produits</a></li>
-                <li><a href="#catalog" className="hover:text-white flex items-center group transition-colors"><ArrowRight size={14} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" /> Demander un Devis</a></li>
-                <li><a href="#projets" className="hover:text-white flex items-center group transition-colors"><ArrowRight size={14} className="mr-2 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" /> Projets</a></li>
-              </ul>
-            </div>
+          {/* Pricing & Guides */}
+          <div className="lg:col-span-2">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-amber-500 mb-6 flex items-center gap-2">
+              <Tag size={14} />
+              <span>Ressources</span>
+            </h4>
+            <ul className="space-y-3 text-xs text-gray-400 font-medium">
+              <li>
+                <Link href="/prix" className="hover:text-white transition-colors">
+                  Grille des Prix
+                </Link>
+              </li>
+              <li>
+                <Link href="/guide" className="hover:text-white transition-colors">
+                  Guides Techniques
+                </Link>
+              </li>
+              <li>
+                <Link href="/devis" className="hover:text-white transition-colors">
+                  Demande de Devis
+                </Link>
+              </li>
+              <li>
+                <Link href="/llms.txt" className="hover:text-white transition-colors text-[11px] text-gray-500">
+                  AI Context (llms.txt)
+                </Link>
+              </li>
+            </ul>
           </div>
 
-          {/* Global HQ Only */}
-          <div className="lg:col-span-4">
-            <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-corporate-gold mb-8">Informations de Contact</h4>
-            <div className="space-y-8">
-              <div className="flex items-center group">
-                <div className="p-3 bg-white/5 rounded-xl text-corporate-blue-light mr-4 group-hover:bg-corporate-blue-light group-hover:text-white transition-all duration-300">
-                  <Phone size={20} />
-                </div>
-                <div>
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Ligne Directe</h5>
-                  <p className="text-gray-300 font-bold text-lg tracking-tight">+212 661-138 204</p>
-                </div>
+          {/* Contact Details */}
+          <div className="lg:col-span-3 space-y-6">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-amber-500 mb-6">
+              Contact & Dépôt Casablanca
+            </h4>
+            
+            <div className="space-y-4 text-xs text-gray-300">
+              <div className="flex items-start gap-3">
+                <MapPin size={16} className="text-amber-500 shrink-0 mt-0.5" />
+                <span>Boulevard Mohammed VI, Casablanca, Maroc</span>
               </div>
 
-              <div className="flex items-center group">
-                <div className="p-3 bg-white/5 rounded-xl text-corporate-blue-light mr-4 group-hover:bg-corporate-blue-light group-hover:text-white transition-all duration-300">
-                  <Mail size={20} />
-                </div>
-                <div>
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Demande par Email</h5>
-                  <a href="mailto:contact@chadaalyasmin.ma" className="text-gray-300 font-medium hover:text-white transition-colors">
-                    contact@chadaalyasmin.ma
-                  </a>
-                </div>
+              <div className="flex items-center gap-3">
+                <Phone size={16} className="text-amber-500 shrink-0" />
+                <a href="tel:+212661138204" className="hover:text-white font-bold">
+                  +212 661-138 204
+                </a>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <Mail size={16} className="text-amber-500 shrink-0" />
+                <a href="mailto:contact@chadaalyasmin.ma" className="hover:text-white">
+                  contact@chadaalyasmin.ma
+                </a>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 font-medium">
-          <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
-            <p>© 2026 Chada Alyasmin. Tous droits réservés.</p>
-            <p className="text-[11px] text-gray-400">
-              Made by <a href="tel:0673011873" className="text-amber-500 hover:text-amber-400 font-bold transition-colors">0673011873</a>
-            </p>
-          </div>
-          <div className="flex space-x-8 mt-6 md:mt-0">
-            <a href="#" className="hover:text-white transition-colors">Politique de Confidentialité</a>
-            <a href="#" className="hover:text-white transition-colors">Conditions d'Utilisation</a>
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400 gap-4">
+          <p>© 2026 Chada Alyasmin SARL. Tous droits réservés. Casablanca, Maroc.</p>
+          <div className="flex items-center space-x-6">
+            <Link href="/products" className="hover:text-white transition-colors">
+              Catalogue
+            </Link>
+            <Link href="/prix" className="hover:text-white transition-colors">
+              Prix
+            </Link>
+            <Link href="/guide" className="hover:text-white transition-colors">
+              Guides
+            </Link>
+            <Link href="/devis" className="hover:text-white transition-colors">
+              Devis
+            </Link>
           </div>
         </div>
       </div>

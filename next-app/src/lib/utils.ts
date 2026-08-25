@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
  * is_positive — Backend-style stock check for the frontend.
  * Handles various truthy values from Google Sheets/Supabase.
  */
-export function is_positive(val: any): boolean {
+export function is_positive(val: unknown): boolean {
   if (val === true || val === 'true') return true;
   if (val === false || val === 'false' || val === null || val === undefined) return false;
   const s = String(val).toLowerCase().trim().replace(/['"]/g, '');

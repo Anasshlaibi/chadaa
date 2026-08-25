@@ -1,43 +1,20 @@
-import { mockProducts } from '@/data/products';
-import { createClient } from '@supabase/supabase-js';
+import { getAllProducts } from '@/lib/products';
 
 export const revalidate = 3600; // Hourly revalidation for Google Merchant Center
 
 export async function GET() {
   const baseUrl = 'https://chadaalyasmin.ma';
+  const products = await getAllProducts();
 
-  let products = mockProducts;
-  try {
-    const cleanEnv = (val: string | undefined) => (val && val.trim() !== "") ? val.trim() : undefined;
-    const supabaseUrl = cleanEnv(process.env.NEXT_PUBLIC_SUPABASE_URL) || cleanEnv(process.env.SUPABASE_URL);
-    const supabaseKey = cleanEnv(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) || cleanEnv(process.env.SUPABASE_KEY);
-    
-    if (supabaseUrl && supabaseKey) {
-      const supabase = createClient(supabaseUrl, supabaseKey);
-      const { data, error } = await supabase.from('products').select('*');
-
-      if (data && !error && data.length > 0) {
-        products = data.map((p: any) => ({
-          id: p.id || p.ref,
-          name: p.name || "Produit",
-          category: p.category || "Matériaux de Construction",
-          description: p.description || p.name,
-          image: p.mainImage || p.image || "",
-          stockStatus: p.inStock ? "En Stock" : "En Rupture"
-        }));
-      }
-    }
-  } catch (err) {
-    console.error("Merchant feed generation error:", err);
-  }
-
-  const itemsXml = products.map(p => {
+  const itemsXml = products.map((p) => {
     const imageUrl = p.image
       ? (p.image.startsWith('http') ? p.image : `${baseUrl}${p.image}`)
       : `${baseUrl}/logo.png`;
 
-    const productUrl = `${baseUrl}/products/${p.id}`;
+    const productUrl = `${baseUrl}/products/${p.slug}`;
     const availability = p.stockStatus === 'En Rupture' ? 'out_of_stock' : 'in_stock';
+    const brand = p.brand || 'Chada Alyasmin';
+    const priceStr = p.pricing.price ? `${p.pricing.price.toFixed(2)} MAD` : '100.00 MAD';
 
     return `    <item>
       <g:id>${escapeXml(p.id)}</g:id>
@@ -47,10 +24,15 @@ export async function GET() {
       <g:image_link>${imageUrl}</g:image_link>
       <g:condition>new</g:condition>
       <g:availability>${availability}</g:availability>
-      <g:price>150.00 MAD</g:price>
-      <g:brand>Chada Alyasmin</g:brand>
-      <g:google_product_category>Building Materials</g:google_product_category>
+      <g:price>${priceStr}</g:price>
+      <g:brand>${escapeXml(brand)}</g:brand>
+      <g:google_product_category>Hardware &gt; Building Materials</g:google_product_category>
       <g:identifier_exists>no</g:identifier_exists>
+      <g:shipping>
+        <g:country>MA</g:country>
+        <g:service>Livraison Standard Maroc</g:service>
+        <g:price>0.00 MAD</g:price>
+      </g:shipping>
     </item>`;
   }).join('\n');
 
@@ -67,8 +49,8 @@ ${itemsXml}
   return new Response(feedXml, {
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=600'
-    }
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=600',
+    },
   });
 }
 

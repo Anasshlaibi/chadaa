@@ -19,10 +19,10 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL('https://chadaalyasmin.ma'),
   title: {
-    default: "Chada Alyasmin | Leader du Second Œuvre au Maroc",
+    default: "Chada Alyasmin | Matériaux de Second Œuvre au Maroc",
     template: "%s | Chada Alyasmin"
   },
-  description: "Expertise en aménagement et finition : Faux plafonds, Trappes de visite, Isolation. Qualité certifiée NF et RT2020. Livraison à Casablanca et partout au Maroc.",
+  description: "Fabricant et distributeur de matériaux de second œuvre et finition au Maroc : Trappes de visite, plaques de plâtre BA13, ossatures métalliques, joints creux et isolation thermo-acoustique à Casablanca.",
   icons: {
     icon: '/logo.png',
     shortcut: '/logo.png',
@@ -31,16 +31,27 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://chadaalyasmin.ma',
     languages: {
-      'fr-MA': 'https://chadaalyasmin.ma/fr',
+      'fr-MA': 'https://chadaalyasmin.ma',
       'ar-MA': 'https://chadaalyasmin.ma/ma',
       'en-MA': 'https://chadaalyasmin.ma/en',
-      'x-default': 'https://chadaalyasmin.ma/fr',
+      'x-default': 'https://chadaalyasmin.ma',
     },
   },
-  keywords: ["trappe de visite", "faux plafond", "isolation", "Maroc", "Casablanca", "second oeuvre", "aménagement", "BA13", "profilé aluminium", "joints creux"],
+  keywords: [
+    "matériaux de second œuvre Maroc",
+    "matériaux de construction Casablanca",
+    "trappe de visite Maroc",
+    "plaque de plâtre BA13 Casablanca",
+    "faux plafond suspendu Maroc",
+    "laine de roche isolation Maroc",
+    "joint creux aluminium",
+    "dalles de plafond 600x600",
+    "fournisseur second oeuvre Casablanca",
+    "prix matériaux second oeuvre Maroc"
+  ],
   openGraph: {
-    title: "Chada Alyasmin | Leader du Second Œuvre au Maroc",
-    description: "Expertise en aménagement et finition : Faux plafonds, Trappes de visite, Isolation. Qualité certifiée.",
+    title: "Chada Alyasmin | Matériaux de Second Œuvre & Finition au Maroc",
+    description: "Expertise en aménagement et finition : Faux plafonds, Trappes de visite, Isolation. Stock permanent à Casablanca et livraison partout au Maroc.",
     url: 'https://chadaalyasmin.ma',
     siteName: 'Chada Alyasmin',
     images: [
@@ -56,8 +67,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Chada Alyasmin | Leader du Second Œuvre au Maroc',
-    description: 'Faux plafonds, Trappes de visite sur-mesure et solutions d isolation au Maroc.',
+    title: 'Chada Alyasmin | Matériaux de Second Œuvre au Maroc',
+    description: 'Trappes de visite, plaques BA13, faux plafonds, joints creux et isolation thermo-acoustique au Maroc.',
     images: ['/logo.png'],
   },
   robots: {
@@ -81,7 +92,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
-        {/* Google Search Console verification — keep both tokens active */}
+        {/* Google Search Console verification */}
         <meta name="google-site-verification" content="pn5AwAPSTE2a5lER7SHva-kUJJkQnpzA0ZPSP0k5ITI" />
         <meta name="google-site-verification" content="f500946794c8c9e8" />
 
@@ -127,4 +138,3 @@ export default function RootLayout({
     </html>
   );
 }
-
