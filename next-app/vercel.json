@@ -1,4 +1,6 @@
 {
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
   "cleanUrls": true,
   "headers": [
     {
@@ -10,11 +12,5 @@
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
       ]
     }
-  ],
-  "rewrites": [
-    { "source": "/api/chat", "destination": "/api/chat.py" },
-    { "source": "/api/products", "destination": "/api/products.py" },
-    { "source": "/api/contact", "destination": "/api/contact.py" },
-    { "source": "/api/quotes", "destination": "/api/quotes.py" }
   ]
 }
