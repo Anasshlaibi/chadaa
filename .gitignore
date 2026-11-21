@@ -17,6 +17,8 @@ dist/
 .next/
 out/
 build/
+build_log.txt
+*.tsbuildinfo
 
 # Vercel
 .vercel

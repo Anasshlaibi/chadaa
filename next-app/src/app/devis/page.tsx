@@ -10,11 +10,13 @@ import {
   ChevronRight,
   ArrowLeft,
   PackageOpen,
+  MessageCircle,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '../../hooks/useCart';
 import { type CartItem } from '../../types/cart';
+import { buildWhatsAppQuoteUrl } from '../../lib/utils';
 import QuoteForm from '../../components/QuoteForm';
 
 export default function DevisPage() {
@@ -238,6 +240,17 @@ export default function DevisPage() {
                 <span>Passer à l&apos;étape suivante</span>
                 <ChevronRight size={20} />
               </button>
+              {items.length > 0 && (
+                <a
+                  href={buildWhatsAppQuoteUrl(items)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full min-h-[48px] rounded-2xl bg-[#25D366] text-white font-black text-sm shadow-md hover:bg-[#20bd5a] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                >
+                  <MessageCircle size={18} />
+                  <span>Envoyer ce devis via WhatsApp</span>
+                </a>
+              )}
               <p className="text-[10px] text-center text-gray-400 font-bold uppercase tracking-tight pb-1">
                 Demande gratuite · Réponse sous 24h
               </p>

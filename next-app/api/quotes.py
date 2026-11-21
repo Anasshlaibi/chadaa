@@ -64,7 +64,7 @@ def generate_pdf(client_name, client_email, client_phone, cart):
         pdf.cell(0, 10, clean_txt("Informations Client :"), ln=True)
         pdf.set_font("Helvetica", "", 10)
         pdf.cell(0, 8, clean_txt(f"Nom/Societe : {client_name}"), ln=True)
-        pdf.cell(0, 8, clean_txt(f"Email : {client_email}"), ln=True)
+        pdf.cell(0, 8, clean_txt(f"Email : {client_email or 'Non fourni'}"), ln=True)
         pdf.cell(0, 8, clean_txt(f"Telephone : {client_phone or 'Non fourni'}"), ln=True)
         pdf.cell(0, 8, clean_txt(f"Date : {time.strftime('%Y-%m-%d %H:%M')}"), ln=True)
         pdf.ln(10)
@@ -160,19 +160,21 @@ def handle_quotes():
             return jsonify({"status": "error", "message": "Database disconnected"}), 503
 
         # Extraction and validation
-        client_name = data.get("companyName") or data.get("contactName")
-        client_email = data.get("email")
-        client_phone = data.get("phone")
+        client_name = data.get("contactName") or data.get("companyName")
+        if data.get("companyName") and data.get("contactName"):
+            client_name = f"{data.get('companyName')} ({data.get('contactName')})"
+        client_email = (data.get("email") or "").strip()
+        client_phone = (data.get("phone") or "").strip()
         cart = data.get("cart")
 
-        if not client_name or not client_email or not cart:
-            return jsonify({"status": "error", "message": "Information manquante (Nom, Email ou Panier)"}), 400
+        if not client_name or (not client_email and not client_phone) or not cart:
+            return jsonify({"status": "error", "message": "Information manquante (Nom, Téléphone/Email ou Panier)"}), 400
 
         # Insert into Supabase
         result = supabase.table("quotes").insert({
             "client_name": client_name,
-            "client_email": client_email,
-            "client_phone": client_phone,
+            "client_email": client_email or "Non fourni",
+            "client_phone": client_phone or "Non fourni",
             "cart": cart,
             "status": "pending"
         }).execute()
@@ -227,12 +229,16 @@ def handle_quotes():
                 # Generate PDF and encode to list of bytes for Resend
                 pdf_bytes = generate_pdf(client_name, client_email, client_phone, cart)
                 
+                quote_to = os.environ.get("QUOTE_TO_EMAIL", "contact@chadaalyasmin.ma")
+                quote_from = os.environ.get("QUOTE_FROM_EMAIL", "Chada Alyasmin <onboarding@resend.dev>")
                 email_params = {
-                    "from": "Chada Alyasmin <onboarding@resend.dev>",
-                    "to": "anasshlaibi@gmail.com",
+                    "from": quote_from,
+                    "to": [quote_to],
                     "subject": f"📋 Nouveau Devis: {client_name}",
                     "html": html_content
                 }
+                if client_email:
+                    email_params["reply_to"] = client_email
 
                 if pdf_bytes:
                     import base64

@@ -247,12 +247,14 @@ export default function GlobalLandingPage({ lang }: { lang: 'fr' | 'ma' | 'en' }
               <span>{content.ctaButton1}</span>
               <ArrowRight size={22} />
             </button>
-            <button 
-              onClick={() => window.dispatchEvent(new CustomEvent('open-chat'))}
+            <a
+              href="https://wa.me/212661138204?text=Bonjour%20Chada%20Alyasmin%2C%20je%20souhaite%20un%20devis%20ou%20des%20informations%20techniques."
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full sm:w-auto px-12 py-6 bg-blue-950 text-white rounded-2xl font-black text-xl shadow-xl hover:bg-blue-900 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center space-x-4"
             >
               <span>{content.ctaButton2}</span>
-            </button>
+            </a>
           </div>
         </div>
       </section>

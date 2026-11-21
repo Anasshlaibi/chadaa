@@ -7,8 +7,5 @@
     "build": "node -e \"const fs=require('fs'); const cp=require('child_process'); if(fs.existsSync('next-app/package.json')){ cp.execSync('cd next-app && npm run build', {stdio:'inherit'}); } else { cp.execSync('next build', {stdio:'inherit'}); }\"",
     "dev": "npm --prefix next-app run dev",
     "start": "npm --prefix next-app run start"
-  },
-  "dependencies": {
-    "@openrouter/agent": "^0.7.2"
   }
 }

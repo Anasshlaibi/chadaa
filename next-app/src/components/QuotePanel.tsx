@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Trash2, ChevronRight, ShoppingBag, Plus, Minus, ArrowLeft, Package } from 'lucide-react';
+import { X, Trash2, ChevronRight, ShoppingBag, Plus, Minus, ArrowLeft, Package, MessageCircle } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
 import { type CartItem } from '../types/cart';
-import { cn } from '../lib/utils';
+import { cn, buildWhatsAppQuoteUrl } from '../lib/utils';
 import QuoteForm from './QuoteForm';
 import Image from 'next/image';
 
@@ -203,7 +203,7 @@ const QuotePanel: React.FC = () => {
                       <div className="grow" />
 
                       {/* CTA button */}
-                      <div className="p-8 pt-0">
+                      <div className="p-8 pt-0 space-y-3">
                         <button
                           onClick={() => setView('checkout')}
                           disabled={items.length === 0}
@@ -217,6 +217,17 @@ const QuotePanel: React.FC = () => {
                           <span>Chiffrer mon Projet</span>
                           <ChevronRight size={20} />
                         </button>
+                        {items.length > 0 && (
+                          <a
+                            href={buildWhatsAppQuoteUrl(items)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full py-4 rounded-2xl bg-[#25D366] text-white font-black text-sm shadow-md hover:bg-[#20bd5a] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                          >
+                            <MessageCircle size={18} />
+                            <span>Envoyer via WhatsApp</span>
+                          </a>
+                        )}
                         <p className="text-[10px] text-center text-gray-400 font-bold uppercase tracking-widest mt-4">
                           Aucun paiement requis
                         </p>
@@ -366,6 +377,17 @@ const QuotePanel: React.FC = () => {
                     <span>Chiffrer mon Projet</span>
                     <ChevronRight size={20} />
                   </button>
+                  {items.length > 0 && (
+                    <a
+                      href={buildWhatsAppQuoteUrl(items)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-4 rounded-3xl bg-[#25D366] text-white font-black text-sm shadow-md hover:bg-[#20bd5a] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                    >
+                      <MessageCircle size={18} />
+                      <span>Envoyer via WhatsApp</span>
+                    </a>
+                  )}
                   <p className="text-[10px] text-center text-gray-400 font-bold uppercase tracking-tight">
                     Demande gratuite · Réponse sous 24h
                   </p>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, CheckCircle, AlertCircle, Loader2, Building2, User, Mail, Phone } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle, Loader2, Building2, User, Mail, Phone, MessageCircle } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
 import { sendQuoteRequest } from '../services/api';
+import { buildWhatsAppQuoteUrl } from '../lib/utils';
 
 interface QuoteFormProps {
   onSuccess: () => void;
@@ -87,10 +88,9 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onSuccess, onCancel }) => {
           <div className="relative">
             <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input
-              required
               type="text"
               autoComplete="organization"
-              placeholder="Nom de l'entreprise"
+              placeholder="Nom de l'entreprise (optionnel)"
               className="w-full bg-gray-50 border-2 border-transparent focus:border-amber-500 focus:bg-white rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-blue-950 outline-none transition-all"
               value={formData.companyName}
               onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
@@ -103,23 +103,10 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onSuccess, onCancel }) => {
               required
               type="text"
               autoComplete="name"
-              placeholder="Nom du Contact"
+              placeholder="Nom du Contact *"
               className="w-full bg-gray-50 border-2 border-transparent focus:border-amber-500 focus:bg-white rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-blue-950 outline-none transition-all"
               value={formData.contactName}
               onChange={(e) => setFormData({ ...formData, contactName: e.target.value })}
-            />
-          </div>
-
-          <div className="relative">
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-            <input
-              required
-              type="email"
-              autoComplete="email"
-              placeholder="Email professionnel"
-              className="w-full bg-gray-50 border-2 border-transparent focus:border-amber-500 focus:bg-white rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-blue-950 outline-none transition-all"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
 
@@ -129,10 +116,22 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onSuccess, onCancel }) => {
               required
               type="tel"
               autoComplete="tel"
-              placeholder="Téléphone"
+              placeholder="Téléphone / WhatsApp *"
               className="w-full bg-gray-50 border-2 border-transparent focus:border-amber-500 focus:bg-white rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-blue-950 outline-none transition-all"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            />
+          </div>
+
+          <div className="relative">
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <input
+              type="email"
+              autoComplete="email"
+              placeholder="Email (optionnel)"
+              className="w-full bg-gray-50 border-2 border-transparent focus:border-amber-500 focus:bg-white rounded-2xl py-4 pl-12 pr-6 text-sm font-bold text-blue-950 outline-none transition-all"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
         </div>
@@ -144,7 +143,7 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onSuccess, onCancel }) => {
           </div>
         )}
 
-        <div className="pt-4">
+        <div className="pt-4 space-y-3">
           <button
             disabled={status === 'loading'}
             type="submit"
@@ -162,6 +161,16 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ onSuccess, onCancel }) => {
               </>
             )}
           </button>
+
+          <a
+            href={buildWhatsAppQuoteUrl(items, formData)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full py-3.5 rounded-2xl bg-[#25D366] text-white font-black text-sm shadow-md hover:bg-[#20bd5a] active:scale-95 transition-all flex items-center justify-center gap-2"
+          >
+            <MessageCircle size={18} />
+            <span>Envoyer via WhatsApp</span>
+          </a>
         </div>
 
       </form>
